@@ -7,28 +7,27 @@ public class cameraScript : MonoBehaviour {
     public GameObject[] listPlayers; // The list of players
     public float cameraXMin, cameraXMax, cameraYMin, cameraYMax; // Limit the camera to go beyond
 
-    private static Camera mainCam;
-    private static float cameraSpacePercent; // Percentage (of the screen) taken left as space at a border
-    private static float CameraFOV;
-    private static float videoFormat;
+    private Camera mainCam;
+    private float cameraRecul;
+    private float CameraFOV;
+    private float videoFormat;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        cameraSpacePercent = 0.10f; // 0 < < 0.5
+        cameraRecul = 1.5f;
 
         CameraFOV = Mathf.Deg2Rad * mainCam.fieldOfView; // radians
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
     }
 
-	// Update is called once per frame
-	void Update () {
+    // FixedUpdate is called once per frame (at a constant rate = for physics/movements calculations)
+    void FixedUpdate() {
         float xMax = cameraXMin, xMin = cameraXMax;
         float yMax = cameraYMin, yMin = cameraYMax;
         float posX, posY;
 
-        foreach (GameObject player in listPlayers)
-        {
+        foreach (GameObject player in listPlayers) {
             posX = player.transform.position.x;
             posY = player.transform.position.y;
 
@@ -47,11 +46,6 @@ public class cameraScript : MonoBehaviour {
         float xCamera = (xMax + xMin) / 2;
         float yCamera = (yMax + yMin) / 2;
 
-        xMax *= (1 - cameraSpacePercent);
-        xMin *= (1 - cameraSpacePercent);
-        yMax *= (1 - cameraSpacePercent);
-        yMin *= (1 - cameraSpacePercent);
-
         // On cherche la distance (z) entre la caméra et le plan
         // Trigo:
         // zX = (xMax - xMin) * 2 * tan(fov / 2)
@@ -60,12 +54,12 @@ public class cameraScript : MonoBehaviour {
         //
         // z = max(xMax - xMin, yMax - yMin) / tan(fov / 2)
 
-        float zCamera = - Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin) / (2 * Mathf.Tan(CameraFOV / 2));
+        float zCamera = -Mathf.Max(15, Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin) / (2 * Mathf.Tan(CameraFOV / 2)));
 
         // Les joueurs aux positions extremums sont aux bords de la caméra
         // Pour ajouter de la visibilité, on recule un peu la caméra
 
-        zCamera *= (1 + cameraSpacePercent);
+        zCamera *= cameraRecul;
 
         transform.position = new Vector3(xCamera, yCamera, zCamera);
     }
