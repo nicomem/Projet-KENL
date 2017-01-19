@@ -9,6 +9,7 @@ public class CharacterControllerScript : MonoBehaviour {
 
     private CharacterController controller;
     private float verticalVelocity;
+    private float xInput, yInput;
 
     // Add color to players while no 3D models
     private void ColorThePlayers() {
@@ -27,23 +28,39 @@ public class CharacterControllerScript : MonoBehaviour {
 
     // Update is called once per period (fixed time)
     private void FixedUpdate() {
+        xInput = Input.GetAxis("Horizontal");
+        yInput = Input.GetAxis("Vertical");
+
         if (transform.name != "Player 1")
             return;
 
         if (controller.isGrounded) {
-            if (Input.GetAxis("Vertical") > 0.1f) {
+            if (yInput > 0.1f) {
                 verticalVelocity = jumpForce;
             }
         } else {
-            if (verticalVelocity > 0 && Input.GetAxis("Vertical") <= 0.1f) {
+            if (verticalVelocity > 0 && yInput <= 0.1f) {
                 verticalVelocity *= 0.5f;
             }
             verticalVelocity -= gravity * Time.deltaTime;
         }
 
         Vector3 moveVector = Vector3.zero;
-        moveVector.x = Input.GetAxis("Horizontal") * horizontalVelocity;
+        float waySign = IsCorrectWay() ? 1 : -1;
+
+        moveVector.x = xInput * horizontalVelocity;
         moveVector.y = verticalVelocity;
+        moveVector.z = 0;
         controller.Move(moveVector * Time.deltaTime);
+
+        // Rotate around Y-Axis if player goes backwards
+        if (waySign * xInput < 0) {
+            transform.Rotate(new Vector3(0, waySign * 180));
+        }
+    }
+
+    private bool IsCorrectWay() {
+        /* Returns true if the player is facing to the right */
+        return controller.transform.eulerAngles.y == 0;
     }
 }
