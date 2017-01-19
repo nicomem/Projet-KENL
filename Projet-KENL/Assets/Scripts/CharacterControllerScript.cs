@@ -14,7 +14,7 @@ public class CharacterControllerScript : MonoBehaviour {
     private void ColorThePlayers() {
         if(transform.name == "Player 1") {
             GetComponent<Renderer>().material.color = Color.green;
-        } else if (transform.name == "Player 2") {
+        } else {
             GetComponent<Renderer>().material.color = Color.red;
         }
     }
@@ -25,12 +25,11 @@ public class CharacterControllerScript : MonoBehaviour {
         ColorThePlayers();
     }
 
-    // Update is called once per frame
-    void Update() {
-
-    }
-
+    // Update is called once per period (fixed time)
     private void FixedUpdate() {
+        if (transform.name != "Player 1")
+            return;
+
         if (controller.isGrounded) {
             if (Input.GetAxis("Vertical") > 0.1f) {
                 verticalVelocity = jumpForce;

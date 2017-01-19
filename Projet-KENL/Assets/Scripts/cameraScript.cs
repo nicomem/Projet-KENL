@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class cameraScript : MonoBehaviour {
+    public float cameraXMin,
+        cameraXMax,
+        cameraYMin,
+        cameraYMax; // Limit the camera to go beyond
 
     public GameObject[] listPlayers; // The list of players
-    public float cameraXMin, cameraXMax, cameraYMin, cameraYMax; // Limit the camera to go beyond
 
     private Camera mainCam;
     private float cameraRecul;
@@ -19,6 +23,7 @@ public class cameraScript : MonoBehaviour {
 
         CameraFOV = Mathf.Deg2Rad * mainCam.fieldOfView; // radians
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
+
     }
 
     // FixedUpdate is called once per frame (at a constant rate = for physics/movements calculations)
