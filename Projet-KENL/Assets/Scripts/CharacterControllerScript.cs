@@ -6,14 +6,17 @@ public class CharacterControllerScript : MonoBehaviour {
     public float gravity = 14.0f;
     public float jumpForce = 10.0f; // Y-velocity added when jumping
     public float horizontalVelocity = 20.0f;
+    public int jumpMax = 2; // How many jumps the player can do
+                            // before being grounded
 
     private CharacterController controller;
     private float verticalVelocity;
     private float xInput, yInput;
+    private int jumpCount = 0; // How many jumps done before grounded
 
     // Add color to players while no 3D models
     private void ColorThePlayers() {
-        if(transform.name == "Player 1") {
+        if (transform.name == "Player 1") {
             GetComponent<Renderer>().material.color = Color.green;
         } else {
             GetComponent<Renderer>().material.color = Color.red;
@@ -35,11 +38,19 @@ public class CharacterControllerScript : MonoBehaviour {
             return;
 
         if (controller.isGrounded) {
+            jumpCount = 0;
+
             if (yInput > 0.1f) {
                 verticalVelocity = jumpForce;
+                jumpCount++;
             }
         } else {
-            if (verticalVelocity > 0 && yInput <= 0.1f) {
+            if (jumpCount < jumpMax
+                    && verticalVelocity < 0.1 * jumpForce
+                    && yInput > 0.25f) {
+                verticalVelocity = jumpForce;
+                jumpCount++;
+            } else if (verticalVelocity > 0 && yInput <= 0.1f) {
                 verticalVelocity *= 0.5f;
             }
             verticalVelocity -= gravity * Time.deltaTime;
