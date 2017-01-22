@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class cameraScript : MonoBehaviour {
+public class cameraScript : MonoBehaviour
+{
     public float cameraXMin,
         cameraXMax,
         cameraYMin,
@@ -17,7 +18,8 @@ public class cameraScript : MonoBehaviour {
     private float videoFormat;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
         cameraRecul = 1.5f;
 
@@ -27,12 +29,14 @@ public class cameraScript : MonoBehaviour {
     }
 
     // FixedUpdate is called once per frame (at a constant rate = for physics/movements calculations)
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         float xMax = cameraXMin, xMin = cameraXMax;
         float yMax = cameraYMin, yMin = cameraYMax;
         float posX, posY;
 
-        foreach (GameObject player in listPlayers) {
+        foreach (GameObject player in listPlayers)
+        {
             posX = player.transform.position.x;
             posY = player.transform.position.y;
 
