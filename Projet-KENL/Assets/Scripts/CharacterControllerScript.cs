@@ -4,50 +4,76 @@ using UnityEngine;
 
 public class CharacterControllerScript : MonoBehaviour
 {
+    // Jump var (public)
     public float gravity = 14.0f;
     public float jumpForce = 10.0f; // Y-velocity added when jumping
     public float horizontalVelocity = 20.0f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
-
+    
+    
+    // Attack var (public)
     public Attack[] listAttacks;
+    public int maxCombo = 4;
 
+
+    // Jump var (private)
     private float verticalVelocity;
-    private float xInput, yInput;
-    private float waySign; // If 1: player looks to the right
     private int jumpCount = 0; // How many jumps done before grounded
-    // powerReceived = power * (1 + percentHealth / 100)
-    private float percentHealth = 0;
+
+    // Attack var (private)
+    private float percentHealth = 0; // powerReceived = 
+                                     // power * (1 + percentHealth / 100)
     private bool isAttacking = false; // See if the player is attacking
+    private float attackTimer = 0f; // If 0f, the player can attack
+                                    // again (no combos)
+    private int comboActual = 0;
+
+
+    // Other movements var (private)
+    private float xInput, yInput;
+    private bool[] inputs; // true if listAttack[i].inputKey is pressed
+    private float waySign; // If 1: player looks to the right
 
     private CharacterController controller;
     private Vector3 moveVector;
 
+
+    // Attack class
     [System.Serializable]
     public class Attack
     {
         public float power;
         public Collider collider;
         public string inputKey; // Input.GetKeyDown(inputKey)
+        public float attackCooldown; // The time to end the attack (s)
+        public int comboIncrease;
 
-        public Attack(float _power, Collider _collider, string _inputKey)
+        public Attack(float _power, 
+            Collider _collider, 
+            string _inputKey, 
+            float _attackCooldown = 1, 
+            int _comboIncrease = 1)
         {
             power = _power;
             collider = _collider;
             inputKey = _inputKey;
+            attackCooldown = _attackCooldown;
+            comboIncrease = _comboIncrease;
         }
     }
+
 
     // Add color to players while no 3D models
     private void ColorThePlayers()
     {
-        if (transform.name == "Player 1")
+        if (transform.name == "Player")
         {
             GetComponent<Renderer>().material.color = Color.green;
         }
         else
         {
-            GetComponent<Renderer>().material.color = Color.red;
+            GetComponent<Renderer>().material.color = Color.yellow;
         }
     }
 
@@ -55,16 +81,25 @@ public class CharacterControllerScript : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        // All initialized at false by default
+        inputs = new bool[listAttacks.Length];
+
         ColorThePlayers();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        if (transform.name != "Player") // For now we only move player 1
+            return;
+
         xInput = Input.GetAxis("Horizontal");
         yInput = Input.GetAxis("Vertical");
 
-        if (transform.name != "Player 1") // For now we only move player 1
-            return;
+        for (int i = 0; i < listAttacks.Length; i++)
+        {
+            inputs[i] = Input.GetKeyDown(listAttacks[i].inputKey);
+        }
 
         // Call all movements functions here
         MoveJump(yInput);
@@ -137,24 +172,49 @@ public class CharacterControllerScript : MonoBehaviour
 
     private bool MoveAttack()
     {
-        if (isAttacking)
+        if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
+
+        if (attackTimer > 0)
         {
-            // TODO Insert a timer here
-            return false;
+            
+            // Give a color to the collider (DEBUG)
+            transform.GetChild(1).GetComponent<Renderer>()
+                .material.color = Color.black;
+
+            if (attackTimer < 0.5f)
+            {
+                transform.GetChild(1).GetComponent<Renderer>()
+                .material.color = Color.yellow;
+            }
+        }
+        else
+        {
+            // Remove color of the collider (DEBUG)
+            transform.GetChild(1).GetComponent<Renderer>()
+                .material.color = Color.white;
+
+            comboActual = 0; // We don't forget to reset the combo var
         }
 
-        foreach (Attack attack in listAttacks)
+        if (comboActual < maxCombo && attackTimer < 0.5f)
         {
-            if (Input.GetKeyDown(attack.inputKey))
+            for (int i = 0; i < listAttacks.Length; i++)
             {
-                LaunchAttack(attack.collider);
+                if (inputs[i]) // If attack button pressed
+                {
+                    LaunchAttack(listAttacks[i].collider, listAttacks[i]);
+                    comboActual += listAttacks[i].comboIncrease;
+                    attackTimer = listAttacks[i].attackCooldown;
+
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-    private void LaunchAttack(Collider collider)
+    private void LaunchAttack(Collider collider, Attack attack)
     {
         Collider[] colliders =
             Physics.OverlapBox(collider.bounds.center,
@@ -169,5 +229,12 @@ public class CharacterControllerScript : MonoBehaviour
                 print(col.transform.name);
             }
         }
+    }
+
+    public void AddMovement(Vector3 movement)
+    {
+        /* Call this function to add a movement
+         * to this player (from another player) */
+        moveVector += movement;
     }
 }
