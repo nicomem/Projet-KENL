@@ -27,9 +27,8 @@ public class cameraScript : MonoBehaviour
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
 
     }
-
-    // FixedUpdate is called once per frame (at a constant rate = for physics/movements calculations)
-    void FixedUpdate()
+    
+    void Update()
     {
         float xMax = cameraXMin, xMin = cameraXMax;
         float yMax = cameraYMin, yMin = cameraYMax;
