@@ -41,7 +41,8 @@ GameObject:
   - component: {fileID: 136448515731162552}
   - component: {fileID: 23563349883282636}
   - component: {fileID: 143781255430388002}
-  - component: {fileID: 114615136846265008}
+  - component: {fileID: 114456825692012940}
+  - component: {fileID: 114898762796964738}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -246,7 +247,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114615136846265008
+--- !u!114 &114456825692012940
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -254,7 +255,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1058267956331638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28a82139f7977e44c8ab1d57219eb2b1, type: 3}
+  m_Script: {fileID: 11500000, guid: ade12221ce1499246b82eb6470c70c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114898762796964738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72794545b5c542f47bb29fc9cfeaffaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 14
@@ -262,8 +274,8 @@ MonoBehaviour:
   horizontalVelocity: 20
   jumpMax: 2
   listAttacks:
-  - power: 5
-    collider: {fileID: 65349683932464952}
+  - power: 10
+    attackCollider: {fileID: 65349683932464952}
     inputKey: g
     attackCooldown: 1
     comboIncrease: 1

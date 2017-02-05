@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class cameraScript : MonoBehaviour
+public class CameraScript : MonoBehaviour
 {
     public float cameraXMin,
         cameraXMax,
@@ -16,6 +16,10 @@ public class cameraScript : MonoBehaviour
     private float cameraRecul;
     private float CameraFOV;
     private float videoFormat;
+
+    private float xMax, xMin, yMax, yMin;
+    private float posX, posY;
+    float xCamera, yCamera, zCamera;
 
     // Use this for initialization
     void Start()
@@ -30,9 +34,10 @@ public class cameraScript : MonoBehaviour
     
     void Update()
     {
-        float xMax = cameraXMin, xMin = cameraXMax;
-        float yMax = cameraYMin, yMin = cameraYMax;
-        float posX, posY;
+        xMax = cameraXMin;
+        xMin = cameraXMax;
+        yMax = cameraYMin;
+        yMin = cameraYMax;
 
         foreach (GameObject player in listPlayers)
         {
@@ -51,8 +56,8 @@ public class cameraScript : MonoBehaviour
         yMax = Mathf.Min(yMax, cameraYMax);
         yMin = Mathf.Max(yMin, cameraYMin);
 
-        float xCamera = (xMax + xMin) / 2;
-        float yCamera = (yMax + yMin) / 2;
+        xCamera = (xMax + xMin) / 2;
+        yCamera = (yMax + yMin) / 2;
 
         // On cherche la distance (z) entre la caméra et le plan
         // Trigo:
@@ -62,7 +67,7 @@ public class cameraScript : MonoBehaviour
         //
         // z = max(xMax - xMin, yMax - yMin) / tan(fov / 2)
 
-        float zCamera = -Mathf.Max(15, Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin) / (2 * Mathf.Tan(CameraFOV / 2)));
+        zCamera = -Mathf.Max(15, Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin) / (2 * Mathf.Tan(CameraFOV / 2)));
 
         // Les joueurs aux positions extremums sont aux bords de la caméra
         // Pour ajouter de la visibilité, on recule un peu la caméra
