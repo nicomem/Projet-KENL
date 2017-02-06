@@ -31,7 +31,7 @@ public class CameraScript : MonoBehaviour
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
 
     }
-    
+
     void Update()
     {
         xMax = cameraXMin;
@@ -39,8 +39,7 @@ public class CameraScript : MonoBehaviour
         yMax = cameraYMin;
         yMin = cameraYMax;
 
-        foreach (GameObject player in listPlayers)
-        {
+        foreach (GameObject player in listPlayers) {
             posX = player.transform.position.x;
             posY = player.transform.position.y;
 

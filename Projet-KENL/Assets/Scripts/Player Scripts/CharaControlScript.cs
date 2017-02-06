@@ -30,7 +30,7 @@ public class CharaControlScript : MonoBehaviour
 
         if (transform.name != "Player") // For now we only move player 1
             return;
-        
+
         // Function for moving the player with input (!= IA)
         MovementPlayer();
     }
