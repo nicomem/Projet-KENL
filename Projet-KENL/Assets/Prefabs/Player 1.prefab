@@ -271,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 14
   jumpForce: 10
-  horizontalVelocity: 20
+  horizontalVelocity: 25
   jumpMax: 2
   listAttacks:
   - power: 10

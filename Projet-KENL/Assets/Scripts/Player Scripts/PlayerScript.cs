@@ -49,16 +49,15 @@ public class PlayerScript : MonoBehaviour
 
     public Vector3 GetMoveVector() { return moveVector; }
 
-    public void ResetMoveVector() { moveVector = Vector3.zero; }
-
-    public void Movements(float xInput, float yInput, bool[] inputs)
+    public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
 
-        ResetMoveVector();
+        // Reset moveVector before making a change
+        moveVector = Vector3.zero;
         Movement_Run(xInput);
-        Movement_Jump(yInput);
+        Movement_Jump(jumpButtonPressed);
         isAttacking = Movement_Attack(inputs);
 
         CheckRotation(xInput);
@@ -81,12 +80,12 @@ public class PlayerScript : MonoBehaviour
         } else { return false; }
     }
 
-    private bool Movement_Jump(float yInput)
+    private bool Movement_Jump(bool jumpButtonPressed)
     {
         /* Verify if a jump can be made, if so, makes the player jump
          * Returns a bool indicating if a jump has been made */
 
-        bool jumped = CheckJump(yInput);
+        bool jumped = CheckJump(jumpButtonPressed);
 
         AddMovement(new Vector3(0, verticalVelocity, 0));
 
@@ -168,13 +167,17 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private bool CheckJump(float yInput)
+    private bool CheckJump(bool jumpButtonPressed)
     {
         /* Verify if a jump can be made & actualize jump vars
          * It is also here we make gravity work */
+
         if (charaControl.isGrounded) {
             jumpCount = 0;
-            verticalVelocity = 0;
+
+            // If we set verticalVelocity to -1f << 1f isGrounded doesn't work
+            // => Go home Unity, you're drunk
+            verticalVelocity = -1f;
         } else {
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
@@ -184,13 +187,11 @@ public class PlayerScript : MonoBehaviour
         }
 
         if (jumpCount < jumpMax
-                && verticalVelocity < 0.25 * jumpForce
-                && yInput > 0.1f) {
+                && verticalVelocity < 0.5f * jumpForce
+                && jumpButtonPressed) {
             verticalVelocity = jumpForce;
             jumpCount++;
             return true;
-        } else if (verticalVelocity > 0 && yInput <= 0.1f) {
-            verticalVelocity *= 0.5f;
         }
 
         return false;

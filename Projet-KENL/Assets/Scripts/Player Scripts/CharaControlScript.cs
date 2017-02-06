@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class CharaControlScript : MonoBehaviour
 {
-    private float xInput, yInput;
+    private float xInput;
+    private bool jumpButtonPressed;
     private bool[] inputs; // true if listAttack[i].inputKey is pressed
 
     private PlayerScript player;
@@ -25,6 +26,11 @@ public class CharaControlScript : MonoBehaviour
 
     private void Update()
     {
+        /* When there's movement or physics, put here */
+
+        if (transform.name != "Player") // For now we only move player 1
+            return;
+        
         // Function for moving the player with input (!= IA)
         MovementPlayer();
     }
@@ -44,17 +50,14 @@ public class CharaControlScript : MonoBehaviour
     {
         /* For move the player with input (!= IA) */
 
-        if (transform.name != "Player") // For now we only move player 1
-            return;
-
         xInput = Input.GetAxis("Horizontal");
-        yInput = Input.GetAxis("Vertical");
+        jumpButtonPressed = Input.GetButtonDown("Jump");
 
         for (int i = 0; i < player.listAttacks.Length; i++) {
             inputs[i] = Input.GetKeyDown(player.listAttacks[i].inputKey);
         }
 
-        player.Movements(xInput, yInput, inputs);
+        player.Movements(xInput, jumpButtonPressed, inputs);
         charaControl.Move(player.GetMoveVector() * Time.deltaTime);
 
         // We make sure there is no movement through Z-Axis

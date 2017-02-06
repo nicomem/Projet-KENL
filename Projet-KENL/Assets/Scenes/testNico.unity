@@ -332,8 +332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraXMin: -30
   cameraXMax: 30
-  cameraYMin: 10
-  cameraYMax: 20
+  cameraYMin: 0
+  cameraYMax: 50
   listPlayers:
   - {fileID: 1804871382}
   - {fileID: 1258175125}
