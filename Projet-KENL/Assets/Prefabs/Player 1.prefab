@@ -275,11 +275,12 @@ MonoBehaviour:
   jumpMax: 2
   listAttacks:
   - power: 10
-    attackCollider: {fileID: 65349683932464952}
     inputKey: g
-    attackCooldown: 1
+    attackCooldown: 1.5
     comboIncrease: 1
+    attackCollider: {fileID: 65349683932464952}
   maxCombo: 4
+  period: 0.25
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1

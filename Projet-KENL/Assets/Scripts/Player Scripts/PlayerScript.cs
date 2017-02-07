@@ -21,6 +21,8 @@ public class PlayerScript : MonoBehaviour
     [Space(5)]
     public AttackClass[] listAttacks;
     public int maxCombo = 4;
+    public float period = 1f; // Set the period between each attackCollider check
+
 
     // Jump var (private)
     private float verticalVelocity;
@@ -33,7 +35,12 @@ public class PlayerScript : MonoBehaviour
                                     // again (no combos)
     private int comboActual = 0;
     private bool isAttacking = false; // See if the player is attacking
-
+    private float currentPeriod = 0; // If <= 0, can check attackCollider
+    private bool attackTimerActivated = false; // If true, activate he attack timer
+    private AttackClass currentAttack;
+    private PlayerScript playerHit; // Player script of hit player
+    private float invulnerableTimer = 0f; // If <= 0f, player can get hit
+        // Resets in function of the attackè
 
     // Other movements var (public)
     private float waySign; // If 1: player looks to the right
@@ -54,6 +61,9 @@ public class PlayerScript : MonoBehaviour
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
 
+        // We update the timers
+        UpdateTimers();
+
         // Reset moveVector before making a change
         moveVector = Vector3.zero;
         Movement_Run(xInput);
@@ -63,6 +73,27 @@ public class PlayerScript : MonoBehaviour
         CheckRotation(xInput);
     }
 
+
+    private void UpdateTimers()
+    {
+        // Attack Timer
+        if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
+
+        // Invulnerable Timer
+        if (invulnerableTimer > 0f) { invulnerableTimer -= Time.deltaTime; }
+
+        // Attack-Collision Timer
+        if (attackTimerActivated) {
+            currentPeriod = Mathf.Max(0f, currentPeriod - Time.deltaTime);
+
+            if (currentPeriod <= 0f) {
+                CollidersAttack(currentAttack);
+
+                // We reset the attack timer
+                currentPeriod = period;
+            }
+        }
+    }
 
     private void AddMovement(Vector3 movement)
     {
@@ -98,8 +129,6 @@ public class PlayerScript : MonoBehaviour
          * There is also combos (& combos limit)
          * Returns true if an attack has been made (else false) */
 
-        if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
-
         if (attackTimer > 0) {
             // Here should be called an attack animation
             // Give a color to the collider (DEBUG)
@@ -118,39 +147,51 @@ public class PlayerScript : MonoBehaviour
                 .material.color = Color.white;
 
             comboActual = 0; // We don't forget to reset the combo var
+            attackTimerActivated = false; // And also the attacks timer
         }
 
         // Attacks & Combos
-        if (comboActual < maxCombo && attackTimer < 0.5f) {
-            for (int i = 0; i < listAttacks.Length; i++) {
-                // If attack button pressed
-                if (inputs[i]) {
-                    //LaunchAttack(listAttacks[i].GetComponent<Collider>(), listAttacks[i]);
-                    comboActual += listAttacks[i].comboIncrease;
-                    attackTimer = listAttacks[i].attackCooldown;
+        for (int i = 0; i < listAttacks.Length; i++) {
+            if (comboActual < maxCombo
+                && attackTimer < 0.5f
+                && inputs[i]) {
+                // We activate the attack timer
+                attackTimerActivated = true;
+                currentPeriod = period;
+                currentAttack = listAttacks[i];
 
-                    return true;
-                }
+                CollidersAttack(currentAttack);
+                comboActual += currentAttack.comboIncrease;
+                attackTimer = currentAttack.attackCooldown;
+
+                return true;
             }
         }
 
-        return false;
+        return attackTimer > 0f;
     }
 
-    private void LaunchAttack(Collider collider, AttackClass attack)
+    private void CollidersAttack(AttackClass attack)
     {
         /* Launch an attack (move into AttackClass ?) */
 
         Collider[] colliders =
-            Physics.OverlapBox(collider.bounds.center,
-                               collider.bounds.extents,
-                               collider.transform.rotation,
+            Physics.OverlapBox(attack.attackCollider.bounds.center,
+                               attack.attackCollider.bounds.extents,
+                               attack.attackCollider.transform.rotation,
                                LayerMask.GetMask("Hitbox"));
 
-        foreach (Collider col in colliders) {
-            if (col.transform.name != transform.name) // No self-hitting here !
-            {
-                //print(col.transform.name);
+        // Colliders gives 2 references to 2 Hitbox-Colliders
+        // So we only take one half
+        for (int i = 0; i < colliders.Length / 2; i++) {
+            // No self-hitting here !
+            if (colliders[i].transform.name != transform.name) {
+                playerHit = colliders[i].GetComponent<PlayerScript>();
+                
+                // If player can get hit
+                if (playerHit.invulnerableTimer <= 0f) {
+                    print(colliders[i].transform.name);
+                }
             }
         }
     }
