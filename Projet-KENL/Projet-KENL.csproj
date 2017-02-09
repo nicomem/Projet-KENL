@@ -75,8 +75,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Atacks Scripts\AttackTemplate.cs" />
+    <Compile Include="Assets\Scripts\Atacks Scripts\BasicAttack.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
-    <Compile Include="Assets\Scripts\Player Scripts\AttackClass.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
   </ItemGroup>

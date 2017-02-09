@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour
     // Attack var (public)
     [Header("Attacking")]
     [Space(5)]
-    public AttackClass[] listAttacks;
+    public AttackTemplate[] listAttacks;
     public int maxCombo = 4;
     public float period = 1f; // Set the period between each attackCollider check
 
@@ -37,10 +37,10 @@ public class PlayerScript : MonoBehaviour
     private bool isAttacking = false; // See if the player is attacking
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
-    private AttackClass currentAttack;
-    private PlayerScript playerHit; // Player script of hit player
-    private float invulnerableTimer = 0f; // If <= 0f, player can get hit
-        // Resets in function of the attackè
+    private AttackTemplate currentAttack;
+    
+    public float InvulnerableTimer { get; private set; }
+        // If <= 0f, player can get hit, resets in function of the attack
 
     // Other movements var (public)
     private float waySign; // If 1: player looks to the right
@@ -52,6 +52,7 @@ public class PlayerScript : MonoBehaviour
     private void Start()
     {
         charaControl = GetComponent<CharacterController>();
+        InvulnerableTimer = 0f;
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
@@ -80,14 +81,14 @@ public class PlayerScript : MonoBehaviour
         if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
 
         // Invulnerable Timer
-        if (invulnerableTimer > 0f) { invulnerableTimer -= Time.deltaTime; }
+        if (InvulnerableTimer > 0f) { InvulnerableTimer -= Time.deltaTime; }
 
         // Attack-Collision Timer
         if (attackTimerActivated) {
             currentPeriod = Mathf.Max(0f, currentPeriod - Time.deltaTime);
 
             if (currentPeriod <= 0f) {
-                CollidersAttack(currentAttack);
+                currentAttack.CollidersAttack();
 
                 // We reset the attack timer
                 currentPeriod = period;
@@ -160,9 +161,9 @@ public class PlayerScript : MonoBehaviour
                 currentPeriod = period;
                 currentAttack = listAttacks[i];
 
-                CollidersAttack(currentAttack);
-                comboActual += currentAttack.comboIncrease;
-                attackTimer = currentAttack.attackCooldown;
+                currentAttack.CollidersAttack();
+                comboActual += currentAttack.ComboIncrease;
+                attackTimer = currentAttack.AttackCooldown;
 
                 return true;
             }
@@ -170,32 +171,7 @@ public class PlayerScript : MonoBehaviour
 
         return attackTimer > 0f;
     }
-
-    private void CollidersAttack(AttackClass attack)
-    {
-        /* Launch an attack (move into AttackClass ?) */
-
-        Collider[] colliders =
-            Physics.OverlapBox(attack.attackCollider.bounds.center,
-                               attack.attackCollider.bounds.extents,
-                               attack.attackCollider.transform.rotation,
-                               LayerMask.GetMask("Hitbox"));
-
-        // Colliders gives 2 references to 2 Hitbox-Colliders
-        // So we only take one half
-        for (int i = 0; i < colliders.Length / 2; i++) {
-            // No self-hitting here !
-            if (colliders[i].transform.name != transform.name) {
-                playerHit = colliders[i].GetComponent<PlayerScript>();
-                
-                // If player can get hit
-                if (playerHit.invulnerableTimer <= 0f) {
-                    print(colliders[i].transform.name);
-                }
-            }
-        }
-    }
-
+    
     private void CheckRotation(float xInput)
     {
         /* Check if the player is correctly rotated

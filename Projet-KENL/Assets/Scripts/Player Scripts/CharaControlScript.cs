@@ -54,8 +54,11 @@ public class CharaControlScript : MonoBehaviour
         jumpButtonPressed = Input.GetButtonDown("Jump");
 
         for (int i = 0; i < player.listAttacks.Length; i++) {
-            inputs[i] = Input.GetKeyDown(player.listAttacks[i].inputKey);
+            inputs[i] = Input.GetKeyDown(player.listAttacks[i].InputKey);
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+            player.transform.position = new Vector3(-10, 2.5f, 0);
 
         player.Movements(xInput, jumpButtonPressed, inputs);
         charaControl.Move(player.GetMoveVector() * Time.deltaTime);

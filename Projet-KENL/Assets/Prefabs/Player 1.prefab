@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 143781255430388002}
   - component: {fileID: 114456825692012940}
   - component: {fileID: 114898762796964738}
+  - component: {fileID: 114986424697877738}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -274,13 +275,32 @@ MonoBehaviour:
   horizontalVelocity: 25
   jumpMax: 2
   listAttacks:
-  - power: 10
-    inputKey: g
-    attackCooldown: 1.5
-    comboIncrease: 1
-    attackCollider: {fileID: 65349683932464952}
+  - {fileID: 114986424697877738}
   maxCombo: 4
   period: 0.25
+--- !u!114 &114986424697877738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68bc3e20275f6445bad3dab3c0cde32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerRel:
+  - 5
+  pushRel:
+  - 10
+  dirVector: []
+  pushVector: []
+  powerVector: []
+  InputKey: g
+  AttackCooldown: 1.5
+  ComboIncrease: 1
+  ComboLength: 1
+  AttackCollider: {fileID: 65349683932464952}
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1
