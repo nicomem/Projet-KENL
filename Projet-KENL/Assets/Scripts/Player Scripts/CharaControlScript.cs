@@ -28,8 +28,8 @@ public class CharaControlScript : MonoBehaviour
     {
         /* When there's movement or physics, put here */
 
-        if (transform.name != "Player") // For now we only move player 1
-            return;
+        if (transform.name == "Player") // For now we only move player 1
+            GetInputs();
 
         // Function for moving the player with input (!= IA)
         MovementPlayer();
@@ -46,10 +46,8 @@ public class CharaControlScript : MonoBehaviour
         }
     }
 
-    private void MovementPlayer()
+    private void GetInputs()
     {
-        /* For move the player with input (!= IA) */
-
         xInput = Input.GetAxis("Horizontal");
         jumpButtonPressed = Input.GetButtonDown("Jump");
 
@@ -59,9 +57,13 @@ public class CharaControlScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
             player.transform.position = new Vector3(-10, 2.5f, 0);
+    }
+
+    private void MovementPlayer()
+    {
+        /* To move the player with input (!= IA) */
 
         player.Movements(xInput, jumpButtonPressed, inputs);
-        charaControl.Move(player.GetMoveVector() * Time.deltaTime);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(

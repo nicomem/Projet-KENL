@@ -29,20 +29,24 @@ public class AttackTemplate : MonoBehaviour
     public string InputKey;
     public float AttackCooldown;
     // \-> The time to end the attack (s)
-    public int ComboIncrease;
     public int ComboLength;
+    [System.NonSerialized]
+    public int actualCombo = -1; // We increment before the attack
+        // so at first attack will be at 0
     public Collider AttackCollider;
+
+    private Vector3 dirAttack;
+    private Collider[] colliders;
 
 
     public void CollidersAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
 
-        Collider[] colliders =
-            Physics.OverlapBox(AttackCollider.bounds.center,
-                               AttackCollider.bounds.extents,
-                               AttackCollider.transform.rotation,
-                               LayerMask.GetMask("Hitbox"));
+        colliders = Physics.OverlapBox(AttackCollider.bounds.center,
+                                       AttackCollider.bounds.extents,
+                                       AttackCollider.transform.rotation,
+                                       LayerMask.GetMask("Hitbox"));
 
         // Colliders gives 2 references to 2 Hitbox-Colliders
         // So we only take one half
@@ -53,9 +57,25 @@ public class AttackTemplate : MonoBehaviour
 
                 // If player can get hit
                 if (playerHit.InvulnerableTimer <= 0f) {
-                    print(colliders[i].transform.name);
+                    dirAttack = (playerHit.transform.position -
+                        transform.position).normalized;
+                    
+                    GiveAttack(dirAttack, powerRel[actualCombo],
+                        pushRel[actualCombo]);
+
+                    GiveAttack(dirVector[actualCombo],
+                        powerVector[actualCombo], pushVector[actualCombo]);
                 }
             }
         }
+    }
+
+    private void GiveAttack(Vector3 attackDir, float attackPower,
+        float attackPush)
+    {
+        playerHit.ChangeVelocities(attackDir * attackPush *
+            (1 + (playerHit.percentHealth / 100)));
+
+        playerHit.percentHealth += attackPower;
     }
 }

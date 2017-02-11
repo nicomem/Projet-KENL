@@ -272,12 +272,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 14
   jumpForce: 10
-  horizontalVelocity: 25
+  horizontalSpeed: 20
   jumpMax: 2
   listAttacks:
   - {fileID: 114986424697877738}
   maxCombo: 4
   period: 0.25
+  verticalVelocity: 0
+  horizontalVelocity: 0
+  percentHealth: 0
 --- !u!114 &114986424697877738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -297,8 +300,7 @@ MonoBehaviour:
   pushVector: []
   powerVector: []
   InputKey: g
-  AttackCooldown: 1.5
-  ComboIncrease: 1
+  AttackCooldown: 0.5
   ComboLength: 1
   AttackCollider: {fileID: 65349683932464952}
 --- !u!136 &136448515731162552
