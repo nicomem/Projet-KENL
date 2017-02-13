@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerScript : MonoBehaviour
 {
-    // Jump var (public)
+    // Jump var (Editor)
     [Header("Jumping")]
     [Space(5)]
     public float gravity = 14.0f;
@@ -16,20 +16,23 @@ public class PlayerScript : MonoBehaviour
 
     [Space]
 
-    // Attack var (public)
+    // Attack var (Editor)
     [Header("Attacking")]
     [Space(5)]
-    public AttackTemplate[] listAttacks;
+    public ComboTemplate[] listAttacks;
     public int maxCombo = 4;
     public float period = 1f; // Set the period between each attackCollider check
 
 
-    // Jump var (private)
-    public float verticalVelocity;
-    public float horizontalVelocity; // Not jump, but goes with Y-velocity
+    // Jump var (hidden)
+    private float verticalVelocity;
+    private float horizontalVelocity; // Not jump, but goes with Y-velocity
     private int jumpCount = 0; // How many jumps done before grounded
+    [System.NonSerialized]
+    public bool isGrounded = true; // See if grounded (can be modified if
+                                   // needed, ex: attacks)
 
-    // Attack var (private)
+    // Attack var (hidden)
     public float percentHealth = 0; // pushReceived = 
                                     // power * (1 + percentHealth / 100)
     private float attackTimer = 0f; // If 0f, the player can attack
@@ -37,10 +40,10 @@ public class PlayerScript : MonoBehaviour
     private bool isAttacking = false; // See if the player is attacking
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
-    private AttackTemplate currentAttack;
+    private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
 
-    public float InvulnerableTimer { get; private set; }
+    public float InvulnerableTimer { get; set; }
     // If <= 0f, player can get hit, resets in function of the attack
 
     // Other movements var (public)
@@ -69,8 +72,10 @@ public class PlayerScript : MonoBehaviour
 
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;
-        if (charaControl.isGrounded) {
-            horizontalVelocity *= 0.97f;
+
+        if (isGrounded) {
+            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
+            horizontalVelocity = 0;
         }
 
         // Movement functions
@@ -86,6 +91,7 @@ public class PlayerScript : MonoBehaviour
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
+        isGrounded = charaControl.isGrounded;
     }
 
     public void AddMovement(Vector3 movement)
@@ -95,13 +101,13 @@ public class PlayerScript : MonoBehaviour
         moveVector += movement;
     }
 
-    public void ChangeVelocities(Vector3 newVelocities)
+    public void ChangeVelocities(float dvx, float dvy)
     {
         /* Use that function if you want to change the X and/or Y velocities 
          * ex: gravity, attack or any other force */
 
-        horizontalVelocity += newVelocities.x;
-        verticalVelocity += newVelocities.y;
+        horizontalVelocity += dvx;
+        verticalVelocity += dvy;
     }
 
 
@@ -142,8 +148,6 @@ public class PlayerScript : MonoBehaviour
 
         if (charaControl.isGrounded) {
             jumpCount = 0;
-
-            verticalVelocity = -1f;
         } else {
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
@@ -169,15 +173,15 @@ public class PlayerScript : MonoBehaviour
          * There is also combos (& combos limit)
          * Returns true if an attack has been made (else false) */
 
-        if (attackTimer > 0) {
+        if (attackTimer > 0f) {
             // Here should be called an attack animation
             if (attackTimer < 0.5f) {
                 // Just for seeing when we can combo (DEBUG)
-                currentAttack.AttackCollider.gameObject.GetComponent<Renderer>()
+                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
                 .material.color = Color.yellow;
             } else {
                 // Give a color to the collider (DEBUG)
-                currentAttack.AttackCollider.gameObject.GetComponent<Renderer>()
+                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
                 .material.color = Color.black;
             }
         } else { // Attack finished || No attack
@@ -185,7 +189,7 @@ public class PlayerScript : MonoBehaviour
 
             if (currentAttack != null) { // Attack just finished
                 // Remove color of the collider (DEBUG)
-                currentAttack.AttackCollider.gameObject.GetComponent<Renderer>()
+                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
                     .material.color = Color.white;
 
                 currentAttack.actualCombo = -1; // We reset the combo
@@ -207,14 +211,14 @@ public class PlayerScript : MonoBehaviour
         if (currentAttack != null
           && inputs[inputAttackIndex]
           && attackTimer < 0.5f
-          && currentAttack.actualCombo < currentAttack.ComboLength - 1) {
+          && currentAttack.actualCombo < currentAttack.comboLength - 1) {
             // We activate the attack timer
             attackTimerActivated = true;
             currentPeriod = period;
 
             currentAttack.actualCombo++;
             currentAttack.CollidersAttack();
-            attackTimer = currentAttack.AttackCooldown;
+            attackTimer = currentAttack.attackCooldown;
         }
 
         return attackTimer > 0f;
@@ -232,7 +236,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private bool IsCorrectWay()
+    public bool IsCorrectWay()
     {
         /* Returns true if the player is facing to the right */
         return transform.eulerAngles.y == 0;

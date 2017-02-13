@@ -52,11 +52,14 @@ public class CharaControlScript : MonoBehaviour
         jumpButtonPressed = Input.GetButtonDown("Jump");
 
         for (int i = 0; i < player.listAttacks.Length; i++) {
-            inputs[i] = Input.GetKeyDown(player.listAttacks[i].InputKey);
+            inputs[i] = Input.GetKeyDown(player.listAttacks[i].inputKey);
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return)) {
             player.transform.position = new Vector3(-10, 2.5f, 0);
+            GameObject.Find("Player 2").transform.position = new Vector3(10,
+                2.5f, 0);
+        }
     }
 
     private void MovementPlayer()

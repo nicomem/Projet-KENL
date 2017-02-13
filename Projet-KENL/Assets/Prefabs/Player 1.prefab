@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1007169984988840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 0.75, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 4987828472313880}
@@ -289,20 +289,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1058267956331638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e68bc3e20275f6445bad3dab3c0cde32, type: 3}
+  m_Script: {fileID: 11500000, guid: e86d97ea00a1a31468aa7d3277963225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerRel:
+  dirAttackList:
+  - {x: 0, y: 1, z: 0}
+  - {x: 0, y: 1, z: 0}
+  - {x: 0, y: 1, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  powerAttackList:
+  - 1
+  - 1
+  - 1
   - 5
-  pushRel:
-  - 10
-  dirVector: []
-  pushVector: []
-  powerVector: []
-  InputKey: g
-  AttackCooldown: 0.5
-  ComboLength: 1
-  AttackCollider: {fileID: 65349683932464952}
+  comboLength: 4
+  inputKey: g
+  attackCollider: {fileID: 65349683932464952}
+  AttackCooldown: 1
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1
