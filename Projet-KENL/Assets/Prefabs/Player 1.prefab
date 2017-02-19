@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 143781255430388002}
   - component: {fileID: 114456825692012940}
   - component: {fileID: 114898762796964738}
-  - component: {fileID: 114986424697877738}
+  - component: {fileID: 114262732934393824}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -248,6 +248,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114262732934393824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be86472b25e150408a11eaa1e271f22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirLastAttack: {x: 0.8, y: 0.2, z: 0}
+  powerLastAttack: 10
+  multPushLastAttack: 2
+  comboLength: 4
+  inputKey: g
+  attackCollider: {fileID: 65349683932464952}
+  attackCooldown: 0.5
 --- !u!114 &114456825692012940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,37 +293,10 @@ MonoBehaviour:
   horizontalSpeed: 20
   jumpMax: 2
   listAttacks:
-  - {fileID: 114986424697877738}
+  - {fileID: 114262732934393824}
   maxCombo: 4
   period: 0.25
-  verticalVelocity: 0
-  horizontalVelocity: 0
   percentHealth: 0
---- !u!114 &114986424697877738
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1058267956331638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e86d97ea00a1a31468aa7d3277963225, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirAttackList:
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  powerAttackList:
-  - 1
-  - 1
-  - 1
-  - 5
-  comboLength: 4
-  inputKey: g
-  attackCollider: {fileID: 65349683932464952}
-  AttackCooldown: 1
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1

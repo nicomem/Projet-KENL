@@ -61,6 +61,8 @@ public class PlayerScript : MonoBehaviour
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
+    public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
+    public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
 
     public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
     {

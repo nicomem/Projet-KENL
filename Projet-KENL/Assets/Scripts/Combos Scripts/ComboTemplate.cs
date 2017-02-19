@@ -10,6 +10,7 @@ public class ComboTemplate : MonoBehaviour
     public Vector3 dirLastAttack;
     [Range(0, 20)]
     public float powerLastAttack;
+    public float multPushLastAttack = 1; // For throwing farther with the same power
     public int comboLength;
 
     public string inputKey;
@@ -51,11 +52,11 @@ public class ComboTemplate : MonoBehaviour
                 // If player can get hit
                 if (playerHit.InvulnerableTimer <= 0.5f) {
                     if (actualCombo < comboLength - 1) {
-                        GiveAttack(Vector3.zero, 0f, 0f);
+                        GiveAttack(Vector3.zero, 0f, 0f, 0f);
                     } else {
                         print(actualCombo);
                         GiveAttack(dirLastAttack, powerLastAttack,
-                            attackDirection);
+                            attackDirection, multPushLastAttack);
                     }
                 }
             }
@@ -63,12 +64,13 @@ public class ComboTemplate : MonoBehaviour
     }
 
     protected void GiveAttack(Vector3 attackDir, float attackPower,
-        float attackDirection)
+        float attackDirection, float multPush)
     {
         healthMultiplier = (1 + (playerHit.percentHealth / 100));
 
-        x = attackDir.x * attackPower * attackDirection * healthMultiplier;
-        y = attackDir.y * attackPower * healthMultiplier;
+        x = attackDir.x * attackPower * attackDirection * healthMultiplier
+            * multPush;
+        y = attackDir.y * attackPower * healthMultiplier * multPush;
 
         playerHit.ChangeVelocities(x, y);
         playerHit.percentHealth += attackPower;
