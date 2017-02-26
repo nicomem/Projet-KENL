@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class PlayerScript : MonoBehaviour
@@ -112,6 +110,12 @@ public class PlayerScript : MonoBehaviour
         verticalVelocity += dvy;
     }
 
+    public bool IsCorrectWay()
+    {
+        /* Returns true if the player is facing to the right */
+        return transform.eulerAngles.y == 0;
+    }
+
 
     private void UpdateTimers()
     {
@@ -130,6 +134,17 @@ public class PlayerScript : MonoBehaviour
 
                 // We reset the attack timer
                 currentPeriod = period;
+            }
+        }
+
+        // Change color if hit (DEBUG)
+        if (InvulnerableTimer > 0) {
+            GetComponent<Renderer>().material.color = Color.gray;
+        } else {
+            if (transform.name == "Player") {
+                GetComponent<Renderer>().material.color = Color.green;
+            } else {
+                GetComponent<Renderer>().material.color = Color.yellow;
             }
         }
     }
@@ -236,11 +251,5 @@ public class PlayerScript : MonoBehaviour
         if (waySign * xInput < 0) {
             transform.Rotate(new Vector3(0, waySign * 180));
         }
-    }
-
-    public bool IsCorrectWay()
-    {
-        /* Returns true if the player is facing to the right */
-        return transform.eulerAngles.y == 0;
     }
 }

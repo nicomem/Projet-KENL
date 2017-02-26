@@ -377,13 +377,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1475696943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc59a908a45a804881007b5b9f72887, type: 3}
+  m_Script: {fileID: 11500000, guid: a64ea5a8338a4104e94ecdcb33befa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cameraXMin: -30
   cameraXMax: 30
-  cameraYMin: 0
-  cameraYMax: 50
+  cameraYMin: -10
+  cameraYMax: 10
   listPlayers:
   - {fileID: 1804871382}
   - {fileID: 1258175125}
