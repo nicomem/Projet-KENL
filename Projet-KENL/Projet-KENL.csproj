@@ -75,9 +75,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CameraScript.cs" />
+    <Compile Include="Assets\Scripts\CameraScriptFix.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\ComboTemplate.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\Combo_Basic.cs" />
+    <Compile Include="Assets\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
   </ItemGroup>
