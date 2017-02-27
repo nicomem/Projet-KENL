@@ -71,7 +71,7 @@ public class CharaControlScript : MonoBehaviour
 
     private void MovementPlayer()
     {
-        /* To move the player with input (!= IA) */
+        /* To move the player with input */
 
         player.Movements(xInput, jumpButtonPressed, inputs);
 

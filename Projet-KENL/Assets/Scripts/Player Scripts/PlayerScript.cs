@@ -147,6 +147,24 @@ public class PlayerScript : MonoBehaviour
                 GetComponent<Renderer>().material.color = Color.yellow;
             }
         }
+
+        // Color of attack collider
+        if (attackTimer > 0f) {
+            // Here should be called an attack animation
+            if (attackTimer < 0.5f) {
+                // Just for seeing when we can combo (DEBUG)
+                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                .material.color = Color.yellow;
+            } else {
+                // Give a color to the collider (DEBUG)
+                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                .material.color = Color.black;
+            }
+        } else if (currentAttack != null) { // Attack just finished
+                                            // Remove color of the collider (DEBUG)
+            currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                .material.color = Color.white;
+        }
     }
 
     private bool Movement_Run(float xInput)
@@ -190,25 +208,11 @@ public class PlayerScript : MonoBehaviour
          * There is also combos (& combos limit)
          * Returns true if an attack has been made (else false) */
 
-        if (attackTimer > 0f) {
-            // Here should be called an attack animation
-            if (attackTimer < 0.5f) {
-                // Just for seeing when we can combo (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                .material.color = Color.yellow;
-            } else {
-                // Give a color to the collider (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                .material.color = Color.black;
-            }
-        } else { // Attack finished || No attack
-                 // Here we should finish an attack animation
+        if (attackTimer <= 0f) { // Attack finished || No attack
+                
+                // Here we should finish an attack animation
 
             if (currentAttack != null) { // Attack just finished
-                // Remove color of the collider (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                    .material.color = Color.white;
-
                 currentAttack.actualCombo = -1; // We reset the combo
                 currentAttack = null;
                 inputAttackIndex = 0;
