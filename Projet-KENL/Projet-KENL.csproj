@@ -114,7 +114,6 @@
     <Compile Include="Assets\Scripts\GUIScript.cs" />
     <Compile Include="Assets\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Scripts\Mouvement.cs" />
-    <Compile Include="Assets\Scripts\PlateformCollision.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Saut.cs" />

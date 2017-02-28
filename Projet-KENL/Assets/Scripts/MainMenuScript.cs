@@ -27,7 +27,7 @@ public class MainMenuScript : MonoBehaviour {
     }
     public void Load_NormalGame()
     {
-        Application.LoadLevel("testNico");
+        Application.LoadLevel("Plateforme");
     }
     
 }
