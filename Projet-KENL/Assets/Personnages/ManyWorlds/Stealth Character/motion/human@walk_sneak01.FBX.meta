@@ -1,0 +1,328 @@
+fileFormatVersion: 2
+guid: d0f82f8541ddc2c4897c32f3985dd0c8
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: StealthChar
+    100004: StealthCharChest
+    100006: StealthCharHead
+    100008: StealthCharLArm1
+    100010: StealthCharLArm2
+    100012: StealthCharLArmCollarbone
+    100014: StealthCharLArmPalm
+    100016: StealthCharLIndex0
+    100018: StealthCharLIndex1
+    100020: StealthCharLIndex2
+    100022: StealthCharLLeg1
+    100024: StealthCharLLeg2
+    100026: StealthCharLLegAnkle
+    100028: StealthCharLLegPlatform
+    100030: StealthCharLMiddleFinger0
+    100032: StealthCharLMiddleFinger1
+    100034: StealthCharLMiddleFinger2
+    100036: StealthCharLPinky0
+    100038: StealthCharLPinky1
+    100040: StealthCharLPinky2
+    100042: StealthCharLRingFinger0
+    100044: StealthCharLRingFinger1
+    100046: StealthCharLRingFinger2
+    100048: StealthCharLThumb0
+    100050: StealthCharLThumb1
+    100052: StealthCharLThumb2
+    100054: StealthCharLToe
+    100056: StealthCharNeck
+    100058: StealthCharPelvis
+    100060: StealthCharRArm1
+    100062: StealthCharRArm2
+    100064: StealthCharRArmCollarbone
+    100066: StealthCharRArmPalm
+    100068: StealthCharRIndex0
+    100070: StealthCharRIndex1
+    100072: StealthCharRIndex2
+    100074: StealthCharRLeg1
+    100076: StealthCharRLeg2
+    100078: StealthCharRLegAnkle
+    100080: StealthCharRLegPlatform
+    100082: StealthCharRMiddleFinger0
+    100084: StealthCharRMiddleFinger1
+    100086: StealthCharRMiddleFinger2
+    100088: StealthCharRPinky0
+    100090: StealthCharRPinky1
+    100092: StealthCharRPinky2
+    100094: StealthCharRRingFinger0
+    100096: StealthCharRRingFinger1
+    100098: StealthCharRRingFinger2
+    100100: StealthCharRThumb0
+    100102: StealthCharRThumb1
+    100104: StealthCharRThumb2
+    100106: StealthCharRToe
+    100108: StealthCharSpine0
+    100110: StealthCharSpine1
+    400000: //RootNode
+    400002: StealthChar
+    400004: StealthCharChest
+    400006: StealthCharHead
+    400008: StealthCharLArm1
+    400010: StealthCharLArm2
+    400012: StealthCharLArmCollarbone
+    400014: StealthCharLArmPalm
+    400016: StealthCharLIndex0
+    400018: StealthCharLIndex1
+    400020: StealthCharLIndex2
+    400022: StealthCharLLeg1
+    400024: StealthCharLLeg2
+    400026: StealthCharLLegAnkle
+    400028: StealthCharLLegPlatform
+    400030: StealthCharLMiddleFinger0
+    400032: StealthCharLMiddleFinger1
+    400034: StealthCharLMiddleFinger2
+    400036: StealthCharLPinky0
+    400038: StealthCharLPinky1
+    400040: StealthCharLPinky2
+    400042: StealthCharLRingFinger0
+    400044: StealthCharLRingFinger1
+    400046: StealthCharLRingFinger2
+    400048: StealthCharLThumb0
+    400050: StealthCharLThumb1
+    400052: StealthCharLThumb2
+    400054: StealthCharLToe
+    400056: StealthCharNeck
+    400058: StealthCharPelvis
+    400060: StealthCharRArm1
+    400062: StealthCharRArm2
+    400064: StealthCharRArmCollarbone
+    400066: StealthCharRArmPalm
+    400068: StealthCharRIndex0
+    400070: StealthCharRIndex1
+    400072: StealthCharRIndex2
+    400074: StealthCharRLeg1
+    400076: StealthCharRLeg2
+    400078: StealthCharRLegAnkle
+    400080: StealthCharRLegPlatform
+    400082: StealthCharRMiddleFinger0
+    400084: StealthCharRMiddleFinger1
+    400086: StealthCharRMiddleFinger2
+    400088: StealthCharRPinky0
+    400090: StealthCharRPinky1
+    400092: StealthCharRPinky2
+    400094: StealthCharRRingFinger0
+    400096: StealthCharRRingFinger1
+    400098: StealthCharRRingFinger2
+    400100: StealthCharRThumb0
+    400102: StealthCharRThumb1
+    400104: StealthCharRThumb2
+    400106: StealthCharRToe
+    400108: StealthCharSpine0
+    400110: StealthCharSpine1
+    7400000: walk_sneak01
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: walk_sneak01
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: StealthChar
+        weight: 1
+      - path: StealthCharLLegPlatform
+        weight: 1
+      - path: StealthCharPelvis
+        weight: 1
+      - path: StealthCharPelvis/StealthCharLLeg1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharLLeg1/StealthCharLLeg2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharLLeg1/StealthCharLLeg2/StealthCharLLegAnkle
+        weight: 1
+      - path: StealthCharPelvis/StealthCharLLeg1/StealthCharLLeg2/StealthCharLLegAnkle/StealthCharLToe
+        weight: 1
+      - path: StealthCharPelvis/StealthCharRLeg1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharRLeg1/StealthCharRLeg2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharRLeg1/StealthCharRLeg2/StealthCharRLegAnkle
+        weight: 1
+      - path: StealthCharPelvis/StealthCharRLeg1/StealthCharRLeg2/StealthCharRLegAnkle/StealthCharRToe
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLIndex0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLIndex0/StealthCharLIndex1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLIndex0/StealthCharLIndex1/StealthCharLIndex2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLMiddleFinger0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLMiddleFinger0/StealthCharLMiddleFinger1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLMiddleFinger0/StealthCharLMiddleFinger1/StealthCharLMiddleFinger2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLPinky0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLPinky0/StealthCharLPinky1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLPinky0/StealthCharLPinky1/StealthCharLPinky2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLRingFinger0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLRingFinger0/StealthCharLRingFinger1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLRingFinger0/StealthCharLRingFinger1/StealthCharLRingFinger2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLThumb0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLThumb0/StealthCharLThumb1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharLArmCollarbone/StealthCharLArm1/StealthCharLArm2/StealthCharLArmPalm/StealthCharLThumb0/StealthCharLThumb1/StealthCharLThumb2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharNeck
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharNeck/StealthCharHead
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRIndex0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRIndex0/StealthCharRIndex1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRIndex0/StealthCharRIndex1/StealthCharRIndex2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRMiddleFinger0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRMiddleFinger0/StealthCharRMiddleFinger1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRMiddleFinger0/StealthCharRMiddleFinger1/StealthCharRMiddleFinger2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRPinky0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRPinky0/StealthCharRPinky1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRPinky0/StealthCharRPinky1/StealthCharRPinky2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRRingFinger0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRRingFinger0/StealthCharRRingFinger1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRRingFinger0/StealthCharRRingFinger1/StealthCharRRingFinger2
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRThumb0
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRThumb0/StealthCharRThumb1
+        weight: 1
+      - path: StealthCharPelvis/StealthCharSpine0/StealthCharSpine1/StealthCharChest/StealthCharRArmCollarbone/StealthCharRArm1/StealthCharRArm2/StealthCharRArmPalm/StealthCharRThumb0/StealthCharRThumb1/StealthCharRThumb2
+        weight: 1
+      - path: StealthCharRLegPlatform
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 7e5f38a8f21b9894cb0f272c9b0b5237,
+    type: 3}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
