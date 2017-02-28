@@ -4,16 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/testKylian.unity
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-  - enabled: 1
-    path: Assets/Scenes/MainMenuCredits.unity
-  - enabled: 1
-    path: Assets/Scenes/MainMenuSettings.unity
-  - enabled: 1
-    path: Assets/Scenes/MainMenuChoose.unity
-  - enabled: 1
-    path: Assets/Scenes/testNico.unity
+  m_Scenes: []
