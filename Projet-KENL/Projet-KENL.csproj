@@ -75,53 +75,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneAlarmLight.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneCCTVPlayerDetection.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserBlinking.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserPlayerDetection.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserSwitchDeactivation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyAI.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyAnimation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyShooting.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemySight.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneWayPointGizmo.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\GameControllerScripts\DoneHashIDs.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\GameControllerScripts\DoneLastPlayerSighting.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneCameraMovement.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneDoorAnimation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneKeyPickup.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneLiftDoorsTracking.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneLiftTrigger.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerHealth.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerInventory.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerMovement.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\ScreenFaderScripts\DoneSceneFadeInOut.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneAnimatorSetup.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneTags.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\guiTextSet.cs" />
-    <Compile Include="Assets\Personnages\Script\playerstealhchar.cs" />
-    <Compile Include="Assets\Scripts\AnimationsScript.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\ComboTemplate.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\Combo_Basic.cs" />
-    <Compile Include="Assets\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRimCUTOUT.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDDisplaceBumpedSpecularRefRimDX11.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDDisplaceBumpedSpecularRefRimDX11CUTOUT.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedRim.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedRimReflective.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedSpecularRefRim.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\DisplaceBumpedSpecularRefRimDX11.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_2SIDEDBumpedSpecularCUTOUT.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_BumpedSpecular.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShader.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShaderCUTOUT.shader" />
-    <None Include="Assets\Personnages\ManyWorlds\Stealth Character\StealthChar.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

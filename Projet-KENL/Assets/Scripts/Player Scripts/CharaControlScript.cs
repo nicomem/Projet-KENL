@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class CharaControlScript : MonoBehaviour
@@ -18,11 +20,6 @@ public class CharaControlScript : MonoBehaviour
 
         ColorThePlayers();
 
-        if (transform.name == "Player Human")
-        {
-            //transform.Rotate(new Vector3(0, 90, 0));
-        }
-
         // All initialized at false by default
         inputs = new bool[player.listAttacks.Length];
     }
@@ -31,7 +28,7 @@ public class CharaControlScript : MonoBehaviour
     {
         /* When there's movement or physics, put here */
 
-        if (transform.name == "Player Human") // For now we only move player 1
+        if (transform.name == "Player") // For now we only move player 1
             GetInputs();
 
         // Function for moving the player with input (!= IA)
@@ -42,8 +39,10 @@ public class CharaControlScript : MonoBehaviour
     {
         /* Add color to players while no 3D models */
 
-        if (transform.name == "Player 2") {
-             GetComponent<Renderer>().material.color = Color.yellow;
+        if (transform.name == "Player") {
+            GetComponent<Renderer>().material.color = Color.green;
+        } else {
+            GetComponent<Renderer>().material.color = Color.yellow;
         }
     }
 
@@ -74,7 +73,7 @@ public class CharaControlScript : MonoBehaviour
 
     private void MovementPlayer()
     {
-        /* To move the player with input */
+        /* To move the player with input (!= IA) */
 
         player.Movements(xInput, jumpButtonPressed, inputs);
 

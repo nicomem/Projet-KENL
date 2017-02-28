@@ -296,7 +296,6 @@ MonoBehaviour:
   - {fileID: 114262732934393824}
   maxCombo: 4
   period: 0.25
-  animScript: {fileID: 0}
   percentHealth: 0
 --- !u!136 &136448515731162552
 CapsuleCollider:
@@ -305,7 +304,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058267956331638}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
