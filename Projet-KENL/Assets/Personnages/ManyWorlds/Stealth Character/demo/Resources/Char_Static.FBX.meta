@@ -1,0 +1,150 @@
+fileFormatVersion: 2
+guid: 5bcd9a94b61bd4343aaad0c4a7842acc
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: StealthChar_Belt
+    100004: StealthChar_BodyMain
+    100006: StealthChar_Coat
+    100008: StealthChar_CompoundSword004
+    100010: StealthChar_CompoundSword005
+    100012: StealthChar_CompoundSword006
+    100014: StealthChar_CompoundSword007
+    100016: StealthChar_Dagger001
+    100018: StealthChar_Dagger002
+    100020: StealthChar_Dagger003
+    100022: StealthChar_Dagger004
+    100024: StealthChar_HoodShoulders
+    100026: StealthChar_Scythe001
+    100028: StealthChar_Scythe002
+    100030: StealthCharLArmIKTarget
+    100032: StealthCharRArmIKTarget
+    400000: //RootNode
+    400002: StealthChar_Belt
+    400004: StealthChar_BodyMain
+    400006: StealthChar_Coat
+    400008: StealthChar_CompoundSword004
+    400010: StealthChar_CompoundSword005
+    400012: StealthChar_CompoundSword006
+    400014: StealthChar_CompoundSword007
+    400016: StealthChar_Dagger001
+    400018: StealthChar_Dagger002
+    400020: StealthChar_Dagger003
+    400022: StealthChar_Dagger004
+    400024: StealthChar_HoodShoulders
+    400026: StealthChar_Scythe001
+    400028: StealthChar_Scythe002
+    400030: StealthCharLArmIKTarget
+    400032: StealthCharRArmIKTarget
+    2300000: StealthChar_Belt
+    2300002: StealthChar_BodyMain
+    2300004: StealthChar_Coat
+    2300006: StealthChar_CompoundSword004
+    2300008: StealthChar_CompoundSword005
+    2300010: StealthChar_CompoundSword006
+    2300012: StealthChar_CompoundSword007
+    2300014: StealthChar_Dagger001
+    2300016: StealthChar_Dagger002
+    2300018: StealthChar_Dagger003
+    2300020: StealthChar_Dagger004
+    2300022: StealthChar_HoodShoulders
+    2300024: StealthChar_Scythe001
+    2300026: StealthChar_Scythe002
+    3300000: StealthChar_Belt
+    3300002: StealthChar_BodyMain
+    3300004: StealthChar_Coat
+    3300006: StealthChar_CompoundSword004
+    3300008: StealthChar_CompoundSword005
+    3300010: StealthChar_CompoundSword006
+    3300012: StealthChar_CompoundSword007
+    3300014: StealthChar_Dagger001
+    3300016: StealthChar_Dagger002
+    3300018: StealthChar_Dagger003
+    3300020: StealthChar_Dagger004
+    3300022: StealthChar_HoodShoulders
+    3300024: StealthChar_Scythe001
+    3300026: StealthChar_Scythe002
+    4300000: StealthChar_BodyMain
+    4300002: StealthChar_Coat
+    4300004: StealthChar_HoodShoulders
+    4300006: StealthChar_Belt
+    4300008: StealthChar_CompoundSword004
+    4300010: StealthChar_CompoundSword007
+    4300012: StealthChar_CompoundSword006
+    4300014: StealthChar_CompoundSword005
+    4300016: StealthChar_Scythe001
+    4300018: StealthChar_Dagger004
+    4300020: StealthChar_Dagger001
+    4300022: StealthChar_Scythe002
+    4300024: StealthChar_Dagger002
+    4300026: StealthChar_Dagger003
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
