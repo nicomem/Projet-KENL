@@ -1,0 +1,119 @@
+Stealth Character
+
+Full character ready to go on any platform perfect to give a cool sight to your stealth game or to be used in any other theme.
+
+It is fully rigged with over 60 animation clips included, 3 different weapons, and at last but not the least a full set of custom shaders (normal, tesellation & mobile versions) created with ShaderForge.
+
+you will find 3 Prefabs:
+
+-Standar
+-Tesellation Ready
+-Mobile Ready
+
+>>MODEL
+
+Character: 2068 tris
+Clothing: 1987 tris (removable)
+Scythe: 233 tris
+Sword: 628 tris
+Knife: 134 tris
+
+>>TEXTURES
+
+Reflection Cubemap x1
+
+38x textures 2048x2048
+
+features:
+- color
+- specular
+- gloss
+- rim mask
+- reflection mask
+- cavity
+- normals
+- ambient occlusion
+- displacement
+
+>>SHADERS
+
+Following shaders are included:
+
+Standar:
+-Bumped Specular Reflection Rim
+-Bumped Specular Reflection Rim 2Sided
+-Bumped Specular Reflection Rim 2Sided Cutout
+-Bumped Rim Reflective
+-Bumped Rim
+
+Tesellation:
+-Displace Reflection Rim AmbientOcclusion
+-Displace Reflection Rim AmbientOcclusion 2Sided
+-Displace Reflection Rim AmbientOcclusion 2Sided Cutout
+
+Mobile:
+-SuperShader
+-SuperShader 2Sided
+-Bumped Specular Reflection
+-Bumped Specular Rim 2Sided Cutout
+
+>>CLOTH
+
+Character includes 2 cloth systems preconfigurated. We take no liability about how good unity cloth works. You will probably see flipping parts in some animations. We're sorry for that minor issues but there's nothing we can do to improve it. Thats how the cloth system works.
+
+>>ANIMATION LIST
+
+- Idle
+- Idle2
+- Idle3
+- Idle4
+- Combat Idle
+- Idle Crouch
+- Idle Crouch2
+- Walk
+- Walk2
+- Walk Sneak
+- Attack
+- Attack2
+- Attack3
+- Attack4
+- Attack5
+- Attack6
+- Attack7
+- Attack Special
+- Attack Slay
+- Attack Stab
+- Damage
+- Damage2
+- Damage3
+- Die
+- Look Left
+- Look Right
+- Jump
+- Jump2
+- Throw Crouch Start
+- Throw Crouch Idle
+- Throw Crouch End
+- Get Weapon Back
+- Save Weapon Back
+- Get 2Weapons Back
+- Save 2Weapons Back
+- Get Knife from Boot
+- Cover
+- Uncover
+- Covered Idle
+- Cover Look Right Start
+- Cover Look Right Idle
+- Cover Look Right End
+- Cover Look Left Start
+- Cover Look Left Idle
+- Cover Look Left End
+- Cover Crouch
+- Cover Crouch Idle
+- Uncover Crouch
+- Cover Crouch Look Right Start
+- Cover Crouch Look Right Idle
+- Cover Crouch Look Right End
+- Cover Crouch Look Left Start
+- Cover Crouch Look Left Idle
+- Cover Crouch Look Left End
