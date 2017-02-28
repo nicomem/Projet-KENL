@@ -448,8 +448,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nicolas \"Reaper\" Memeint aka La Machine\n\n\nTristan \"Lamado\" Molter
-    aka \n\n\nEdwin \"Six\" Lagant aka\n\n\nKylian \"Saltimo\" Tastayre aka Le g\xE9nie"
+  m_Text: "Nicolas \"Reaper\" Memeint \n\n\nTristan \"Lamado\" Molter \n\n\nEdwin
+    \"Six\" Lagant \n\n\nKylian \"Saltimo\" Tastayre "
 --- !u!222 &583964863
 CanvasRenderer:
   m_ObjectHideFlags: 0
