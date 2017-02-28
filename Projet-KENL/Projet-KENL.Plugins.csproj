@@ -5,16 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{776BDDE0-06C2-40AF-13B8-5950EDF75D5E}</ProjectGuid>
+    <ProjectGuid>{F2045F3A-0F64-6F50-B21C-54C062950865}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -75,48 +75,88 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Projet-KENL.Plugins.csproj">
-      <Project>{F2045F3A-0F64-6F50-B21C-54C062950865}</Project>
-      <Name>Projet-KENL.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneAlarmLight.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneCCTVPlayerDetection.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserBlinking.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserPlayerDetection.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserSwitchDeactivation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyAI.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyAnimation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemyShooting.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneEnemySight.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\EnemyScripts\DoneWayPointGizmo.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\GameControllerScripts\DoneHashIDs.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\GameControllerScripts\DoneLastPlayerSighting.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneCameraMovement.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneDoorAnimation.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneKeyPickup.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneLiftDoorsTracking.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\LevelDynamics\DoneLiftTrigger.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerHealth.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerInventory.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\PlayerScripts\DonePlayerMovement.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\ScreenFaderScripts\DoneSceneFadeInOut.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneAnimatorSetup.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneTags.cs" />
-    <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\guiTextSet.cs" />
-    <Compile Include="Assets\Personnages\Script\playerstealhchar.cs" />
-    <Compile Include="Assets\Scripts\AnimationsScript.cs" />
-    <Compile Include="Assets\Scripts\CameraScript.cs" />
-    <Compile Include="Assets\Scripts\CameraTest.cs" />
-    <Compile Include="Assets\Scripts\Combos Scripts\ComboTemplate.cs" />
-    <Compile Include="Assets\Scripts\Combos Scripts\Combo_Basic.cs" />
-    <Compile Include="Assets\Scripts\GUIScript.cs" />
-    <Compile Include="Assets\Scripts\MainMenuScript.cs" />
-    <Compile Include="Assets\Scripts\Mouvement.cs" />
-    <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
-    <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
-    <Compile Include="Assets\Scripts\Saut.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Antialiasing.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Bloom.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\BloomAndFlares.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\BloomOptimized.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Blur.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\BlurOptimized.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\CameraMotionBlur.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ColorCorrectionCurves.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ColorCorrectionLookup.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ColorCorrectionRamp.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ContrastEnhance.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ContrastStretch.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\CreaseShading.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\DepthOfField.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\DepthOfFieldDeprecated.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\EdgeDetection.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Fisheye.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\GlobalFog.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Grayscale.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ImageEffectBase.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ImageEffects.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\MotionBlur.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\NoiseAndGrain.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\NoiseAndScratches.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\PostEffectsBase.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\PostEffectsHelper.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Quads.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ScreenOverlay.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ScreenSpaceAmbientObscurance.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\ScreenSpaceAmbientOcclusion.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\SepiaTone.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\SunShafts.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\TiltShift.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Tonemapping.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Triangles.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Twirl.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\VignetteAndChromaticAberration.cs" />
+    <Compile Include="Assets\Standard Assets\Effects\ImageEffects\Scripts\Vortex.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water (Basic)\Scripts\WaterBasic.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\Displace.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\GerstnerDisplace.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\MeshContainer.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\PlanarReflection.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\SpecularLighting.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\Water.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\WaterBase.cs" />
+    <Compile Include="Assets\Standard Assets\Environment\Water\Water\Scripts\WaterTile.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\ActivateTrigger.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\AlphaButtonClickMask.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\AutoMoveAndRotate.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\CameraRefocus.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\CurveControlledBob.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\DragRigidbody.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\DynamicShadowSettings.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\EventSystemChecker.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\FOVKick.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\FPSCounter.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\FollowTarget.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\ForcedReset.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\LerpControlledBob.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\ObjectResetter.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\ParticleSystemDestroyer.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\PlatformSpecificContent.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\SimpleActivatorMenu.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\SimpleMouseRotator.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\SmoothFollow.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\TimedObjectActivator.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\TimedObjectDestructor.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\WaypointCircuit.cs" />
+    <Compile Include="Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />

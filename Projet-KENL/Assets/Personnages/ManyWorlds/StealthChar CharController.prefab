@@ -1253,12 +1253,12 @@ GameObject:
   - component: {fileID: 136435190890293226}
   - component: {fileID: 114088745075403292}
   - component: {fileID: 114005435499416262}
-  - component: {fileID: 114292415199277966}
   - component: {fileID: 143930951259180914}
   - component: {fileID: 114950666320621718}
-  m_Layer: 0
+  - component: {fileID: 114456792117123444}
+  m_Layer: 8
   m_Name: StealthChar CharController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1462,7 +1462,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100026}
-  m_LocalRotation: {x: 0.28705898, y: -0.6617764, z: -0.6187193, w: -0.31118432}
+  m_LocalRotation: {x: 0.28705895, y: -0.66177636, z: -0.6187192, w: -0.3111843}
   m_LocalPosition: {x: -0.04020389, y: -0.19843842, z: 0.10653419}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3099,7 +3099,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100142}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.26, z: 0.3}
@@ -3111,7 +3111,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100030}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.22, y: 0.1, z: 0.1}
@@ -3123,7 +3123,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100072}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.22, y: 0.1, z: 0.1}
@@ -3135,7 +3135,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100110}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.22, y: 0.1, z: 0.1}
@@ -3147,7 +3147,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100118}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.46, y: 0.14, z: 0.14}
@@ -3159,7 +3159,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100130}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.46, y: 0.14, z: 0.14}
@@ -3171,7 +3171,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100136}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.22, y: 0.1, z: 0.1}
@@ -3559,8 +3559,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1351285491652628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 0.2, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 400154}
   m_RootOrder: 9
@@ -3642,12 +3642,12 @@ MonoBehaviour:
   horizontalSpeed: 20
   jumpMax: 2
   listAttacks:
-  - {fileID: 114292415199277966}
+  - {fileID: 114456792117123444}
   maxCombo: 4
-  period: 0.25
+  period: 1
   animScript: {fileID: 114950666320621718}
   percentHealth: 0
---- !u!114 &114292415199277966
+--- !u!114 &114456792117123444
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -3660,7 +3660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dirLastAttack: {x: 0.8, y: 0.2, z: 0}
   powerLastAttack: 10
-  multPushLastAttack: 2
+  multPushLastAttack: 1
   comboLength: 4
   inputKey: e
   attackCollider: {fileID: 65415945184279236}
@@ -3686,7 +3686,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100158}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 1
@@ -3702,10 +3702,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
