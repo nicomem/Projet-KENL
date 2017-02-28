@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public float horizontalSpeed = 20.0f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
+    public Collider jumpCollider;
 
     [Space]
 
@@ -24,7 +25,6 @@ public class PlayerScript : MonoBehaviour
     [Space]
     public AnimationsScript animScript;
 
-
     // Jump var (hidden)
     private float verticalVelocity;
     private float horizontalVelocity; // Not jump, but goes with Y-velocity
@@ -33,6 +33,8 @@ public class PlayerScript : MonoBehaviour
     public bool isGrounded = true; // See if grounded (can be modified if
                                    // needed, ex: attacks)
     private bool isJumping = false;
+    private Collider[] colliders;
+
 
     // Attack var (hidden)
     public float percentHealth = 0; // pushReceived = 
@@ -50,17 +52,19 @@ public class PlayerScript : MonoBehaviour
 
     // Other movements var (public)
     private float waySign; // If 1: player looks to the right
-    private bool isRunning = false;
 
     // Other movements var (private)
     private Vector3 moveVector;
     private CharacterController charaControl;
+    private bool isRunning = false;
+    private Vector3 lastPosition;
 
     private void Start()
     {
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;
+        lastPosition = transform.position;
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
@@ -84,14 +88,11 @@ public class PlayerScript : MonoBehaviour
         }
 
         // Movement functions
-        if (transform.name == "Player 2")
-        {
+        if (transform.name == "Player 2") {
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(inputs);
-        }
-        else
-        {
+        } else {
             animScript.isRunning = Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             animScript.isAttacking = Movement_Attack(inputs);
@@ -105,6 +106,9 @@ public class PlayerScript : MonoBehaviour
 
         // Added velocities
         AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
+
+        // We keep last position in memory
+        lastPosition = transform.position;
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
@@ -136,8 +140,7 @@ public class PlayerScript : MonoBehaviour
 
     private void UpdateTimers()
     {
-        if (transform.name == "Player Human" && Input.GetKeyDown(KeyCode.H))
-        {
+        if (transform.name == "Player Human" && Input.GetKeyDown(KeyCode.H)) {
             InvulnerableTimer = 0.5f;
         }
 
@@ -160,14 +163,10 @@ public class PlayerScript : MonoBehaviour
         }
 
         // Change color if hit (DEBUG)
-        if (transform.name == "Player 2")
-        {
-            if (InvulnerableTimer > 0)
-            {
+        if (transform.name == "Player 2") {
+            if (InvulnerableTimer > 0) {
                 GetComponent<Renderer>().material.color = Color.gray;
-            }
-            else
-            {
+            } else {
                 GetComponent<Renderer>().material.color = Color.yellow;
             }
         }
@@ -186,8 +185,8 @@ public class PlayerScript : MonoBehaviour
             }
         } else if (currentAttack != null) { // Attack just finished
                                             // Remove color of the collider (DEBUG)
-            //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-            //    .material.color = Color.white;
+                                            //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                                            //    .material.color = Color.white;
         }
     }
 
@@ -208,6 +207,10 @@ public class PlayerScript : MonoBehaviour
         if (charaControl.isGrounded) {
             jumpCount = 0;
         } else {
+            if (verticalVelocity > 0 && CheckCollisionUp()) {
+                verticalVelocity = 0;
+            }
+
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
 
@@ -233,8 +236,8 @@ public class PlayerScript : MonoBehaviour
          * Returns true if an attack has been made (else false) */
 
         if (attackTimer <= 0f) { // Attack finished || No attack
-                
-                // Here we should finish an attack animation
+
+            // Here we should finish an attack animation
 
             if (currentAttack != null) { // Attack just finished
                 currentAttack.actualCombo = -1; // We reset the combo
@@ -279,5 +282,15 @@ public class PlayerScript : MonoBehaviour
         if (waySign * xInput < 0) {
             transform.Rotate(new Vector3(0, waySign * 180));
         }
+    }
+
+    private bool CheckCollisionUp()
+    {
+        colliders = Physics.OverlapBox(jumpCollider.bounds.center,
+                                       jumpCollider.bounds.extents,
+                                       jumpCollider.transform.rotation,
+                                       LayerMask.GetMask("Plateform"));
+
+        return colliders.Length > 0;
     }
 }
