@@ -58,8 +58,12 @@ public class IAScript : MonoBehaviour
         }*/
 
         // Lorsque IA touchée
-        if (player.InvulnerableTimer > 0f)
-            xInput = +1.0f;
+        if (player.InvulnerableTimer > 0f) {
+            if (otherPlayer.transform.position.x < transform.position.x)
+                xInput = 1.0f;
+            else
+                xInput = -1.0f;
+        }
 
         // Le time évite le bug au début ou le perso saute sans raison
         if ((!otherPlayerCharaControl.isGrounded && Time.deltaTime > 1.0f)

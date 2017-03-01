@@ -57,14 +57,12 @@ public class PlayerScript : MonoBehaviour
     private Vector3 moveVector;
     private CharacterController charaControl;
     private bool isRunning = false;
-    private Vector3 lastPosition;
 
     private void Start()
     {
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;
-        lastPosition = transform.position;
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
@@ -102,13 +100,10 @@ public class PlayerScript : MonoBehaviour
         }
 
         // Other useful functions
-        CheckRotation(-xInput);
+        CheckRotation(xInput);
 
         // Added velocities
         AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
-
-        // We keep last position in memory
-        lastPosition = transform.position;
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
@@ -281,7 +276,7 @@ public class PlayerScript : MonoBehaviour
 
         waySign = LookToRight() ? 1 : -1;
 
-        if (-waySign * xInput < 0) {
+        if (waySign * xInput < 0) {
             transform.Rotate(new Vector3(0, waySign * 180));
         }
     }

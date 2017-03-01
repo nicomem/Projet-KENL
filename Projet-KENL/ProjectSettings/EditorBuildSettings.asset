@@ -16,6 +16,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuPause.unity
   - enabled: 1
-    path: Assets/Scenes/testNico.unity
-  - enabled: 1
     path: Assets/Scenes/Plateforme.unity
