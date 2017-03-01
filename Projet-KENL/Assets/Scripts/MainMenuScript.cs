@@ -29,5 +29,10 @@ public class MainMenuScript : MonoBehaviour {
     {
         Application.LoadLevel("Plateforme");
     }
+
+    public void Load_Exit()
+    {
+        Application.Quit();
+    }
     
 }
