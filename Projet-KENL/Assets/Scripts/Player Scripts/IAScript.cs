@@ -22,10 +22,6 @@ public class IAScript : MonoBehaviour
 
         GetComponent<Renderer>().material.color = Color.yellow;
 
-        if (transform.name == "Player Human") {
-            //transform.Rotate(new Vector3(0, 90, 0));
-        }
-
         // All initialized at false by default
         inputs = new bool[player.listAttacks.Length];
     }
