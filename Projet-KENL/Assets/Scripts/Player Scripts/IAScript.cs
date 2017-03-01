@@ -9,17 +9,20 @@ public class IAScript : MonoBehaviour
 
     private PlayerScript player;
     private CharacterController charaControl;
+    private GameObject otherPlayer;
+    private CharacterController otherPlayerCharaControl;
 
     // Use this for initialization
     void Start()
     {
         player = GetComponent<PlayerScript>();
         charaControl = GetComponent<CharacterController>();
-        
-        ColorThePlayers();
+        otherPlayer = GameObject.Find("Player Human");
+        otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
 
-        if (transform.name == "Player Human")
-        {
+        GetComponent<Renderer>().material.color = Color.yellow;
+
+        if (transform.name == "Player Human") {
             //transform.Rotate(new Vector3(0, 90, 0));
         }
 
@@ -29,32 +32,25 @@ public class IAScript : MonoBehaviour
 
     private void Update()
     {
-        /* When there's movement or physics, put here */
-
-        if (player.transform.name == "Player 2") // For now we only move player 1
-            GetInputs();
+        // We move the IA
+        GetInputsIA();
 
         // Function for moving the player with input (!= IA)
         MovementPlayer();
     }
 
-    private void ColorThePlayers()
+    private void GetInputsIA()
     {
-        /* Add color to players while no 3D models */
-
-        if (transform.name == "Player 2")
-        {
-            GetComponent<Renderer>().material.color = Color.yellow;
+        for (int i = 0; i < inputs.Length; i++) {
+            inputs[i] = false;
         }
-    }
 
-    private void GetInputs()
-    {
-        inputs[0] = false;
-        if (CharaControlScript.player.transform.position.x < player.transform.position.x -2)
+        if (otherPlayer.transform.position.x < transform.position.x - 2)
             xInput = -1.0f;
-        else
+        else if (otherPlayer.transform.position.x > transform.position.x + 2)
             xInput = 1.0f;
+        else
+            xInput = 0f;
         /*else
         {
             System.Random rand = new System.Random();
@@ -64,38 +60,17 @@ public class IAScript : MonoBehaviour
                 xInput = 1.0f;
 
         }*/
-            
-        if (player.transform.GetComponent<Renderer>().material.color == Color.gray)
+
+        // Lorsque IA touchée
+        if (player.InvulnerableTimer > 0f)
             xInput = +1.0f;
-        if ((!CharaControlScript.player.isGrounded && Time.deltaTime > 1.0f) || (CharaControlScript.player.transform.position.y > player.transform.position.y) ) // le time évite le bug au début ou le perso saute sans raison
+
+        // Le time évite le bug au début ou le perso saute sans raison
+        if ((!otherPlayerCharaControl.isGrounded && Time.deltaTime > 1.0f)
+            || (otherPlayer.transform.position.y > transform.position.y))
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
-        
-
-        /*xInput = Input.GetAxis("Horizontal");
-        jumpButtonPressed = Input.GetButtonDown("Jump");
-
-        for (int i = 0; i < player.listAttacks.Length; i++)
-        {
-            inputs[i] = Input.GetKeyDown(player.listAttacks[i].inputKey);
-        }*/
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            // Reset player1
-            player.transform.position = new Vector3(-10, 2.5f, 0);
-            player.SetHorizontalVelocity(0f);
-            player.SetVerticalVelocity(0f);
-
-            // Reset player2
-            GameObject player2 = GameObject.Find("Player 2");
-            PlayerScript player2Script = player2.GetComponent<PlayerScript>();
-
-            player2.transform.position = new Vector3(10, 2.5f, 0);
-            player2Script.SetHorizontalVelocity(0f);
-            player2Script.SetVerticalVelocity(0f);
-        }
     }
 
     private void MovementPlayer()

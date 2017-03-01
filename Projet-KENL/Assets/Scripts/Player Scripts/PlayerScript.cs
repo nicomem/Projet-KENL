@@ -131,10 +131,12 @@ public class PlayerScript : MonoBehaviour
         verticalVelocity += dvy;
     }
 
-    public bool IsCorrectWay()
+    public bool LookToRight()
     {
         /* Returns true if the player is facing to the right */
-        return transform.eulerAngles.y <= 1f || transform.eulerAngles.y >= 179f;
+
+        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
+            || transform.localEulerAngles.y >= 359f;
     }
 
 
@@ -277,9 +279,9 @@ public class PlayerScript : MonoBehaviour
         /* Check if the player is correctly rotated
          * If not, rotate it correctly */
 
-        waySign = IsCorrectWay() ? 1 : -1;
+        waySign = LookToRight() ? 1 : -1;
 
-        if (waySign * xInput < 0) {
+        if (-waySign * xInput < 0) {
             transform.Rotate(new Vector3(0, waySign * 180));
         }
     }
