@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-
-public class CharaControlScript : MonoBehaviour
+public class CharaControlScript : NetworkBehaviour
 {
     private float xInput;
     private bool jumpButtonPressed;
