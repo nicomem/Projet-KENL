@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class PlayerScript : MonoBehaviour
@@ -13,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public float horizontalSpeed = 20.0f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
+    public Collider jumpCollider;
 
     [Space]
 
@@ -23,6 +22,8 @@ public class PlayerScript : MonoBehaviour
     public int maxCombo = 4;
     public float period = 1f; // Set the period between each attackCollider check
 
+    [Space]
+    public AnimationsScript animScript;
 
     // Jump var (hidden)
     private float verticalVelocity;
@@ -31,6 +32,9 @@ public class PlayerScript : MonoBehaviour
     [System.NonSerialized]
     public bool isGrounded = true; // See if grounded (can be modified if
                                    // needed, ex: attacks)
+    private bool isJumping = false;
+    private Collider[] colliders;
+
 
     // Attack var (hidden)
     public float percentHealth = 0; // pushReceived = 
@@ -52,6 +56,7 @@ public class PlayerScript : MonoBehaviour
     // Other movements var (private)
     private Vector3 moveVector;
     private CharacterController charaControl;
+    private bool isRunning = false;
 
     private void Start()
     {
@@ -81,9 +86,18 @@ public class PlayerScript : MonoBehaviour
         }
 
         // Movement functions
-        Movement_Run(xInput);
-        Movement_Jump(jumpButtonPressed);
-        isAttacking = Movement_Attack(inputs);
+        if (transform.name == "Player 2") {
+            Movement_Run(xInput);
+            Movement_Jump(jumpButtonPressed);
+            Movement_Attack(inputs);
+        } else {
+            animScript.isRunning = Movement_Run(xInput);
+            Movement_Jump(jumpButtonPressed);
+            animScript.isAttacking = Movement_Attack(inputs);
+
+            // Animations
+            animScript.do_animations(xInput, InvulnerableTimer);
+        }
 
         // Other useful functions
         CheckRotation(xInput);
@@ -112,9 +126,21 @@ public class PlayerScript : MonoBehaviour
         verticalVelocity += dvy;
     }
 
+    public bool LookToRight()
+    {
+        /* Returns true if the player is facing to the right */
+
+        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
+            || transform.localEulerAngles.y >= 359f;
+    }
+
 
     private void UpdateTimers()
     {
+        if (transform.name == "Player Human" && Input.GetKeyDown(KeyCode.H)) {
+            InvulnerableTimer = 0.5f;
+        }
+
         // Attack Timer
         if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
 
@@ -131,6 +157,33 @@ public class PlayerScript : MonoBehaviour
                 // We reset the attack timer
                 currentPeriod = period;
             }
+        }
+
+        // Change color if hit (DEBUG)
+        if (transform.name == "Player 2") {
+            if (InvulnerableTimer > 0) {
+                GetComponent<Renderer>().material.color = Color.gray;
+            } else {
+                GetComponent<Renderer>().material.color = Color.yellow;
+            }
+        }
+
+        // Color of attack collider
+        if (attackTimer > 0f) {
+            // Here should be called an attack animation
+            if (attackTimer < 0.5f) {
+                // Just for seeing when we can combo (DEBUG)
+                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                //.material.color = Color.yellow;
+            } else {
+                // Give a color to the collider (DEBUG)
+                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                //.material.color = Color.black;
+            }
+        } else if (currentAttack != null) { // Attack just finished
+                                            // Remove color of the collider (DEBUG)
+                                            //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
+                                            //    .material.color = Color.white;
         }
     }
 
@@ -151,6 +204,10 @@ public class PlayerScript : MonoBehaviour
         if (charaControl.isGrounded) {
             jumpCount = 0;
         } else {
+            if (verticalVelocity > 0 && CheckCollisionUp()) {
+                verticalVelocity = 0;
+            }
+
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
 
@@ -175,25 +232,11 @@ public class PlayerScript : MonoBehaviour
          * There is also combos (& combos limit)
          * Returns true if an attack has been made (else false) */
 
-        if (attackTimer > 0f) {
-            // Here should be called an attack animation
-            if (attackTimer < 0.5f) {
-                // Just for seeing when we can combo (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                .material.color = Color.yellow;
-            } else {
-                // Give a color to the collider (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                .material.color = Color.black;
-            }
-        } else { // Attack finished || No attack
-                 // Here we should finish an attack animation
+        if (attackTimer <= 0f) { // Attack finished || No attack
+
+            // Here we should finish an attack animation
 
             if (currentAttack != null) { // Attack just finished
-                // Remove color of the collider (DEBUG)
-                currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                    .material.color = Color.white;
-
                 currentAttack.actualCombo = -1; // We reset the combo
                 currentAttack = null;
                 inputAttackIndex = 0;
@@ -231,16 +274,20 @@ public class PlayerScript : MonoBehaviour
         /* Check if the player is correctly rotated
          * If not, rotate it correctly */
 
-        waySign = IsCorrectWay() ? 1 : -1;
+        waySign = LookToRight() ? 1 : -1;
 
         if (waySign * xInput < 0) {
             transform.Rotate(new Vector3(0, waySign * 180));
         }
     }
 
-    public bool IsCorrectWay()
+    private bool CheckCollisionUp()
     {
-        /* Returns true if the player is facing to the right */
-        return transform.eulerAngles.y == 0;
+        colliders = Physics.OverlapBox(jumpCollider.bounds.center,
+                                       jumpCollider.bounds.extents,
+                                       jumpCollider.transform.rotation,
+                                       LayerMask.GetMask("Plateform"));
+
+        return colliders.Length > 0;
     }
 }
