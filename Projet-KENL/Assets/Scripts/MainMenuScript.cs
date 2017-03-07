@@ -1,38 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour {
 
     public void Load_Choose()
     {
-        Application.LoadLevel("MainMenuChoose");
+        SceneManager.LoadScene("MainMenuChoose");
     }
 	
 	public void Load_MainMenu()
     {
-        Application.LoadLevel("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
+
     public void Load_Settings()
     {
-        Application.LoadLevel("MainMenuSettings");
+        SceneManager.LoadScene("MainMenuSettings");
     }
+
     public void Load_Credits()
     {
-        Application.LoadLevel("MainMenuCredits");
+        SceneManager.LoadScene("MainMenuCredits");
     }
+
     public void Load_Training()
     {
-        Application.LoadLevel("Training");
+        SceneManager.LoadScene("Training");
     }
+
     public void Load_NormalGame()
     {
-        Application.LoadLevel("Plateforme");
+        SceneManager.LoadScene("Plateforme");
+    }
+
+    public void Load_Multiplayer()
+    {
+        SceneManager.LoadScene("MainMenuMultiplayer");
     }
 
     public void Load_Exit()
     {
         Application.Quit();
     }
-    
 }

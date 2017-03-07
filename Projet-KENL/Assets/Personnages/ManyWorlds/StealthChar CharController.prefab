@@ -1254,6 +1254,7 @@ GameObject:
   - component: {fileID: 114005435499416262}
   - component: {fileID: 114950666320621718}
   - component: {fileID: 114456792117123444}
+  - component: {fileID: 114681064665719550}
   m_Layer: 8
   m_Name: StealthChar CharController
   m_TagString: Player
@@ -1460,7 +1461,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100026}
-  m_LocalRotation: {x: 0.28705895, y: -0.66177636, z: -0.6187192, w: -0.3111843}
+  m_LocalRotation: {x: 0.28705898, y: -0.6617764, z: -0.6187193, w: -0.31118432}
   m_LocalPosition: {x: -0.04020389, y: -0.19843842, z: 0.10653419}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3734,6 +3735,38 @@ MonoBehaviour:
   inputKey: e
   attackCollider: {fileID: 65415945184279236}
   attackCooldown: 0.5
+--- !u!114 &114681064665719550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 152
+    i1: 92
+    i2: 229
+    i3: 55
+    i4: 200
+    i5: 154
+    i6: 197
+    i7: 116
+    i8: 90
+    i9: 132
+    i10: 136
+    i11: 211
+    i12: 122
+    i13: 98
+    i14: 226
+    i15: 246
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114950666320621718
 MonoBehaviour:
   m_ObjectHideFlags: 1
