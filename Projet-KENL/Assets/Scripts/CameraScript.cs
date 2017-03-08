@@ -13,8 +13,6 @@ public class CameraScript : MonoBehaviour
     private float posX, posY;
     private float xCamera, yCamera, zCamera;
 
-    private float cameraZMin, cameraZMax;
-
     // Use this for initialization
     void Start()
     {
@@ -34,10 +32,6 @@ public class CameraScript : MonoBehaviour
         cameraXMax = mapInfos.xMaxLimit;
         cameraYMin = mapInfos.yMinLimit;
         cameraYMax = mapInfos.yMaxLimit;
-
-        cameraZMin = 15;
-        // Remplir cameraXMin, cameraYMin
-        // Pas besoin de cameraZMax ?
     }
 
     void Update()
