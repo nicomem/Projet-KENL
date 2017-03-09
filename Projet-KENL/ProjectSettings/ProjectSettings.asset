@@ -461,7 +461,7 @@ PlayerSettings:
   vrEditorSettings: {}
   cloudServicesEnabled:
     UNet: 1
-  cloudProjectId: 8501f5e9-21e0-4043-9ef4-757b07146889
-  projectName: New Unity Project (1)
-  organizationId: llamado
+  cloudProjectId: 3e6d8abb-6a88-4f63-9095-dc01e9386efe
+  projectName: New Unity Project
+  organizationId: m_nicolas
   cloudEnabled: 0

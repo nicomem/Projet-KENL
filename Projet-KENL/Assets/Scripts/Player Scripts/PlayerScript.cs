@@ -32,7 +32,6 @@ public class PlayerScript : MonoBehaviour
     [System.NonSerialized]
     public bool isGrounded = true; // See if grounded (can be modified if
                                    // needed, ex: attacks)
-    private bool isJumping = false;
     private Collider[] colliders;
 
 
@@ -41,7 +40,6 @@ public class PlayerScript : MonoBehaviour
                                     // power * (1 + percentHealth / 100)
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
-    private bool isAttacking = false; // See if the player is attacking
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
@@ -56,7 +54,6 @@ public class PlayerScript : MonoBehaviour
     // Other movements var (private)
     private Vector3 moveVector;
     private CharacterController charaControl;
-    private bool isRunning = false;
 
     private void Start()
     {

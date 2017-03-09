@@ -2,21 +2,16 @@
 
 public class CameraScript : MonoBehaviour
 {
-    public float cameraXMin,
-        cameraXMax,
-        cameraYMin,
-        cameraYMax; // Limit the camera to go beyond
-
-    public GameObject[] listPlayers; // The list of players
-
     private Camera mainCam;
+    private GameObject[] listPlayers;
     private float cameraRecul;
     private float CameraFOV;
     private float videoFormat;
 
+    private float cameraXMin, cameraXMax, cameraYMin, cameraYMax;
     private float xMax, xMin, yMax, yMin;
     private float posX, posY;
-    float xCamera, yCamera, zCamera;
+    private float xCamera, yCamera, zCamera;
 
     // Use this for initialization
     void Start()
@@ -27,6 +22,16 @@ public class CameraScript : MonoBehaviour
         CameraFOV = Mathf.Deg2Rad * mainCam.fieldOfView; // radians
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
 
+        MapInfosScript mapInfos = GameObject.Find("Map Infos")
+            .GetComponent<MapInfosScript>();
+
+        listPlayers = mapInfos.listPlayers;
+
+        // Change that
+        cameraXMin = mapInfos.xMinLimit;
+        cameraXMax = mapInfos.xMaxLimit;
+        cameraYMin = mapInfos.yMinLimit;
+        cameraYMax = mapInfos.yMaxLimit;
     }
 
     void Update()
@@ -52,6 +57,7 @@ public class CameraScript : MonoBehaviour
         yMax = Mathf.Min(yMax, cameraYMax);
         yMin = Mathf.Max(yMin, cameraYMin);
 
+        /* Change that */
         xCamera = (xMax + xMin) / 2;
         yCamera = (yMax + yMin) / 2;
 

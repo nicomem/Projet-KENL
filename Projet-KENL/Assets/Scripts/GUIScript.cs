@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GUIScript : MonoBehaviour {
     private bool isPaused;
@@ -28,7 +27,7 @@ public class GUIScript : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width / 2 - 320, Screen.height / 2 + 80, 640, 80), "Back to main menu" ))
                 {
                 //Application.Quit();
-                Application.LoadLevel("MainMenu");
+                SceneManager.LoadScene("MainMenu");
             }
         }
  
