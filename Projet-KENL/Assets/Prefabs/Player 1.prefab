@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: 114413347525088982}
   - component: {fileID: 114395247065784836}
   - component: {fileID: 114044815082028570}
+  - component: {fileID: 114966648458241270}
+  - component: {fileID: 114983108236030526}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -133,8 +135,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058267956331638}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 6.96, y: 3.83, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1}
   m_Children:
   - {fileID: 4178299126990310}
@@ -142,7 +144,7 @@ Transform:
   - {fileID: 4781003699771284}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23387530483769088
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -414,6 +416,58 @@ MonoBehaviour:
   period: 1
   animScript: {fileID: 0}
   percentHealth: 0
+--- !u!114 &114966648458241270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 4
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114983108236030526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 12
+    i1: 202
+    i2: 24
+    i3: 113
+    i4: 139
+    i5: 100
+    i6: 0
+    i7: 20
+    i8: 139
+    i9: 116
+    i10: 200
+    i11: 88
+    i12: 94
+    i13: 159
+    i14: 86
+    i15: 231
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1

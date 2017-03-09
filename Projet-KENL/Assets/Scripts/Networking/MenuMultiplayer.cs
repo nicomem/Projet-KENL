@@ -2,70 +2,133 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MenuMultiplayer : NetworkManager
 {
     private Text InputIPAdress;
     private Text InputPlayerName;
 
+    private int indexPlayer;
     private string playerName;
 
-    // ///////////////////////// //
-    // MainMenuMultiplayer Scene //
-    // ///////////////////////// //
+    private bool isHost;
+
+    // Server vars
+    private NetworkConnection[] listPlayers = new NetworkConnection[4];
+
+    #region MainMenuMultiplayer Scene
 
     public void StartClientButton()
     {
+        // When clicking on "Join Game" button
+
         networkAddress = InputIPAdress.text;
         playerName = InputPlayerName.text;
+        isHost = false;
 
-        NetworkServer.Reset();
         StartClient();
+        StartCoroutine(CheckClient(0.25f));
+    }
+
+    private IEnumerator CheckClient(float seconds)
+    {
+        // Wait for [seconds] & check if client is connected
+        // If not, stop Unity from searching for a server
+
+        yield return new WaitForSeconds(seconds);
+        
+        if (!client.isConnected)
+            StopClient();
     }
 
     public void StartHostButton()
     {
+        // When clicking on "Start Host" button
+
         networkAddress = InputIPAdress.text;
         playerName = InputPlayerName.text;
+        isHost = true;
 
-        NetworkServer.Reset();
+
         StartHost();
     }
 
     public void Load_MainMenu()
     {
+        // When clicking on "Main Menu" button
+
         SceneManager.LoadScene("MainMenu");
+        Destroy(gameObject);
     }
 
-    
+    #endregion
 
-    // ////////////////////// //
-    // LobbyMultiplayer Scene //
-    // ////////////////////// //
+    #region LobbyMultiplayer Scene
 
     public void Lobby_BackButton()
     {
-        StopHost();
+        // When clicking on "Back" button
+
+        if (isHost) {
+            StopHost();
+            listPlayers = new NetworkConnection[4];
+        } else
+            StopClient();
     }
 
+    public void Lobby_ReadyButton()
+    {
+        // When clicking on "Ready" button
+    }
 
+    public override void OnServerConnect(NetworkConnection conn)
+    {
+        // When a client connects on the server
+        // Function launched on the server
 
+        base.OnServerConnect(conn);
 
-    // ///////////////////// //
-    // Other functions Scene //
-    // ///////////////////// //
+        for (short i = 0; i < 4; i++) {
+            if (listPlayers[i] == null) {
+                listPlayers[i] = conn;
+                Debug.Log("Player " + i + " connected");
+                break;
+            }
+        }
+    }
+
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        // When a client disconnects from the server
+        // Function launched on the server
+
+        base.OnServerDisconnect(conn);
+
+        for (short i = 1; i < 4; i++) {
+            if (listPlayers[i] == conn) {
+                listPlayers[i] = null;
+                Debug.Log("Player " + i + " disconnected");
+                break;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Other functions Scene
 
     private void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // When a scene is loaded
+        // Launch functions for setting the buttons
+
         if (scene.name == "MultiplayerLobby") {
             // When entering the LobbyMultiplayer scene
-            Debug.Log("Scene loaded: " + scene.name);
-            Debug.Log("Player entered lobby : " + playerName);
 
             SetupLobbySceneButtons();
         } else if (scene.name == "MainMenuMultiplayer") {
             // When entering the MainMenuMultiplayer scene
-            Debug.Log("Scene loaded: " + scene.name);
 
             SetupMultiSceneButtons();
         } else {
@@ -75,6 +138,8 @@ public class MenuMultiplayer : NetworkManager
 
     private void SetupMultiSceneButtons()
     {
+        // Set the buttons on "MainMenuMuliplayer" scene
+
         Button.ButtonClickedEvent button;
 
         button = GameObject.Find("StartHost Button").GetComponent<Button>()
@@ -100,18 +165,26 @@ public class MenuMultiplayer : NetworkManager
 
     private void SetupLobbySceneButtons()
     {
+        // Set the buttons on "MuliplayerLobby" scene
+
         Button.ButtonClickedEvent button;
 
         button = GameObject.Find("Back").GetComponent<Button>()
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(Lobby_BackButton);
+
+        button = GameObject.Find("Ready").GetComponent<Button>()
+            .onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_ReadyButton);
     }
 
     void OnEnable()
     {
         // Tell our 'OnLevelFinishedLoading' function to start listening for
         // a scene change as soon as this script is enabled.
+
         SceneManager.sceneLoaded += SceneLoaded;
     }
 
@@ -119,6 +192,9 @@ public class MenuMultiplayer : NetworkManager
     {
         // Tell our 'OnLevelFinishedLoading' function to stop listening for
         // a scene change as soon as this script is disabled.
+
         SceneManager.sceneLoaded -= SceneLoaded;
     }
+
+    #endregion
 }
