@@ -3,16 +3,23 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MenuMultiplayer : NetworkManager
 {
     private Text InputIPAdress;
     private Text InputPlayerName;
 
-    private int indexPlayer;
-    private string playerName;
+    private GameObject canvas;
 
+    private string playerName;
     private bool isHost;
+
+    private enum PlayerType { PlayerTest, StealthChar };
+    private Dictionary<NetworkConnection, PlayerType> playerTypeList = 
+        new Dictionary<NetworkConnection, PlayerType>();
+
+    public Vector3[] lobbySpawnPoints;
 
     // Server vars
     private NetworkConnection[] listPlayers = new NetworkConnection[4];
@@ -37,7 +44,7 @@ public class MenuMultiplayer : NetworkManager
         // If not, stop Unity from searching for a server
 
         yield return new WaitForSeconds(seconds);
-        
+
         if (!client.isConnected)
             StopClient();
     }
@@ -92,10 +99,34 @@ public class MenuMultiplayer : NetworkManager
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == null) {
                 listPlayers[i] = conn;
+
                 Debug.Log("Player " + i + " connected");
                 break;
             }
         }
+    }
+
+    public override void OnServerReady(NetworkConnection conn)
+    {
+        base.OnServerReady(conn);
+
+        short indexPlayer = 0;
+
+        for (short i = 0; i < 4; i++) {
+            if (listPlayers[i] == conn) {
+                indexPlayer = i;
+            }
+        }
+
+         // We create player prefab and give it to client
+        playerTypeList.Add(conn, 0);
+
+        GameObject go = Instantiate(spawnPrefabs[0]);
+        go.transform.parent = canvas.transform;
+        go.transform.localPosition = lobbySpawnPoints[indexPlayer];
+        go.transform.localScale = new Vector3(1, 1, 1);
+
+        NetworkServer.SpawnWithClientAuthority(go, conn);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -178,6 +209,8 @@ public class MenuMultiplayer : NetworkManager
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(Lobby_ReadyButton);
+
+        canvas = GameObject.Find("Canvas");
     }
 
     void OnEnable()

@@ -868,6 +868,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1522436294824646, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
   m_IsPrefabParent: 0
@@ -1212,7 +1216,12 @@ Prefab:
       propertyPath: m_Name
       value: Multiplayer - Panel Player (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1522436294824646, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1300854711 stripped
@@ -1455,7 +1464,12 @@ Prefab:
       propertyPath: m_Name
       value: Multiplayer - Panel Player (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1522436294824646, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1596968334 stripped
@@ -1786,7 +1800,12 @@ Prefab:
       propertyPath: m_Name
       value: Multiplayer - Panel Player (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1522436294824646, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &2059190683 stripped
