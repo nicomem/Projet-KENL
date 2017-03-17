@@ -114,6 +114,7 @@
     <Compile Include="Assets\Scripts\GUIScript.cs" />
     <Compile Include="Assets\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Scripts\MapInfosScript.cs" />
+    <Compile Include="Assets\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Scripts\Networking\MenuMultiplayer.cs" />
     <Compile Include="Assets\Scripts\Networking\MessageTypes.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />

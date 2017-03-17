@@ -1256,7 +1256,6 @@ GameObject:
   - component: {fileID: 114456792117123444}
   - component: {fileID: 114681064665719550}
   - component: {fileID: 114449819985802178}
-  - component: {fileID: 114978897773866152}
   m_Layer: 8
   m_Name: StealthChar CharController
   m_TagString: Player
@@ -1463,7 +1462,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100026}
-  m_LocalRotation: {x: 0.28705895, y: -0.66177636, z: -0.6187192, w: -0.3111843}
+  m_LocalRotation: {x: 0.28705898, y: -0.6617764, z: -0.6187193, w: -0.31118432}
   m_LocalPosition: {x: -0.04020389, y: -0.19843842, z: 0.10653419}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2119,13 +2118,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100156}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.0047044125, y: 0, z: 0.0058019715}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400154}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.00001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &400124
 Transform:
   m_ObjectHideFlags: 1
@@ -2342,8 +2341,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 2.1000023, y: 2.1, z: 2.1000023}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_Children:
   - {fileID: 400122}
   - {fileID: 400040}
@@ -3692,7 +3691,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ade12221ce1499246b82eb6470c70c29, type: 3}
   m_Name: 
@@ -3803,38 +3802,6 @@ MonoBehaviour:
   anim: {fileID: 9500010}
   isRunning: 0
   isAttacking: 0
---- !u!114 &114978897773866152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 152
-    i1: 92
-    i2: 229
-    i3: 55
-    i4: 200
-    i5: 154
-    i6: 197
-    i7: 116
-    i8: 90
-    i9: 132
-    i10: 136
-    i11: 211
-    i12: 122
-    i13: 98
-    i14: 226
-    i15: 246
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
 --- !u!143 &143930951259180914
 CharacterController:
   m_ObjectHideFlags: 1

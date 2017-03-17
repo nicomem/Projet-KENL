@@ -7,16 +7,23 @@ using System.Collections.Generic;
 
 public class MenuMultiplayer : NetworkManager
 {
+    private const int NUMBER_OF_PERSOS = 2;
+
     private Text InputIPAdress;
     private Text InputPlayerName;
 
     private GameObject canvas;
+    private GameObject charaSelectBox;
 
-    private string playerName;
+    public string PlayerName { get; private set; }
     private bool isHost;
+    private PlayerType playerSelected = 0;
+
+    public GameObject LobbyPlayer;
+    private GameObject charaSelectBoxPlayer;
 
     private enum PlayerType { PlayerTest, StealthChar };
-    private Dictionary<NetworkConnection, PlayerType> playerTypeList = 
+    private Dictionary<NetworkConnection, PlayerType> playerTypeList =
         new Dictionary<NetworkConnection, PlayerType>();
 
     public Vector3[] lobbySpawnPoints;
@@ -31,7 +38,7 @@ public class MenuMultiplayer : NetworkManager
         // When clicking on "Join Game" button
 
         networkAddress = InputIPAdress.text;
-        playerName = InputPlayerName.text;
+        PlayerName = InputPlayerName.text;
         isHost = false;
 
         StartClient();
@@ -54,7 +61,7 @@ public class MenuMultiplayer : NetworkManager
         // When clicking on "Start Host" button
 
         networkAddress = InputIPAdress.text;
-        playerName = InputPlayerName.text;
+        PlayerName = InputPlayerName.text;
         isHost = true;
 
 
@@ -89,6 +96,26 @@ public class MenuMultiplayer : NetworkManager
         // When clicking on "Ready" button
     }
 
+    public void Lobby_PlayerSelectRightArrow()
+    {
+        playerSelected = (PlayerType)
+            (((int)playerSelected + 1) % NUMBER_OF_PERSOS);
+
+        // Update perso in charSelectBox
+        UpdatePersoInSelect();
+    }
+
+    public void Lobby_PlayerSelectLeftArrow()
+    {
+        playerSelected = (PlayerType) ((int)playerSelected - 1);
+        if (playerSelected < 0)
+            playerSelected = (PlayerType)
+                ((int)playerSelected + NUMBER_OF_PERSOS);
+
+        // Update perso in charSelectBox
+        UpdatePersoInSelect();
+    }
+
     public override void OnServerConnect(NetworkConnection conn)
     {
         // When a client connects on the server
@@ -118,11 +145,11 @@ public class MenuMultiplayer : NetworkManager
             }
         }
 
-         // We create player prefab and give it to client
+        // We create player prefab and give it to client
         playerTypeList.Add(conn, 0);
 
         GameObject go = Instantiate(spawnPrefabs[0]);
-        go.transform.parent = canvas.transform;
+        go.transform.SetParent(canvas.transform);
         go.transform.localPosition = lobbySpawnPoints[indexPlayer];
         go.transform.localScale = new Vector3(1, 1, 1);
 
@@ -144,6 +171,48 @@ public class MenuMultiplayer : NetworkManager
             }
         }
     }
+
+    public void UpdatePersoInSelect()
+    {
+        if (charaSelectBoxPlayer != null) {
+            Destroy(charaSelectBoxPlayer);
+        }
+
+        charaSelectBoxPlayer = Instantiate(spawnPrefabs[(int)playerSelected + 1]);
+        charaSelectBoxPlayer.transform.parent = charaSelectBox.transform;
+        charaSelectBoxPlayer.transform.localPosition = Vector3.zero;
+
+        charaSelectBoxPlayer.transform.localScale *= 30;
+
+        string persoName = "";
+
+        // Other fixes for each perso
+        switch (playerSelected) {
+            case PlayerType.StealthChar:
+                charaSelectBoxPlayer.transform.localPosition += 
+                    new Vector3(-5, -120, 0);
+                charaSelectBoxPlayer.transform.Rotate(0, 180, 0);
+                persoName = "Stealth Char";
+                break;
+
+            case PlayerType.PlayerTest:
+                persoName = "Player Test";
+                break;
+
+            default:
+                break;
+        }
+
+        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
+            .GetComponent<Text>().text = persoName;
+
+        try {
+            LobbyPlayer.transform.Find("Perso Name")
+                .GetComponent<Text>().text = persoName;
+        } catch (UnassignedReferenceException) { }
+        
+    }
+
 
     #endregion
 
@@ -196,8 +265,15 @@ public class MenuMultiplayer : NetworkManager
 
     private void SetupLobbySceneButtons()
     {
-        // Set the buttons on "MuliplayerLobby" scene
+        // Get important GO (and set things)
+        canvas = GameObject.Find("Canvas");
+        charaSelectBox = canvas.transform.Find("Character Selection")
+            .gameObject;
 
+        canvas.transform.Find("Character Selection").Find("Panel - Player Name")
+            .Find("Player Name").GetComponent<Text>().text = PlayerName;
+
+        // Set the buttons on "MuliplayerLobby" scene
         Button.ButtonClickedEvent button;
 
         button = GameObject.Find("Back").GetComponent<Button>()
@@ -210,7 +286,18 @@ public class MenuMultiplayer : NetworkManager
         button.RemoveAllListeners();
         button.AddListener(Lobby_ReadyButton);
 
-        canvas = GameObject.Find("Canvas");
+        button = charaSelectBox.transform.Find("Left").GetComponent<Button>()
+            .onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_PlayerSelectLeftArrow);
+
+        button = charaSelectBox.transform.Find("Right").GetComponent<Button>()
+            .onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_PlayerSelectRightArrow);
+
+        // Other things
+        UpdatePersoInSelect();
     }
 
     void OnEnable()
