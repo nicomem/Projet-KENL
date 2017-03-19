@@ -14,18 +14,21 @@ public class MenuMultiplayer : NetworkManager
 
     private GameObject canvas;
     private GameObject charaSelectBox;
+    private GameObject readyButton;
 
     public string PlayerName { get; private set; }
     private bool isHost;
     private PlayerType playerSelected = 0;
 
+    [HideInInspector]
     public GameObject LobbyPlayer;
-    private GameObject charaSelectBoxPlayer;
+    public LobbyPlayerScript lobbyPlayerScript;
+    private GameObject charaSelected;
 
-    private enum PlayerType { PlayerTest, StealthChar };
-    private Dictionary<NetworkConnection, PlayerType> playerTypeList =
+    public enum PlayerType { PlayerTest, StealthChar };
+    /*private Dictionary<NetworkConnection, PlayerType> playerTypeList =
         new Dictionary<NetworkConnection, PlayerType>();
-
+    */
     public Vector3[] lobbySpawnPoints;
 
     // Server vars
@@ -93,7 +96,38 @@ public class MenuMultiplayer : NetworkManager
 
     public void Lobby_ReadyButton()
     {
-        // When clicking on "Ready" button
+        // Move selected perso in LobbyPlayer box
+        charaSelected.transform.position -=
+            (canvas.transform.position - LobbyPlayer.transform.position);
+
+        // Change ready button
+        Button button = readyButton.GetComponent<Button>();
+        // button.colors.normalColor = new Color(255, 255, 0); // yellow
+        // button.colors.pressedColor = new Color(200, 200, 0); // dark yelow
+
+        Button.ButtonClickedEvent buttonEvent;
+        buttonEvent = readyButton.GetComponent<Button>().onClick;
+        buttonEvent.RemoveAllListeners();
+        buttonEvent.AddListener(Lobby_StopReadyButton);
+    }
+
+    public void Lobby_StopReadyButton()
+    {
+        // When clicking on ready button when already ready (stop being ready)
+
+        // Move selected perso in LobbyPlayer box
+        charaSelected.transform.position += 
+            (canvas.transform.position - LobbyPlayer.transform.position);
+
+        // Change ready button
+        Button button = readyButton.GetComponent<Button>();
+        // button.colors.normalColor = new Color(255, 255, 255); // white
+        // button.colors.pressedColor = new Color(200, 200, 200); // dark white
+
+        Button.ButtonClickedEvent buttonEvent;
+        buttonEvent = readyButton.GetComponent<Button>().onClick;
+        buttonEvent.RemoveAllListeners();
+        buttonEvent.AddListener(Lobby_ReadyButton);
     }
 
     public void Lobby_PlayerSelectRightArrow()
@@ -146,7 +180,7 @@ public class MenuMultiplayer : NetworkManager
         }
 
         // We create player prefab and give it to client
-        playerTypeList.Add(conn, 0);
+        //playerTypeList.Add(conn, 0);
 
         GameObject go = Instantiate(spawnPrefabs[0]);
         go.transform.SetParent(canvas.transform);
@@ -174,28 +208,31 @@ public class MenuMultiplayer : NetworkManager
 
     public void UpdatePersoInSelect()
     {
-        if (charaSelectBoxPlayer != null) {
-            Destroy(charaSelectBoxPlayer);
+        if (charaSelected != null) {
+            Destroy(charaSelected);
         }
 
-        charaSelectBoxPlayer = Instantiate(spawnPrefabs[(int)playerSelected + 1]);
-        charaSelectBoxPlayer.transform.parent = charaSelectBox.transform;
-        charaSelectBoxPlayer.transform.localPosition = Vector3.zero;
-
-        charaSelectBoxPlayer.transform.localScale *= 30;
+        charaSelected = Instantiate(spawnPrefabs[(int)playerSelected + 1]);
+        charaSelected.transform.parent = charaSelectBox.transform;
+        charaSelected.transform.position = canvas.transform.position;
+        charaSelected.transform.localScale = new Vector3(1, 1, 1);
 
         string persoName = "";
 
         // Other fixes for each perso
         switch (playerSelected) {
             case PlayerType.StealthChar:
-                charaSelectBoxPlayer.transform.localPosition += 
-                    new Vector3(-5, -120, 0);
-                charaSelectBoxPlayer.transform.Rotate(0, 180, 0);
+                charaSelected.transform.localScale = 
+                    new Vector3(2.1f, 2.1f, 2.1f);
+                charaSelected.transform.localPosition += 
+                    new Vector3(0, -2f, 0);
+                charaSelected.transform.Rotate(0, 180, 0);
                 persoName = "Stealth Char";
                 break;
 
             case PlayerType.PlayerTest:
+                charaSelected.transform.localScale =
+                    new Vector3(1.5f, 2f, 1f);
                 persoName = "Player Test";
                 break;
 
@@ -212,7 +249,6 @@ public class MenuMultiplayer : NetworkManager
         } catch (UnassignedReferenceException) { }
         
     }
-
 
     #endregion
 
@@ -281,7 +317,8 @@ public class MenuMultiplayer : NetworkManager
         button.RemoveAllListeners();
         button.AddListener(Lobby_BackButton);
 
-        button = GameObject.Find("Ready").GetComponent<Button>()
+        readyButton = GameObject.Find("Ready");
+        button = readyButton.GetComponent<Button>()
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(Lobby_ReadyButton);
@@ -298,6 +335,8 @@ public class MenuMultiplayer : NetworkManager
 
         // Other things
         UpdatePersoInSelect();
+        GameObject.Find("Main Camera").transform.position = 
+            canvas.transform.position + new Vector3(0, 0, -10);
     }
 
     void OnEnable()

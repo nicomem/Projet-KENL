@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class LobbyPlayerScript : MonoBehaviour {
+public class LobbyPlayerScript : NetworkBehaviour {
+    public MenuMultiplayer networkManagerScript;
+    public GameObject persoReady = null;
 
     void Start () {
-        var networkManagerScript = GameObject.Find("Network Manager")
+        networkManagerScript = GameObject.Find("Network Manager")
             .GetComponent<MenuMultiplayer>();
 
         networkManagerScript.LobbyPlayer = gameObject;
+        networkManagerScript.lobbyPlayerScript = this;
 
         transform.Find("Player Name").GetComponent<Text>().text =
             networkManagerScript.PlayerName;
