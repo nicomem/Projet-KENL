@@ -2,11 +2,13 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class LobbyPlayerScript : NetworkBehaviour {
+public class LobbyPlayerScript : NetworkBehaviour
+{
     public MenuMultiplayer networkManagerScript;
     public GameObject persoReady = null;
 
-    void Start () {
+    void Start()
+    {
         networkManagerScript = GameObject.Find("Network Manager")
             .GetComponent<MenuMultiplayer>();
 

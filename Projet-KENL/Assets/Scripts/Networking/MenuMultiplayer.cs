@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class MenuMultiplayer : NetworkManager
 {
     private const int NUMBER_OF_PERSOS = 2;
+    private const int NUMBER_OF_MAPS = 1;
 
     private Text InputIPAdress;
     private Text InputPlayerName;
@@ -15,17 +16,23 @@ public class MenuMultiplayer : NetworkManager
     private GameObject canvas;
     private GameObject charaSelectBox;
     private GameObject readyButton;
+    private GameObject mapSelectBox;
+    private GameObject chooseMapButton;
 
     public string PlayerName { get; private set; }
     private bool isHost;
+    private bool mapChoosed;
     private PlayerType playerSelected = 0;
+    private MapType mapSelected = 0;
 
     [HideInInspector]
     public GameObject LobbyPlayer;
+    [HideInInspector]
     public LobbyPlayerScript lobbyPlayerScript;
     private GameObject charaSelected;
 
     public enum PlayerType { PlayerTest, StealthChar };
+    public enum MapType { Plateforme };
     /*private Dictionary<NetworkConnection, PlayerType> playerTypeList =
         new Dictionary<NetworkConnection, PlayerType>();
     */
@@ -36,6 +43,20 @@ public class MenuMultiplayer : NetworkManager
 
     #region MainMenuMultiplayer Scene
 
+    public void StartHostButton()
+    {
+        // When clicking on "Start Host" button
+
+        networkAddress = "127.0.0.1";
+        PlayerName = InputPlayerName.text;
+        isHost = true;
+
+        if (PlayerName.Length == 0 || networkAddress.Length == 0)
+            return;
+
+        StartHost();
+    }
+
     public void StartClientButton()
     {
         // When clicking on "Join Game" button
@@ -43,6 +64,9 @@ public class MenuMultiplayer : NetworkManager
         networkAddress = InputIPAdress.text;
         PlayerName = InputPlayerName.text;
         isHost = false;
+
+        if (PlayerName.Length == 0 || networkAddress.Length == 0)
+            return;
 
         StartClient();
         StartCoroutine(CheckClient(0.25f));
@@ -57,18 +81,6 @@ public class MenuMultiplayer : NetworkManager
 
         if (!client.isConnected)
             StopClient();
-    }
-
-    public void StartHostButton()
-    {
-        // When clicking on "Start Host" button
-
-        networkAddress = InputIPAdress.text;
-        PlayerName = InputPlayerName.text;
-        isHost = true;
-
-
-        StartHost();
     }
 
     public void Load_MainMenu()
@@ -96,14 +108,33 @@ public class MenuMultiplayer : NetworkManager
 
     public void Lobby_ReadyButton()
     {
-        // Move selected perso in LobbyPlayer box
-        charaSelected.transform.position -=
-            (canvas.transform.position - LobbyPlayer.transform.position);
+        UpdatePersoInSelect();
+
+        // Set ready text in lobbyPlayer
+        LobbyPlayer.transform.Find("IsReady Text")
+            .GetComponent<Text>().text = "Ready!";
+
+        LobbyPlayer.transform.Find("Perso Name")
+            .gameObject.SetActive(true);
+
+        charaSelectBox.SetActive(false);
+
+        // Map selection Box
+        mapSelectBox.SetActive(true);
+        if (!isHost) {
+            mapSelectBox.transform.Find("Left").gameObject.SetActive(false);
+            mapSelectBox.transform.Find("Right").gameObject.SetActive(false);
+            mapSelectBox.transform.Find("Choose").gameObject.SetActive(false);
+        }
 
         // Change ready button
         Button button = readyButton.GetComponent<Button>();
-        // button.colors.normalColor = new Color(255, 255, 0); // yellow
-        // button.colors.pressedColor = new Color(200, 200, 0); // dark yelow
+
+        var buttonColors = button.colors;
+        buttonColors.normalColor = new Color(255, 255, 0); // yellow
+        buttonColors.pressedColor = new Color(200, 200, 0); // dark yelow
+        buttonColors.highlightedColor = new Color(255, 255, 0);
+        button.colors = buttonColors;
 
         Button.ButtonClickedEvent buttonEvent;
         buttonEvent = readyButton.GetComponent<Button>().onClick;
@@ -115,19 +146,42 @@ public class MenuMultiplayer : NetworkManager
     {
         // When clicking on ready button when already ready (stop being ready)
 
-        // Move selected perso in LobbyPlayer box
-        charaSelected.transform.position += 
-            (canvas.transform.position - LobbyPlayer.transform.position);
+        // Set not ready text in lobbyPlayer
+        LobbyPlayer.transform.Find("IsReady Text")
+            .GetComponent<Text>().text = "Not Ready";
+
+        LobbyPlayer.transform.Find("Perso Name")
+            .gameObject.SetActive(false);
+
+        charaSelectBox.SetActive(true);
+
+        // Map selection Box
+        mapSelectBox.SetActive(false);
 
         // Change ready button
         Button button = readyButton.GetComponent<Button>();
-        // button.colors.normalColor = new Color(255, 255, 255); // white
-        // button.colors.pressedColor = new Color(200, 200, 200); // dark white
+
+        var buttonColors = button.colors;
+        buttonColors.normalColor = new Color(255, 255, 255); // white
+        buttonColors.pressedColor = new Color(200, 200, 200); // dark white
+        buttonColors.highlightedColor = new Color(255, 255, 255);
+        button.colors = buttonColors;
 
         Button.ButtonClickedEvent buttonEvent;
         buttonEvent = readyButton.GetComponent<Button>().onClick;
         buttonEvent.RemoveAllListeners();
         buttonEvent.AddListener(Lobby_ReadyButton);
+    }
+
+    public void Lobby_PlayerSelectLeftArrow()
+    {
+        playerSelected = (PlayerType)((int)playerSelected - 1);
+        if (playerSelected < 0)
+            playerSelected = (PlayerType)
+                ((int)playerSelected + NUMBER_OF_PERSOS);
+
+        // Update perso in charSelectBox
+        UpdatePersoInSelect();
     }
 
     public void Lobby_PlayerSelectRightArrow()
@@ -139,15 +193,68 @@ public class MenuMultiplayer : NetworkManager
         UpdatePersoInSelect();
     }
 
-    public void Lobby_PlayerSelectLeftArrow()
+    public void Lobby_MapSelectLeftArrow()
     {
-        playerSelected = (PlayerType) ((int)playerSelected - 1);
-        if (playerSelected < 0)
-            playerSelected = (PlayerType)
-                ((int)playerSelected + NUMBER_OF_PERSOS);
+        mapSelected = (MapType)((int)mapSelected - 1);
+        if (mapSelected < 0)
+            mapSelected = (MapType)
+                ((int)mapSelected + NUMBER_OF_MAPS);
 
-        // Update perso in charSelectBox
-        UpdatePersoInSelect();
+        UpdateMapInSelect();
+    }
+
+    public void Lobby_MapSelectRightArrow()
+    {
+        mapSelected = (MapType) (((int)mapSelected + 1) % NUMBER_OF_MAPS);
+
+        UpdateMapInSelect();
+    }
+
+    public void Lobby_MapSelectChooseButton()
+    {
+        mapSelectBox.transform.Find("Left").gameObject.SetActive(false);
+        mapSelectBox.transform.Find("Right").gameObject.SetActive(false);
+
+        mapChoosed = true;
+
+        // Change ready button
+        Button button = chooseMapButton.GetComponent<Button>();
+
+        var buttonColors = button.colors;
+        buttonColors.normalColor = new Color(0, 200, 0);
+        buttonColors.pressedColor = new Color(0, 150, 0);
+        buttonColors.highlightedColor = new Color(0, 150, 0);
+        button.colors = buttonColors;
+
+        Button.ButtonClickedEvent buttonEvent;
+        buttonEvent = chooseMapButton.GetComponent<Button>().onClick;
+        buttonEvent.RemoveAllListeners();
+        buttonEvent.AddListener(Lobby_MapSelectStopChooseButton);
+
+        // Check if start game
+        // ???
+    }
+
+    public void Lobby_MapSelectStopChooseButton()
+    {
+        mapSelectBox.transform.Find("Left").gameObject.SetActive(true);
+        mapSelectBox.transform.Find("Right").gameObject.SetActive(true);
+
+        mapChoosed = false;
+
+        // Change ready button
+        Button button = chooseMapButton.GetComponent<Button>();
+
+        var buttonColors = button.colors;
+        buttonColors.normalColor = new Color(255, 255, 255);
+        buttonColors.pressedColor = new Color(200, 200, 200);
+        buttonColors.highlightedColor = new Color(255, 255, 255);
+        button.colors = buttonColors;
+
+        Button.ButtonClickedEvent buttonEvent;
+        buttonEvent = chooseMapButton.GetComponent<Button>().onClick;
+        buttonEvent.RemoveAllListeners();
+        buttonEvent.AddListener(Lobby_MapSelectChooseButton);
     }
 
     public override void OnServerConnect(NetworkConnection conn)
@@ -157,10 +264,13 @@ public class MenuMultiplayer : NetworkManager
 
         base.OnServerConnect(conn);
 
+        short indexPlayer = 0;
+
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == null) {
                 listPlayers[i] = conn;
 
+                indexPlayer = i;
                 Debug.Log("Player " + i + " connected");
                 break;
             }
@@ -186,6 +296,7 @@ public class MenuMultiplayer : NetworkManager
         go.transform.SetParent(canvas.transform);
         go.transform.localPosition = lobbySpawnPoints[indexPlayer];
         go.transform.localScale = new Vector3(1, 1, 1);
+        go.SetActive(true);
 
         NetworkServer.SpawnWithClientAuthority(go, conn);
     }
@@ -246,8 +357,16 @@ public class MenuMultiplayer : NetworkManager
         try {
             LobbyPlayer.transform.Find("Perso Name")
                 .GetComponent<Text>().text = persoName;
-        } catch (UnassignedReferenceException) { }
-        
+        } catch (UnassignedReferenceException) {
+        } catch (MissingReferenceException) {
+        }
+
+
+    }
+
+    public void UpdateMapInSelect()
+    {
+        // Change map in image & sync with clients
     }
 
     #endregion
@@ -306,6 +425,8 @@ public class MenuMultiplayer : NetworkManager
         charaSelectBox = canvas.transform.Find("Character Selection")
             .gameObject;
 
+        mapSelectBox = canvas.transform.Find("Map Selection").gameObject;
+
         canvas.transform.Find("Character Selection").Find("Panel - Player Name")
             .Find("Player Name").GetComponent<Text>().text = PlayerName;
 
@@ -316,6 +437,8 @@ public class MenuMultiplayer : NetworkManager
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(Lobby_BackButton);
+
+        // Perso selection
 
         readyButton = GameObject.Find("Ready");
         button = readyButton.GetComponent<Button>()
@@ -333,10 +456,28 @@ public class MenuMultiplayer : NetworkManager
         button.RemoveAllListeners();
         button.AddListener(Lobby_PlayerSelectRightArrow);
 
+        // Map selection
+
+        button = mapSelectBox.transform.Find("Left").GetComponent<Button>()
+            .onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_MapSelectLeftArrow);
+
+        button = mapSelectBox.transform.Find("Right").GetComponent<Button>()
+            .onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_MapSelectRightArrow);
+
+        chooseMapButton = mapSelectBox.transform.Find("Choose").gameObject;
+        button = chooseMapButton.GetComponent<Button>().onClick;
+        button.RemoveAllListeners();
+        button.AddListener(Lobby_MapSelectChooseButton);
+
         // Other things
         UpdatePersoInSelect();
         GameObject.Find("Main Camera").transform.position = 
             canvas.transform.position + new Vector3(0, 0, -10);
+        mapChoosed = false;
     }
 
     void OnEnable()
