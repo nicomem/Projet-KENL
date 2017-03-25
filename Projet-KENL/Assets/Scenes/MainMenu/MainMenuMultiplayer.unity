@@ -1370,7 +1370,7 @@ MonoBehaviour:
   m_OfflineScene: MainMenuMultiplayer
   m_OnlineScene: MultiplayerLobby
   m_SpawnPrefabs:
-  - {fileID: 1283148608054344, guid: d28ba46206d467d4c810a0242ad0ce9a, type: 2}
+  - {fileID: 1258542075649488, guid: 6f24a8d072c1f284899169d0f1252ccd, type: 2}
   - {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
   - {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
   m_CustomConfig: 0

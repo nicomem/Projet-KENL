@@ -36,7 +36,7 @@ public class MenuMultiplayer : NetworkManager
     public Vector3[] lobbySpawnPoints;
 
     // Server vars
-    private NetworkConnection[] listPlayers = new NetworkConnection[4];
+    public NetworkConnection[] listPlayers = new NetworkConnection[4];
 
     #region MainMenuMultiplayer Scene
 
@@ -265,13 +265,10 @@ public class MenuMultiplayer : NetworkManager
 
         base.OnServerConnect(conn);
 
-        short indexPlayer = 0;
-
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == null) {
                 listPlayers[i] = conn;
 
-                indexPlayer = i;
                 Debug.Log("Player " + i + " connected");
                 break;
             }
@@ -282,25 +279,20 @@ public class MenuMultiplayer : NetworkManager
     {
         base.OnServerReady(conn);
 
-        short indexPlayer = -1;
+        short indexPlayer = 0;
 
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == conn) {
                 indexPlayer = i;
+                break;
             }
         }
 
-        if (indexPlayer == -1) {
-            return;
-        }
+        Debug.Log("conn: " + conn);
 
-        // We create player prefab and give it to client
-        //playerTypeList.Add(conn, 0);
-        
-        GameObject go = Instantiate(spawnPrefabs[0]);
-        go.transform.Find("Panel Player").localScale = new Vector3(1, 1, 1);
-        go.transform.Find("Panel Player").localPosition =
-            lobbySpawnPoints[indexPlayer];
+        GameObject go = Instantiate(spawnPrefabs[0], canvas.transform);
+        go.transform.localScale = new Vector3(1, 1, 1);
+        go.transform.localPosition = lobbySpawnPoints[indexPlayer];
 
         NetworkServer.SpawnWithClientAuthority(go, conn);
     }
