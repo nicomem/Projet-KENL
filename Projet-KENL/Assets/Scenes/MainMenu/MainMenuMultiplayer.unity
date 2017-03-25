@@ -1363,13 +1363,14 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 1283148608054344, guid: d28ba46206d467d4c810a0242ad0ce9a,
+    type: 2}
   m_AutoCreatePlayer: 0
-  m_PlayerSpawnMethod: 0
+  m_PlayerSpawnMethod: 1
   m_OfflineScene: MainMenuMultiplayer
   m_OnlineScene: MultiplayerLobby
   m_SpawnPrefabs:
-  - {fileID: 1522436294824646, guid: 5d7b3508573d5ea4e8a3219b4fc4cbbd, type: 2}
+  - {fileID: 1283148608054344, guid: d28ba46206d467d4c810a0242ad0ce9a, type: 2}
   - {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
   - {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
   m_CustomConfig: 0
@@ -1415,6 +1416,7 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   LobbyPlayer: {fileID: 0}
+  lobbyPlayerScript: {fileID: 0}
   lobbySpawnPoints:
   - {x: -520, y: 180, z: 0}
   - {x: 520, y: 180, z: 0}

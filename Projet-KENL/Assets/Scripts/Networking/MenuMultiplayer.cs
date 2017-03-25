@@ -33,9 +33,6 @@ public class MenuMultiplayer : NetworkManager
 
     public enum PlayerType { PlayerTest, StealthChar };
     public enum MapType { Plateforme };
-    /*private Dictionary<NetworkConnection, PlayerType> playerTypeList =
-        new Dictionary<NetworkConnection, PlayerType>();
-    */
     public Vector3[] lobbySpawnPoints;
 
     // Server vars
@@ -109,6 +106,7 @@ public class MenuMultiplayer : NetworkManager
     public void Lobby_ReadyButton()
     {
         UpdatePersoInSelect();
+        UpdateMapInSelect();
 
         // Set ready text in lobbyPlayer
         LobbyPlayer.transform.Find("IsReady Text")
@@ -125,6 +123,9 @@ public class MenuMultiplayer : NetworkManager
             mapSelectBox.transform.Find("Left").gameObject.SetActive(false);
             mapSelectBox.transform.Find("Right").gameObject.SetActive(false);
             mapSelectBox.transform.Find("Choose").gameObject.SetActive(false);
+            mapSelectBox.transform.Find("Map Image").gameObject.SetActive(false);
+            mapSelectBox.transform.Find("Map Name Panel").gameObject.SetActive(false);
+            mapSelectBox.transform.Find("Map Text").gameObject.SetActive(true);
         }
 
         // Change ready button
@@ -281,7 +282,7 @@ public class MenuMultiplayer : NetworkManager
     {
         base.OnServerReady(conn);
 
-        short indexPlayer = 0;
+        short indexPlayer = -1;
 
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == conn) {
@@ -289,14 +290,17 @@ public class MenuMultiplayer : NetworkManager
             }
         }
 
+        if (indexPlayer == -1) {
+            return;
+        }
+
         // We create player prefab and give it to client
         //playerTypeList.Add(conn, 0);
-
+        
         GameObject go = Instantiate(spawnPrefabs[0]);
-        go.transform.SetParent(canvas.transform);
-        go.transform.localPosition = lobbySpawnPoints[indexPlayer];
-        go.transform.localScale = new Vector3(1, 1, 1);
-        go.SetActive(true);
+        go.transform.Find("Panel Player").localScale = new Vector3(1, 1, 1);
+        go.transform.Find("Panel Player").localPosition =
+            lobbySpawnPoints[indexPlayer];
 
         NetworkServer.SpawnWithClientAuthority(go, conn);
     }
@@ -367,6 +371,8 @@ public class MenuMultiplayer : NetworkManager
     public void UpdateMapInSelect()
     {
         // Change map in image & sync with clients
+        mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
+            .GetComponent<Text>().text = mapSelected.ToString();
     }
 
     #endregion
