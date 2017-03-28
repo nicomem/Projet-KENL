@@ -4,74 +4,76 @@ using UnityEngine.Networking;
 
 public class LobbyPlayerScript : NetworkBehaviour
 {
-    [HideInInspector]
-    public MenuMultiplayer networkManagerScript = null;
-    [HideInInspector]
-    public GameObject persoReady = null;
+    [HideInInspector] public MenuMultiplayer networkManagerScript = null;
 
-    private NetworkConnection localPlayerConn;
-    [SyncVar]
-    private int indexPlayer = -1;
-    private bool positioned;
+    private Text PlayerNameText;
+    private Text PersoNameText;
+    private Text IsReadyText;
+
+    [SyncVar] public string playerName;
+    [SyncVar] public string persoName;
+    [SyncVar] public bool isReady = false;
+
+    [SyncVar] private Vector3 position;
 
     void Start()
     {
-        positioned = false;
+        var canvas = GameObject.Find("Canvas").transform;
+        transform.SetParent(canvas, false);
+        transform.localScale = new Vector3(1, 1, 1);
 
-        transform.SetParent(GameObject.Find("Canvas").transform);
-        // Make it "invisible" while not positioned
-        transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        PlayerNameText = transform.Find("Player Name").GetComponent<Text>();
+        PersoNameText = transform.Find("Perso Name").GetComponent<Text>();
+        IsReadyText = transform.Find("IsReady Text").GetComponent<Text>();
+
+        PersoNameText.text = "";
+        CmdSyncPosition(transform.localPosition);
     }
 
     public override void OnStartAuthority()
     {
-        // This does not work!
-        localPlayerConn = connectionToClient;
-        CmdGetIndexPlayer();
-
-        Debug.Log(connectionToServer);
-        Debug.Log(connectionToClient);
-
         networkManagerScript = GameObject.Find("Network Manager")
             .GetComponent<MenuMultiplayer>();
 
         networkManagerScript.LobbyPlayer = gameObject;
         networkManagerScript.lobbyPlayerScript = this;
-
-        transform.Find("Player Name").GetComponent<Text>().text =
-            networkManagerScript.PlayerName;
+        CmdSyncPlayerName(networkManagerScript.PlayerName);
     }
 
     private void Update()
     {
-        if (!positioned && indexPlayer != -1) {
-            int x, y;
-            x = 520 * (indexPlayer % 2 == 0 ? -1 : 1);
-            y = 180 * (indexPlayer >= 2 ? -1 : 1);
+        if (playerName != null) PlayerNameText.text = playerName;
+        if (persoName != null) PersoNameText.text = persoName;
+        if (isReady) IsReadyText.text = "Ready!";
+            else IsReadyText.text = "Not Ready";
+        if (position != null) transform.localPosition = position;
+    }
 
-            transform.localPosition = new Vector3(x, y, 0);
-            transform.localScale = new Vector3(1, 1, 1);
-            transform.gameObject.SetActive(true);
-
-            positioned = true;
-        }
+    #region SyncVar (because [SyncVar] only Server -> Client)
+    [Command]
+    public void CmdSyncPlayerName(string playerName)
+    {
+        this.playerName = playerName;
     }
 
     [Command]
-    public void CmdGetIndexPlayer()
+    public void CmdSyncPersoName(string persoName)
     {
-        var listPlayers = GameObject.Find("Network Manager")
-                .GetComponent<MenuMultiplayer>().listPlayers;
-
-        for (short i = 0; i < listPlayers.Length; i++) {
-            if (listPlayers[i] == localPlayerConn) {
-                indexPlayer = i;
-                break;
-            }
-        }
-
-        if (indexPlayer == -1) {
-            Debug.Log("LobbyPlayerScript: CmdGetIndexPlayer: indexPlayer == -1");
-        }
+        Debug.Log("Perso Name: " + persoName);
+        this.persoName = persoName;
     }
+
+    [Command]
+    public void CmdSyncIsReady(bool isReady)
+    {
+        this.isReady = isReady;
+    }
+
+    [Command]
+    public void CmdSyncPosition(Vector3 position)
+    {
+        if (this.position != null)
+            this.position = position;
+    }
+    #endregion
 }

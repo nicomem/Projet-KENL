@@ -1370,7 +1370,10 @@ MonoBehaviour:
   m_OfflineScene: MainMenuMultiplayer
   m_OnlineScene: MultiplayerLobby
   m_SpawnPrefabs:
-  - {fileID: 1258542075649488, guid: 6f24a8d072c1f284899169d0f1252ccd, type: 2}
+  - {fileID: 1291607801742082, guid: a7910b2d361c05841969c398a19357bd, type: 2}
+  - {fileID: 1031245304540026, guid: b5f17d7db83d0fd4f933d9c15369f12b, type: 2}
+  - {fileID: 1699795354756708, guid: 9c4f7987500a0ca45b717cc3fc42f03b, type: 2}
+  - {fileID: 1892792874947158, guid: 7fd094e9ede794748ae260e61549beb0, type: 2}
   - {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
   - {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
   m_CustomConfig: 0
@@ -1415,13 +1418,16 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  lobbyPrefabs:
+  - {fileID: 1291607801742082, guid: a7910b2d361c05841969c398a19357bd, type: 2}
+  - {fileID: 1031245304540026, guid: b5f17d7db83d0fd4f933d9c15369f12b, type: 2}
+  - {fileID: 1699795354756708, guid: 9c4f7987500a0ca45b717cc3fc42f03b, type: 2}
+  - {fileID: 1892792874947158, guid: 7fd094e9ede794748ae260e61549beb0, type: 2}
+  persoPrefabs:
+  - {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
+  - {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
   LobbyPlayer: {fileID: 0}
   lobbyPlayerScript: {fileID: 0}
-  lobbySpawnPoints:
-  - {x: -520, y: 180, z: 0}
-  - {x: 520, y: 180, z: 0}
-  - {x: -520, y: -180, z: 0}
-  - {x: 520, y: -180, z: 0}
 --- !u!4 &1863009431
 Transform:
   m_ObjectHideFlags: 0

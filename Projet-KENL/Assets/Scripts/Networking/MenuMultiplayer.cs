@@ -3,11 +3,10 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Collections.Generic;
+using System;
 
 public class MenuMultiplayer : NetworkManager
 {
-    private const int NUMBER_OF_PERSOS = 2;
     private const int NUMBER_OF_MAPS = 1;
 
     private Text InputIPAdress;
@@ -19,21 +18,22 @@ public class MenuMultiplayer : NetworkManager
     private GameObject mapSelectBox;
     private GameObject chooseMapButton;
 
+    public GameObject[] lobbyPrefabs;
+    public GameObject[] persoPrefabs;
+
     public string PlayerName { get; private set; }
+    private string persoName;
     private bool isHost;
     private bool mapChoosed;
     private PlayerType playerSelected = 0;
     private MapType mapSelected = 0;
 
-    [HideInInspector]
-    public GameObject LobbyPlayer;
-    [HideInInspector]
-    public LobbyPlayerScript lobbyPlayerScript;
+    [HideInInspector] public GameObject LobbyPlayer;
+    [HideInInspector] public LobbyPlayerScript lobbyPlayerScript;
     private GameObject charaSelected;
 
     public enum PlayerType { PlayerTest, StealthChar };
     public enum MapType { Plateforme };
-    public Vector3[] lobbySpawnPoints;
 
     // Server vars
     public NetworkConnection[] listPlayers = new NetworkConnection[4];
@@ -109,11 +109,8 @@ public class MenuMultiplayer : NetworkManager
         UpdateMapInSelect();
 
         // Set ready text in lobbyPlayer
-        LobbyPlayer.transform.Find("IsReady Text")
-            .GetComponent<Text>().text = "Ready!";
-
-        LobbyPlayer.transform.Find("Perso Name")
-            .gameObject.SetActive(true);
+        lobbyPlayerScript.CmdSyncIsReady(true);
+        lobbyPlayerScript.CmdSyncPersoName(persoName);
 
         charaSelectBox.SetActive(false);
 
@@ -148,11 +145,8 @@ public class MenuMultiplayer : NetworkManager
         // When clicking on ready button when already ready (stop being ready)
 
         // Set not ready text in lobbyPlayer
-        LobbyPlayer.transform.Find("IsReady Text")
-            .GetComponent<Text>().text = "Not Ready";
-
-        LobbyPlayer.transform.Find("Perso Name")
-            .gameObject.SetActive(false);
+        lobbyPlayerScript.CmdSyncIsReady(false);
+        lobbyPlayerScript.CmdSyncPersoName("");
 
         charaSelectBox.SetActive(true);
 
@@ -179,7 +173,7 @@ public class MenuMultiplayer : NetworkManager
         playerSelected = (PlayerType)((int)playerSelected - 1);
         if (playerSelected < 0)
             playerSelected = (PlayerType)
-                ((int)playerSelected + NUMBER_OF_PERSOS);
+                ((int)playerSelected + persoPrefabs.Length);
 
         // Update perso in charSelectBox
         UpdatePersoInSelect();
@@ -188,7 +182,7 @@ public class MenuMultiplayer : NetworkManager
     public void Lobby_PlayerSelectRightArrow()
     {
         playerSelected = (PlayerType)
-            (((int)playerSelected + 1) % NUMBER_OF_PERSOS);
+            (((int)playerSelected + 1) % persoPrefabs.Length);
 
         // Update perso in charSelectBox
         UpdatePersoInSelect();
@@ -273,6 +267,8 @@ public class MenuMultiplayer : NetworkManager
                 break;
             }
         }
+
+        conn.Disconnect();
     }
 
     public override void OnServerReady(NetworkConnection conn)
@@ -290,10 +286,7 @@ public class MenuMultiplayer : NetworkManager
 
         Debug.Log("conn: " + conn);
 
-        GameObject go = Instantiate(spawnPrefabs[0], canvas.transform);
-        go.transform.localScale = new Vector3(1, 1, 1);
-        go.transform.localPosition = lobbySpawnPoints[indexPlayer];
-
+        GameObject go = Instantiate(lobbyPrefabs[indexPlayer]);
         NetworkServer.SpawnWithClientAuthority(go, conn);
     }
 
@@ -319,12 +312,10 @@ public class MenuMultiplayer : NetworkManager
             Destroy(charaSelected);
         }
 
-        charaSelected = Instantiate(spawnPrefabs[(int)playerSelected + 1]);
+        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
         charaSelected.transform.parent = charaSelectBox.transform;
         charaSelected.transform.position = canvas.transform.position;
         charaSelected.transform.localScale = new Vector3(1, 1, 1);
-
-        string persoName = "";
 
         // Other fixes for each perso
         switch (playerSelected) {
@@ -349,15 +340,6 @@ public class MenuMultiplayer : NetworkManager
 
         charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
             .GetComponent<Text>().text = persoName;
-
-        try {
-            LobbyPlayer.transform.Find("Perso Name")
-                .GetComponent<Text>().text = persoName;
-        } catch (UnassignedReferenceException) {
-        } catch (MissingReferenceException) {
-        }
-
-
     }
 
     public void UpdateMapInSelect()
@@ -473,8 +455,10 @@ public class MenuMultiplayer : NetworkManager
 
         // Other things
         UpdatePersoInSelect();
-        GameObject.Find("Main Camera").transform.position = 
-            canvas.transform.position + new Vector3(0, 0, -10);
+        Camera.main.transform.position =
+            new Vector3(canvas.transform.position.x,
+                        canvas.transform.position.y,
+                        -10);
         mapChoosed = false;
     }
 
