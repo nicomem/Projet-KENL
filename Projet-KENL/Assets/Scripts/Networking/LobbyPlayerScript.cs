@@ -15,6 +15,7 @@ public class LobbyPlayerScript : NetworkBehaviour
     [SyncVar] public bool isReady = false;
 
     [SyncVar] private Vector3 position;
+    [SyncVar] public int indexPlayer = -1;
 
     void Start()
     {
@@ -47,6 +48,13 @@ public class LobbyPlayerScript : NetworkBehaviour
         if (isReady) IsReadyText.text = "Ready!";
             else IsReadyText.text = "Not Ready";
         if (position != null) transform.localPosition = position;
+    }
+
+    [Command]
+    public void CmdTellReady(bool isReady)
+    {
+        GameObject.Find("Network Manager").GetComponent<MenuMultiplayer>()
+            .UpdateReady(indexPlayer, isReady);
     }
 
     #region SyncVar (because [SyncVar] only Server -> Client)

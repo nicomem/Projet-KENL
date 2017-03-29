@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class MenuMultiplayer : NetworkManager
 {
@@ -20,6 +21,7 @@ public class MenuMultiplayer : NetworkManager
 
     public GameObject[] lobbyPrefabs;
     public GameObject[] persoPrefabs;
+    public string[] gameScenes;
 
     public string PlayerName { get; private set; }
     private string persoName;
@@ -31,12 +33,15 @@ public class MenuMultiplayer : NetworkManager
     [HideInInspector] public GameObject LobbyPlayer;
     [HideInInspector] public LobbyPlayerScript lobbyPlayerScript;
     private GameObject charaSelected;
+    private NetworkConnection networkConnection;
+    private int connectedPlayers;
 
     public enum PlayerType { PlayerTest, StealthChar };
     public enum MapType { Plateforme };
 
     // Server vars
     public NetworkConnection[] listPlayers = new NetworkConnection[4];
+    public bool[] isReadyPlayers = new bool[4];
 
     #region MainMenuMultiplayer Scene
 
@@ -46,11 +51,14 @@ public class MenuMultiplayer : NetworkManager
 
         networkAddress = "127.0.0.1";
         PlayerName = InputPlayerName.text;
-        isHost = true;
 
         if (PlayerName.Length == 0 || networkAddress.Length == 0)
             return;
 
+        isHost = true;
+        connectedPlayers = 0;
+        listPlayers = new NetworkConnection[4];
+        isReadyPlayers = new bool[4];
         StartHost();
     }
 
@@ -60,11 +68,11 @@ public class MenuMultiplayer : NetworkManager
 
         networkAddress = InputIPAdress.text;
         PlayerName = InputPlayerName.text;
-        isHost = false;
 
         if (PlayerName.Length == 0 || networkAddress.Length == 0)
             return;
 
+        isHost = false;
         StartClient();
         StartCoroutine(CheckClient(0.25f));
     }
@@ -92,6 +100,7 @@ public class MenuMultiplayer : NetworkManager
 
     #region LobbyMultiplayer Scene
 
+    #region Perso Selection
     public void Lobby_BackButton()
     {
         // When clicking on "Back" button
@@ -99,6 +108,7 @@ public class MenuMultiplayer : NetworkManager
         if (isHost) {
             StopHost();
             listPlayers = new NetworkConnection[4];
+            isReadyPlayers = new bool[4];
         } else
             StopClient();
     }
@@ -113,6 +123,9 @@ public class MenuMultiplayer : NetworkManager
         lobbyPlayerScript.CmdSyncPersoName(persoName);
 
         charaSelectBox.SetActive(false);
+
+        // Tell server that ready
+        lobbyPlayerScript.CmdTellReady(true);
 
         // Map selection Box
         mapSelectBox.SetActive(true);
@@ -144,6 +157,8 @@ public class MenuMultiplayer : NetworkManager
     {
         // When clicking on ready button when already ready (stop being ready)
 
+        Lobby_MapSelectStopChooseButton();
+
         // Set not ready text in lobbyPlayer
         lobbyPlayerScript.CmdSyncIsReady(false);
         lobbyPlayerScript.CmdSyncPersoName("");
@@ -152,6 +167,9 @@ public class MenuMultiplayer : NetworkManager
 
         // Map selection Box
         mapSelectBox.SetActive(false);
+
+        // Tell to server that not ready
+        lobbyPlayerScript.CmdTellReady(false);
 
         // Change ready button
         Button button = readyButton.GetComponent<Button>();
@@ -188,6 +206,44 @@ public class MenuMultiplayer : NetworkManager
         UpdatePersoInSelect();
     }
 
+    public void UpdatePersoInSelect()
+    {
+        if (charaSelected != null) {
+            Destroy(charaSelected);
+        }
+
+        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
+        charaSelected.transform.parent = charaSelectBox.transform;
+        charaSelected.transform.position = canvas.transform.position;
+        charaSelected.transform.localScale = new Vector3(1, 1, 1);
+
+        // Other fixes for each perso
+        switch (playerSelected) {
+            case PlayerType.StealthChar:
+                charaSelected.transform.localScale =
+                    new Vector3(2.1f, 2.1f, 2.1f);
+                charaSelected.transform.localPosition +=
+                    new Vector3(0, -2f, 0);
+                charaSelected.transform.Rotate(0, 180, 0);
+                persoName = "Stealth Char";
+                break;
+
+            case PlayerType.PlayerTest:
+                charaSelected.transform.localScale =
+                    new Vector3(1.5f, 2f, 1f);
+                persoName = "Player Test";
+                break;
+
+            default:
+                break;
+        }
+
+        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
+            .GetComponent<Text>().text = persoName;
+    }
+    #endregion
+
+    #region Map Selection
     public void Lobby_MapSelectLeftArrow()
     {
         mapSelected = (MapType)((int)mapSelected - 1);
@@ -227,7 +283,7 @@ public class MenuMultiplayer : NetworkManager
         buttonEvent.AddListener(Lobby_MapSelectStopChooseButton);
 
         // Check if start game
-        // ???
+        UpdateReady();
     }
 
     public void Lobby_MapSelectStopChooseButton()
@@ -252,6 +308,44 @@ public class MenuMultiplayer : NetworkManager
         buttonEvent.AddListener(Lobby_MapSelectChooseButton);
     }
 
+    public void UpdateMapInSelect()
+    {
+        // Change map in image & sync with clients
+        mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
+            .GetComponent<Text>().text = mapSelected.ToString();
+    }
+    #endregion
+
+    #region Start Game
+    public void UpdateReady(int _indexPlayer = -1, bool isReady = false)
+    {
+        // Call it on server
+
+        if (_indexPlayer < 0 || _indexPlayer > 3)
+            Debug.Log("[WAR] UpdateReady: Player not found or map choosed");
+        else
+            isReadyPlayers[_indexPlayer] = isReady;
+
+        if (mapChoosed){
+            // I know, this is bad code, but you'll probably not see this
+            for (short i = 0; i < connectedPlayers; i++) {
+                if (!isReadyPlayers[i])
+                    return;
+            }
+
+            StartGame();
+        }
+    }
+
+    public void StartGame()
+    {
+        // Will start the game on every client
+
+        Debug.Log("[INF] Starting game");
+    }
+    #endregion
+
+    #region Unity Interrupts
     public override void OnServerConnect(NetworkConnection conn)
     {
         // When a client connects on the server
@@ -262,12 +356,15 @@ public class MenuMultiplayer : NetworkManager
         for (short i = 0; i < 4; i++) {
             if (listPlayers[i] == null) {
                 listPlayers[i] = conn;
+                connectedPlayers++;
 
-                Debug.Log("Player " + i + " connected");
-                break;
+                Debug.Log("[INF] OnServerConnect: Player " + i +
+                    " connected");
+                return;
             }
         }
 
+        // If already 4 players
         conn.Disconnect();
     }
 
@@ -284,9 +381,10 @@ public class MenuMultiplayer : NetworkManager
             }
         }
 
-        Debug.Log("conn: " + conn);
+        Debug.Log("[INF] OnServerReady: Connection: " + conn);
 
         GameObject go = Instantiate(lobbyPrefabs[indexPlayer]);
+        go.GetComponent<LobbyPlayerScript>().indexPlayer = indexPlayer;
         NetworkServer.SpawnWithClientAuthority(go, conn);
     }
 
@@ -300,58 +398,25 @@ public class MenuMultiplayer : NetworkManager
         for (short i = 1; i < 4; i++) {
             if (listPlayers[i] == conn) {
                 listPlayers[i] = null;
-                Debug.Log("Player " + i + " disconnected");
+                connectedPlayers--;
+                Debug.Log("[INF] OnServerDisconnected: Player " + i +
+                    " disconnected");
                 break;
             }
         }
     }
 
-    public void UpdatePersoInSelect()
+    public override void OnClientConnect(NetworkConnection conn)
     {
-        if (charaSelected != null) {
-            Destroy(charaSelected);
-        }
+        base.OnClientConnect(conn);
 
-        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
-        charaSelected.transform.parent = charaSelectBox.transform;
-        charaSelected.transform.position = canvas.transform.position;
-        charaSelected.transform.localScale = new Vector3(1, 1, 1);
-
-        // Other fixes for each perso
-        switch (playerSelected) {
-            case PlayerType.StealthChar:
-                charaSelected.transform.localScale = 
-                    new Vector3(2.1f, 2.1f, 2.1f);
-                charaSelected.transform.localPosition += 
-                    new Vector3(0, -2f, 0);
-                charaSelected.transform.Rotate(0, 180, 0);
-                persoName = "Stealth Char";
-                break;
-
-            case PlayerType.PlayerTest:
-                charaSelected.transform.localScale =
-                    new Vector3(1.5f, 2f, 1f);
-                persoName = "Player Test";
-                break;
-
-            default:
-                break;
-        }
-
-        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = persoName;
+        networkConnection = conn;
     }
-
-    public void UpdateMapInSelect()
-    {
-        // Change map in image & sync with clients
-        mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
-            .GetComponent<Text>().text = mapSelected.ToString();
-    }
+    #endregion
 
     #endregion
 
-    #region Other functions Scene
+    #region Multi-Scenes Functions
 
     private void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -367,7 +432,7 @@ public class MenuMultiplayer : NetworkManager
 
             SetupMultiSceneButtons();
         } else {
-            Debug.Log("Scene loaded (not wanted!): " + scene.name);
+            Debug.Log("[ERR] Scene loaded (not wanted!): " + scene.name);
         }
     }
 
