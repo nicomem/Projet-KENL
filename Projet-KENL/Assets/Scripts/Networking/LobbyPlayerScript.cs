@@ -15,7 +15,8 @@ public class LobbyPlayerScript : NetworkBehaviour
     [SyncVar] public bool isReady = false;
 
     [SyncVar] private Vector3 position;
-    [SyncVar] public int indexPlayer = -1;
+    [SyncVar] public int indexPlayer;
+    [SyncVar] public string PlayerName1, PlayerName2, PlayerName3, PlayerName4;
 
     void Start()
     {
@@ -44,44 +45,49 @@ public class LobbyPlayerScript : NetworkBehaviour
     private void Update()
     {
         if (playerName != null) PlayerNameText.text = playerName;
-        if (persoName != null) PersoNameText.text = persoName;
+        if (persoName != null) {
+            PersoNameText.text = persoName;
+            if (indexPlayer == 0) PlayerName1 = persoName;
+            else if (indexPlayer == 1) PlayerName2 = persoName;
+            else if (indexPlayer == 2) PlayerName3 = persoName;
+            else PlayerName4 = persoName;
+        }
         if (isReady) IsReadyText.text = "Ready!";
             else IsReadyText.text = "Not Ready";
-        if (position != null) transform.localPosition = position;
+        transform.localPosition = position;
     }
 
-    [Command]
-    public void CmdTellReady(bool isReady)
+    [Command] public void CmdTellReady(bool isReady)
     {
         GameObject.Find("Network Manager").GetComponent<MenuMultiplayer>()
             .UpdateReady(indexPlayer, isReady);
     }
 
     #region SyncVar (because [SyncVar] only Server -> Client)
-    [Command]
-    public void CmdSyncPlayerName(string playerName)
+    [Command] public void CmdSyncPlayerName(string playerName)
     {
         this.playerName = playerName;
     }
 
-    [Command]
-    public void CmdSyncPersoName(string persoName)
+    [Command] public void CmdSyncPersoName(string persoName)
     {
         Debug.Log("Perso Name: " + persoName);
         this.persoName = persoName;
     }
 
-    [Command]
-    public void CmdSyncIsReady(bool isReady)
+    [Command] public void CmdSyncIsReady(bool isReady)
     {
         this.isReady = isReady;
     }
 
-    [Command]
-    public void CmdSyncPosition(Vector3 position)
+    [Command] public void CmdSyncIndexPlayer(short indexPlayer)
     {
-        if (this.position != null)
-            this.position = position;
+        this.indexPlayer = indexPlayer;
+    }
+
+    [Command] public void CmdSyncPosition(Vector3 position)
+    {
+        this.position = position;
     }
     #endregion
 }

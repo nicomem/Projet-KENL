@@ -3,6 +3,8 @@
 [System.Serializable]
 public class PlayerScript : MonoBehaviour
 {
+    public string PlayerName;
+
     // Jump var (Editor)
     [Header("Jumping")]
     [Space(5)]

@@ -3,8 +3,6 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
-using System.Linq;
 
 public class MenuMultiplayer : NetworkManager
 {
@@ -33,7 +31,6 @@ public class MenuMultiplayer : NetworkManager
     [HideInInspector] public GameObject LobbyPlayer;
     [HideInInspector] public LobbyPlayerScript lobbyPlayerScript;
     private GameObject charaSelected;
-    private NetworkConnection networkConnection;
     private int connectedPlayers;
 
     public enum PlayerType { PlayerTest, StealthChar };
@@ -92,8 +89,7 @@ public class MenuMultiplayer : NetworkManager
     {
         // When clicking on "Main Menu" button
 
-        SceneManager.LoadScene("MainMenu");
-        Destroy(gameObject);
+        SceneManager.LoadScene("DestroyNetworkScene");
     }
 
     #endregion
@@ -217,6 +213,8 @@ public class MenuMultiplayer : NetworkManager
         charaSelected.transform.position = canvas.transform.position;
         charaSelected.transform.localScale = new Vector3(1, 1, 1);
 
+        var playerScript = charaSelected.GetComponent<PlayerScript>();
+
         // Other fixes for each perso
         switch (playerSelected) {
             case PlayerType.StealthChar:
@@ -238,6 +236,7 @@ public class MenuMultiplayer : NetworkManager
                 break;
         }
 
+        playerScript.PlayerName = persoName;
         charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
             .GetComponent<Text>().text = persoName;
     }
@@ -333,19 +332,64 @@ public class MenuMultiplayer : NetworkManager
                     return;
             }
 
-            StartGame();
+            string mapSceneString = null;
+
+            switch (mapSelected) {
+                case MapType.Plateforme:
+                    mapSceneString = "Plateforme";
+                    break;
+
+                default:
+                    Debug.Log("[ERR] UpdateReady: Map selected not recognized," +
+                        " could not create string");
+                    break;
+            }
+
+            if (mapSceneString != null)
+                StartGame(mapSceneString);
         }
     }
 
-    public void StartGame()
+    public void StartGame(string mapSceneString)
     {
         // Will start the game on every client
 
+        // Create all persos (DontDestroyOnLoad & authority)
+        GameObject go;
+        for (short i = 0; i < 4; i++) {
+            string persoName;
+            if (i == 0) persoName = lobbyPlayerScript.PlayerName1;
+            else if (i == 1) persoName = lobbyPlayerScript.PlayerName2;
+            else if (i == 2) persoName = lobbyPlayerScript.PlayerName3;
+            else persoName = lobbyPlayerScript.PlayerName4;
+
+            Debug.Log(lobbyPlayerScript.indexPlayer);
+
+            switch (persoName) {
+                case "Stealth Char":
+                    go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
+                    break;
+
+                case "Player Test":
+                    go = Instantiate(persoPrefabs[(int)PlayerType.PlayerTest]);
+                    break;
+
+                default:
+                    go = new GameObject();
+                    Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
+                        persoName);
+                    break;
+            }
+
+            NetworkServer.SpawnWithClientAuthority(go, listPlayers[i]);
+        }
+
         Debug.Log("[INF] Starting game");
+        ServerChangeScene(mapSceneString);
     }
     #endregion
 
-    #region Unity Interrupts
+    #region Unity Global Interrupts
     public override void OnServerConnect(NetworkConnection conn)
     {
         // When a client connects on the server
@@ -384,8 +428,8 @@ public class MenuMultiplayer : NetworkManager
         Debug.Log("[INF] OnServerReady: Connection: " + conn);
 
         GameObject go = Instantiate(lobbyPrefabs[indexPlayer]);
-        go.GetComponent<LobbyPlayerScript>().indexPlayer = indexPlayer;
         NetworkServer.SpawnWithClientAuthority(go, conn);
+        go.GetComponent<LobbyPlayerScript>().CmdSyncIndexPlayer(indexPlayer);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -405,13 +449,6 @@ public class MenuMultiplayer : NetworkManager
             }
         }
     }
-
-    public override void OnClientConnect(NetworkConnection conn)
-    {
-        base.OnClientConnect(conn);
-
-        networkConnection = conn;
-    }
     #endregion
 
     #endregion
@@ -423,6 +460,8 @@ public class MenuMultiplayer : NetworkManager
         // When a scene is loaded
         // Launch functions for setting the buttons
 
+        if (scene.name == "MainMenu") return;
+
         if (scene.name == "MultiplayerLobby") {
             // When entering the LobbyMultiplayer scene
 
@@ -431,8 +470,15 @@ public class MenuMultiplayer : NetworkManager
             // When entering the MainMenuMultiplayer scene
 
             SetupMultiSceneButtons();
+        } else if (scene.name == "DestroyNetworkScene") {
+            foreach (var go in FindObjectsOfType<GameObject>()) {
+                if (go != gameObject) Destroy(go);
+            }
+
+            SceneManager.LoadScene("MainMenu");
+            Destroy(gameObject);
         } else {
-            Debug.Log("[ERR] Scene loaded (not wanted!): " + scene.name);
+            Debug.Log("[INF] Unrecognized scene: " + scene.name);
         }
     }
 
