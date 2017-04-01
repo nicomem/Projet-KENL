@@ -675,7 +675,7 @@ GameObject:
   - component: {fileID: 1998234538}
   - component: {fileID: 1998234537}
   m_Layer: 0
-  m_Name: Map Creator-Infos
+  m_Name: Map Infos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

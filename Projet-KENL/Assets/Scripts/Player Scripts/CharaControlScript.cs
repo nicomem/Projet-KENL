@@ -22,7 +22,8 @@ public class CharaControlScript : NetworkBehaviour
 
     private void Update()
     {
-        GetInputs();
+        if (hasAuthority)
+            GetInputs();
 
         // Function for moving the player with input (!= IA)
         MovementPlayer();

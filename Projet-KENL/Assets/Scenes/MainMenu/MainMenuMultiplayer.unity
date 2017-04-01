@@ -1429,6 +1429,7 @@ MonoBehaviour:
   - Plateforme
   LobbyPlayer: {fileID: 0}
   lobbyPlayerScript: {fileID: 0}
+  isReadyPlayers: 
 --- !u!4 &1863009431
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class LobbyPlayerScript : NetworkBehaviour
 {
@@ -20,6 +21,12 @@ public class LobbyPlayerScript : NetworkBehaviour
 
     void Start()
     {
+        if (SceneManager.GetActiveScene() !=
+            SceneManager.GetSceneByName("MultiplayerLobby")) {
+            Destroy(gameObject);
+            return;
+        }
+            
         var canvas = GameObject.Find("Canvas").transform;
         transform.SetParent(canvas, false);
         transform.localScale = new Vector3(1, 1, 1);
@@ -63,6 +70,16 @@ public class LobbyPlayerScript : NetworkBehaviour
             .UpdateReady(indexPlayer, isReady);
     }
 
+    [Command] public void CmdDisconnect()
+    {
+        RpcDisconnect();
+    }
+
+    [ClientRpc] public void RpcDisconnect()
+    {
+        Destroy(gameObject);
+    }
+
     #region SyncVar (because [SyncVar] only Server -> Client)
     [Command] public void CmdSyncPlayerName(string playerName)
     {
@@ -71,7 +88,6 @@ public class LobbyPlayerScript : NetworkBehaviour
 
     [Command] public void CmdSyncPersoName(string persoName)
     {
-        Debug.Log("Perso Name: " + persoName);
         this.persoName = persoName;
     }
 

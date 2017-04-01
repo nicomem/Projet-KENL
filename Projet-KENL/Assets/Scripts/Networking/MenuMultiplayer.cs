@@ -37,7 +37,8 @@ public class MenuMultiplayer : NetworkManager
     public enum MapType { Plateforme };
 
     // Server vars
-    public NetworkConnection[] listPlayers = new NetworkConnection[4];
+    public NetworkConnection[] listNetworkConn = new NetworkConnection[4];
+    public GameObject[] listPlayersGO = new GameObject[4];
     public bool[] isReadyPlayers = new bool[4];
 
     #region MainMenuMultiplayer Scene
@@ -54,7 +55,8 @@ public class MenuMultiplayer : NetworkManager
 
         isHost = true;
         connectedPlayers = 0;
-        listPlayers = new NetworkConnection[4];
+        listNetworkConn = new NetworkConnection[4];
+        listPlayersGO = new GameObject[4];
         isReadyPlayers = new bool[4];
         StartHost();
     }
@@ -103,7 +105,8 @@ public class MenuMultiplayer : NetworkManager
 
         if (isHost) {
             StopHost();
-            listPlayers = new NetworkConnection[4];
+            listNetworkConn = new NetworkConnection[4];
+            listPlayersGO = new GameObject[4];
             isReadyPlayers = new bool[4];
         } else
             StopClient();
@@ -236,7 +239,7 @@ public class MenuMultiplayer : NetworkManager
                 break;
         }
 
-        playerScript.PlayerName = persoName;
+        playerScript.persoName  = persoName;
         charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
             .GetComponent<Text>().text = persoName;
     }
@@ -320,9 +323,7 @@ public class MenuMultiplayer : NetworkManager
     {
         // Call it on server
 
-        if (_indexPlayer < 0 || _indexPlayer > 3)
-            Debug.Log("[WAR] UpdateReady: Player not found or map choosed");
-        else
+        if (_indexPlayer >= 0 && _indexPlayer <= 3)
             isReadyPlayers[_indexPlayer] = isReady;
 
         if (mapChoosed){
@@ -363,7 +364,8 @@ public class MenuMultiplayer : NetworkManager
             else if (i == 2) persoName = lobbyPlayerScript.PlayerName3;
             else persoName = lobbyPlayerScript.PlayerName4;
 
-            Debug.Log(lobbyPlayerScript.indexPlayer);
+            if (persoName == "")
+                continue;
 
             switch (persoName) {
                 case "Stealth Char":
@@ -378,10 +380,11 @@ public class MenuMultiplayer : NetworkManager
                     go = new GameObject();
                     Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
                         persoName);
-                    break;
+                    return;
             }
 
-            NetworkServer.SpawnWithClientAuthority(go, listPlayers[i]);
+            NetworkServer.SpawnWithClientAuthority(go, listNetworkConn[i]);
+            go.GetComponent<PlayerScript>().CmdSyncPersoName(persoName);
         }
 
         Debug.Log("[INF] Starting game");
@@ -398,8 +401,8 @@ public class MenuMultiplayer : NetworkManager
         base.OnServerConnect(conn);
 
         for (short i = 0; i < 4; i++) {
-            if (listPlayers[i] == null) {
-                listPlayers[i] = conn;
+            if (listNetworkConn[i] == null) {
+                listNetworkConn[i] = conn;
                 connectedPlayers++;
 
                 Debug.Log("[INF] OnServerConnect: Player " + i +
@@ -419,17 +422,16 @@ public class MenuMultiplayer : NetworkManager
         short indexPlayer = 0;
 
         for (short i = 0; i < 4; i++) {
-            if (listPlayers[i] == conn) {
+            if (listNetworkConn[i] == conn) {
                 indexPlayer = i;
                 break;
             }
         }
 
-        Debug.Log("[INF] OnServerReady: Connection: " + conn);
-
-        GameObject go = Instantiate(lobbyPrefabs[indexPlayer]);
-        NetworkServer.SpawnWithClientAuthority(go, conn);
-        go.GetComponent<LobbyPlayerScript>().CmdSyncIndexPlayer(indexPlayer);
+        listPlayersGO[indexPlayer] = Instantiate(lobbyPrefabs[indexPlayer]);
+        NetworkServer.SpawnWithClientAuthority(listPlayersGO[indexPlayer], conn);
+        listPlayersGO[indexPlayer].GetComponent<LobbyPlayerScript>()
+            .CmdSyncIndexPlayer(indexPlayer);
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -440,9 +442,13 @@ public class MenuMultiplayer : NetworkManager
         base.OnServerDisconnect(conn);
 
         for (short i = 1; i < 4; i++) {
-            if (listPlayers[i] == conn) {
-                listPlayers[i] = null;
+            if (listNetworkConn[i] == conn) {
+                listNetworkConn[i] = null;
                 connectedPlayers--;
+
+                listPlayersGO[i].GetComponent<LobbyPlayerScript>()
+                    .CmdDisconnect();
+
                 Debug.Log("[INF] OnServerDisconnected: Player " + i +
                     " disconnected");
                 break;
@@ -459,6 +465,8 @@ public class MenuMultiplayer : NetworkManager
     {
         // When a scene is loaded
         // Launch functions for setting the buttons
+
+        Debug.Log("[INF] Loaded scene: " + scene.name);
 
         if (scene.name == "MainMenu") return;
 
@@ -477,8 +485,6 @@ public class MenuMultiplayer : NetworkManager
 
             SceneManager.LoadScene("MainMenu");
             Destroy(gameObject);
-        } else {
-            Debug.Log("[INF] Unrecognized scene: " + scene.name);
         }
     }
 

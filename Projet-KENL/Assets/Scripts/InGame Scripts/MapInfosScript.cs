@@ -15,11 +15,12 @@ public class MapInfosScript : MonoBehaviour
         foreach (GameObject player in listPlayers) {
             var playerScript = player.GetComponent<PlayerScript>();
 
-            switch (playerScript.PlayerName) {
+            switch (playerScript.persoName) {
                 case "Stealth Char":
                     // Set Rotate90 as parent (& do things)
                     var go = new GameObject("Stealth Char - Rotate90");
                     go.transform.position = Vector3.zero;
+                    DontDestroyOnLoad(go);
                     player.transform.localPosition = new Vector3(0, 1.5f, 0);
                     player.transform.localRotation = Quaternion.identity;
                     player.transform.SetParent(go.transform, true);
@@ -29,6 +30,11 @@ public class MapInfosScript : MonoBehaviour
                 case "Player Test":
                     break;
             }
+
+            if (playerScript.isIA)
+                player.AddComponent<IAScript>();
+            else
+                player.AddComponent<CharaControlScript>();
         }
     }
 

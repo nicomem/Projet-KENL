@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 143781255430388002}
   - component: {fileID: 114898762796964738}
   - component: {fileID: 114413347525088982}
-  - component: {fileID: 114395247065784836}
   - component: {fileID: 114044815082028570}
   - component: {fileID: 114966648458241270}
   m_Layer: 8
@@ -364,17 +363,6 @@ MonoBehaviour:
     i15: 231
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114395247065784836
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1058267956331638}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05087b98a5c56734895aed9d58f1b783, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114413347525088982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -404,7 +392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72794545b5c542f47bb29fc9cfeaffaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerName: 
+  persoName: 
+  isIA: 0
   gravity: 14
   jumpForce: 11
   horizontalSpeed: 20
@@ -422,14 +411,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058267956331638}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 4
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
+  m_SendInterval: 0.033333335
+  m_SyncRotationAxis: 0
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001

@@ -42,6 +42,9 @@ public class CameraScript : MonoBehaviour
         yMin = cameraYMax;
 
         foreach (GameObject player in listPlayers) {
+            if (player == null)
+                continue;
+
             posX = player.transform.position.x;
             posY = player.transform.position.y;
 

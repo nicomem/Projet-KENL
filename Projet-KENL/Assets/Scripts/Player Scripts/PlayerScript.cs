@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : NetworkBehaviour
 {
-    public string PlayerName;
+    [HideInInspector] [SyncVar] public string persoName;
+    [Command] public void CmdSyncPersoName(string name) { persoName = name; }
+
+    [HideInInspector] [SyncVar] public bool isIA;
+    [Command] public void CmdSyncIsIA(bool _isIA) { isIA = _isIA; }
+
+    [HideInInspector] [SyncVar] public Vector3 syncPos;
+    [Command] public void CmdSyncPosXY(Vector3 _syncPos) { syncPos = _syncPos; }
 
     // Jump var (Editor)
     [Header("Jumping")]
@@ -59,9 +68,21 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+        if (transform.parent == null) {
+            DontDestroyOnLoad(gameObject);
+        }
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;
+    }
+
+    private void Update()
+    {
+        if (hasAuthority)
+            CmdSyncPosXY(transform.localPosition);
+        else
+            // TODO
+            ;// transform.localPosition = syncPos;
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
@@ -85,11 +106,13 @@ public class PlayerScript : MonoBehaviour
         }
 
         // Movement functions
-        if (transform.name == "Player 2") {
+        if (persoName == "Player Test") {
+            // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(inputs);
         } else {
+            // With animations
             animScript.isRunning = Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             animScript.isAttacking = Movement_Attack(inputs);

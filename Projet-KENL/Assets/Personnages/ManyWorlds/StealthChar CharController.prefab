@@ -1251,7 +1251,6 @@ GameObject:
   - component: {fileID: 9500010}
   - component: {fileID: 143930951259180914}
   - component: {fileID: 114088745075403292}
-  - component: {fileID: 114005435499416262}
   - component: {fileID: 114950666320621718}
   - component: {fileID: 114456792117123444}
   - component: {fileID: 114681064665719550}
@@ -3685,17 +3684,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114005435499416262
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100158}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ade12221ce1499246b82eb6470c70c29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114088745075403292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3707,6 +3695,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72794545b5c542f47bb29fc9cfeaffaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persoName: 
+  isIA: 0
+  syncPos: {x: 0, y: 0, z: 0}
   gravity: 14
   jumpForce: 11
   horizontalSpeed: 20
@@ -3724,7 +3715,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
