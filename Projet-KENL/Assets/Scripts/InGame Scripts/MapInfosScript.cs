@@ -11,6 +11,7 @@ public class MapInfosScript : MonoBehaviour
     private void Start()
     {
         listPlayers = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log(listPlayers.Length);
 
         foreach (GameObject player in listPlayers) {
             var playerScript = player.GetComponent<PlayerScript>();
@@ -18,6 +19,7 @@ public class MapInfosScript : MonoBehaviour
             switch (playerScript.persoName) {
                 case "Stealth Char":
                     // Set Rotate90 as parent (& do things)
+                    Debug.Log("bla");
                     var go = new GameObject("Stealth Char - Rotate90");
                     go.transform.position = Vector3.zero;
                     DontDestroyOnLoad(go);

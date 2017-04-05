@@ -76,15 +76,6 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
     }
 
-    private void Update()
-    {
-        if (hasAuthority)
-            CmdSyncPosXY(transform.localPosition);
-        else
-            // TODO
-            ;// transform.localPosition = syncPos;
-    }
-
     public Vector3 GetMoveVector() { return moveVector; }
     public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
     public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
@@ -96,6 +87,11 @@ public class PlayerScript : NetworkBehaviour
 
         // We update the timers
         UpdateTimers();
+
+        if (hasAuthority)
+            CmdSyncPosXY(transform.localPosition);
+        else
+            transform.localPosition = syncPos;
 
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;

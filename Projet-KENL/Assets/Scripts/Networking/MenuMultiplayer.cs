@@ -90,8 +90,7 @@ public class MenuMultiplayer : NetworkManager
     public void Load_MainMenu()
     {
         // When clicking on "Main Menu" button
-
-        SceneManager.LoadScene("DestroyNetworkScene");
+        SceneManager.LoadScene("MainMenu");
     }
 
     #endregion
@@ -468,23 +467,25 @@ public class MenuMultiplayer : NetworkManager
 
         Debug.Log("[INF] Loaded scene: " + scene.name);
 
-        if (scene.name == "MainMenu") return;
-
-        if (scene.name == "MultiplayerLobby") {
+        if (scene.name == "MainMenu") {
+            // When entering the MainMenu scene
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player")) {
+                if (go.transform.parent != null)
+                    Destroy(go.transform.parent.gameObject);
+                else
+                    Destroy(go);
+                
+            }
+            Lobby_BackButton();
+            offlineScene = "MainMenu";
+            SceneManager.LoadScene("MainMenu");
+            Destroy(gameObject);
+        } else if (scene.name == "MultiplayerLobby") {
             // When entering the LobbyMultiplayer scene
-
             SetupLobbySceneButtons();
         } else if (scene.name == "MainMenuMultiplayer") {
             // When entering the MainMenuMultiplayer scene
-
             SetupMultiSceneButtons();
-        } else if (scene.name == "DestroyNetworkScene") {
-            foreach (var go in FindObjectsOfType<GameObject>()) {
-                if (go != gameObject) Destroy(go);
-            }
-
-            SceneManager.LoadScene("MainMenu");
-            Destroy(gameObject);
         }
     }
 
@@ -594,6 +595,5 @@ public class MenuMultiplayer : NetworkManager
 
         SceneManager.sceneLoaded -= SceneLoaded;
     }
-
     #endregion
 }

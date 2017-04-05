@@ -36,7 +36,8 @@ public class LobbyPlayerScript : NetworkBehaviour
         IsReadyText = transform.Find("IsReady Text").GetComponent<Text>();
 
         PersoNameText.text = "";
-        CmdSyncPosition(transform.localPosition);
+        if (transform.localPosition.x != 0)
+            CmdSyncPosition(transform.localPosition);
     }
 
     public override void OnStartAuthority()
