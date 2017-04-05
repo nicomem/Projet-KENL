@@ -21,5 +21,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu/MultiplayerLobby.unity
   - enabled: 1
     path: Assets/Scenes/Battles/Plateforme.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DestroyNetworkScene.unity

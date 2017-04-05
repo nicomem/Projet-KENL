@@ -40,6 +40,7 @@ public class MenuMultiplayer : NetworkManager
     public NetworkConnection[] listNetworkConn = new NetworkConnection[4];
     public GameObject[] listPlayersGO = new GameObject[4];
     public bool[] isReadyPlayers = new bool[4];
+    public string[] persoNames = new string[4];
 
     #region MainMenuMultiplayer Scene
 
@@ -58,6 +59,7 @@ public class MenuMultiplayer : NetworkManager
         listNetworkConn = new NetworkConnection[4];
         listPlayersGO = new GameObject[4];
         isReadyPlayers = new bool[4];
+        persoNames = new string[4];
         StartHost();
     }
 
@@ -107,6 +109,7 @@ public class MenuMultiplayer : NetworkManager
             listNetworkConn = new NetworkConnection[4];
             listPlayersGO = new GameObject[4];
             isReadyPlayers = new bool[4];
+            persoNames = new string[4];
         } else
             StopClient();
     }
@@ -118,7 +121,8 @@ public class MenuMultiplayer : NetworkManager
 
         // Set ready text in lobbyPlayer
         lobbyPlayerScript.CmdSyncIsReady(true);
-        lobbyPlayerScript.CmdSyncPersoName(persoName);
+        lobbyPlayerScript.CmdSyncPersoName(persoName,
+            lobbyPlayerScript.indexPlayer);
 
         charaSelectBox.SetActive(false);
 
@@ -159,7 +163,7 @@ public class MenuMultiplayer : NetworkManager
 
         // Set not ready text in lobbyPlayer
         lobbyPlayerScript.CmdSyncIsReady(false);
-        lobbyPlayerScript.CmdSyncPersoName("");
+        lobbyPlayerScript.CmdSyncPersoName("", lobbyPlayerScript.indexPlayer);
 
         charaSelectBox.SetActive(true);
 
@@ -273,9 +277,9 @@ public class MenuMultiplayer : NetworkManager
         Button button = chooseMapButton.GetComponent<Button>();
 
         var buttonColors = button.colors;
-        buttonColors.normalColor = new Color(0, 200, 0);
-        buttonColors.pressedColor = new Color(0, 150, 0);
-        buttonColors.highlightedColor = new Color(0, 150, 0);
+        buttonColors.normalColor = new Color(255, 255, 0); // yellow
+        buttonColors.pressedColor = new Color(200, 200, 0); // dark yelow
+        buttonColors.highlightedColor = new Color(255, 255, 0);
         button.colors = buttonColors;
 
         Button.ButtonClickedEvent buttonEvent;
@@ -352,19 +356,21 @@ public class MenuMultiplayer : NetworkManager
 
     public void StartGame(string mapSceneString)
     {
+        // Called on server
         // Will start the game on every client
 
         // Create all persos (DontDestroyOnLoad & authority)
         GameObject go;
-        for (short i = 0; i < 4; i++) {
-            string persoName;
-            if (i == 0) persoName = lobbyPlayerScript.PlayerName1;
-            else if (i == 1) persoName = lobbyPlayerScript.PlayerName2;
-            else if (i == 2) persoName = lobbyPlayerScript.PlayerName3;
-            else persoName = lobbyPlayerScript.PlayerName4;
+        Debug.Log("[DEB] StartGame: ");
 
-            if (persoName == "")
+        for (short i = 0; i < 4; i++) {
+            string persoName = persoNames[i];
+            Debug.Log(persoName);
+
+            if (persoName == "" || persoName == null)
                 continue;
+
+            Debug.Log("[DEB] StartGame: " + persoName);
 
             switch (persoName) {
                 case "Stealth Char":

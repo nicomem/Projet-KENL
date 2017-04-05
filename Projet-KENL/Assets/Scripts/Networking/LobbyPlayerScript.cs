@@ -17,7 +17,6 @@ public class LobbyPlayerScript : NetworkBehaviour
 
     [SyncVar] private Vector3 position;
     [SyncVar] public int indexPlayer;
-    [SyncVar] public string PlayerName1, PlayerName2, PlayerName3, PlayerName4;
 
     void Start()
     {
@@ -53,15 +52,9 @@ public class LobbyPlayerScript : NetworkBehaviour
     private void Update()
     {
         if (playerName != null) PlayerNameText.text = playerName;
-        if (persoName != null) {
-            PersoNameText.text = persoName;
-            if (indexPlayer == 0) PlayerName1 = persoName;
-            else if (indexPlayer == 1) PlayerName2 = persoName;
-            else if (indexPlayer == 2) PlayerName3 = persoName;
-            else PlayerName4 = persoName;
-        }
+        if (persoName != null) PersoNameText.text = persoName;
         if (isReady) IsReadyText.text = "Ready!";
-            else IsReadyText.text = "Not Ready";
+        else IsReadyText.text = "Not Ready";
         transform.localPosition = position;
     }
 
@@ -87,9 +80,13 @@ public class LobbyPlayerScript : NetworkBehaviour
         this.playerName = playerName;
     }
 
-    [Command] public void CmdSyncPersoName(string persoName)
+    [Command] public void CmdSyncPersoName(string persoName, int indexPlayer)
     {
         this.persoName = persoName;
+
+        var ServerManagerScript = GameObject.Find("Network Manager")
+            .GetComponent<MenuMultiplayer>();
+        ServerManagerScript.persoNames[indexPlayer] = persoName;
     }
 
     [Command] public void CmdSyncIsReady(bool isReady)
