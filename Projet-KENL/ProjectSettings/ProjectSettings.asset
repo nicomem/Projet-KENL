@@ -10,8 +10,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: New Unity Project
+  companyName: Studio KENL
+  productName: Kombat Entertainment Nations League
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21176471, a: 1}
@@ -461,7 +461,7 @@ PlayerSettings:
   vrEditorSettings: {}
   cloudServicesEnabled:
     UNet: 1
-  cloudProjectId: 3e6d8abb-6a88-4f63-9095-dc01e9386efe
-  projectName: New Unity Project
+  cloudProjectId: 16909416-4146-4b06-bc8c-c9af5edec3cc
+  projectName: Kombat Entertainment Nations League
   organizationId: m_nicolas
   cloudEnabled: 0

@@ -697,10 +697,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  xMinLimit: 0
-  xMaxLimit: 0
-  yMinLimit: 0
-  yMaxLimit: 0
+  xMinLimit: -30
+  xMaxLimit: 30
+  yMinLimit: -5
+  yMaxLimit: 5
+  initPlayersFinished: 0
 --- !u!4 &1998234538
 Transform:
   m_ObjectHideFlags: 0

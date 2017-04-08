@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
 {
-    [HideInInspector] [SyncVar] public string persoName;
+    [SyncVar] public string persoName;
     [Command] public void CmdSyncPersoName(string name) { persoName = name; }
 
     [HideInInspector] [SyncVar] public bool isIA;
@@ -91,7 +91,9 @@ public class PlayerScript : NetworkBehaviour
         if (hasAuthority)
             CmdSyncPosXY(transform.localPosition);
         else
-            transform.localPosition = syncPos;
+            transform.localPosition = Vector3.Lerp(transform.localPosition,
+                syncPos, 0.25f);
+            //transform.localPosition = syncPos;
 
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;
@@ -102,7 +104,7 @@ public class PlayerScript : NetworkBehaviour
         }
 
         // Movement functions
-        if (persoName == "Player Test") {
+        if (animScript == null) {
             // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);

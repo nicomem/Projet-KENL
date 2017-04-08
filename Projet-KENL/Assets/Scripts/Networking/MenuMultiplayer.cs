@@ -2,7 +2,6 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class MenuMultiplayer : NetworkManager
 {
@@ -37,10 +36,11 @@ public class MenuMultiplayer : NetworkManager
     public enum MapType { Plateforme };
 
     // Server vars
-    public NetworkConnection[] listNetworkConn = new NetworkConnection[4];
-    public GameObject[] listPlayersGO = new GameObject[4];
-    public bool[] isReadyPlayers = new bool[4];
-    public string[] persoNames = new string[4];
+    [HideInInspector] public NetworkConnection[] listNetworkConn =
+        new NetworkConnection[4];
+    [HideInInspector] public GameObject[] listPlayersGO = new GameObject[4];
+    [HideInInspector] public bool[] isReadyPlayers = new bool[4];
+    [HideInInspector] public string[] persoNames = new string[4];
 
     #region MainMenuMultiplayer Scene
 
@@ -51,7 +51,7 @@ public class MenuMultiplayer : NetworkManager
         networkAddress = "127.0.0.1";
         PlayerName = InputPlayerName.text;
 
-        if (PlayerName.Length == 0 || networkAddress.Length == 0)
+        if (PlayerName == "")
             return;
 
         isHost = true;
@@ -70,23 +70,23 @@ public class MenuMultiplayer : NetworkManager
         networkAddress = InputIPAdress.text;
         PlayerName = InputPlayerName.text;
 
-        if (PlayerName.Length == 0 || networkAddress.Length == 0)
+        if (networkAddress == "")
+            networkAddress = "127.0.0.1";
+
+        if (PlayerName == "")
             return;
 
         isHost = false;
         StartClient();
-        StartCoroutine(CheckClient(0.25f));
+        GameObject.Find("Canvas").transform.Find("Connection Client")
+            .gameObject.SetActive(true);
     }
 
-    private IEnumerator CheckClient(float seconds)
+    public void StopClientButton()
     {
-        // Wait for [seconds] & check if client is connected
-        // If not, stop Unity from searching for a server
-
-        yield return new WaitForSeconds(seconds);
-
-        if (!client.isConnected)
-            StopClient();
+        GameObject.Find("Canvas").transform.Find("Connection Client")
+            .gameObject.SetActive(false);
+        StopClient();
     }
 
     public void Load_MainMenu()
@@ -498,6 +498,7 @@ public class MenuMultiplayer : NetworkManager
     private void SetupMultiSceneButtons()
     {
         // Set the buttons on "MainMenuMuliplayer" scene
+        StopClient();
 
         Button.ButtonClickedEvent button;
 
@@ -516,8 +517,14 @@ public class MenuMultiplayer : NetworkManager
         button.RemoveAllListeners();
         button.AddListener(Load_MainMenu);
 
+        button = GameObject.Find("Canvas").transform.Find("Connection Client")
+            .Find("Button").GetComponent<Button>().onClick;
+        button.RemoveAllListeners();
+        button.AddListener(StopClientButton);
+
         InputIPAdress = GameObject.Find("IPAdress Text")
             .GetComponent<Text>();
+
         InputPlayerName = GameObject.Find("Player Name Text")
             .GetComponent<Text>();
     }
