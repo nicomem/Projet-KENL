@@ -68,9 +68,10 @@ public class PlayerScript : NetworkBehaviour
 
     private void Start()
     {
-        if (transform.parent == null) {
+        // When lobby -> inGame
+        if (transform.parent == null)
             DontDestroyOnLoad(gameObject);
-        }
+
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;

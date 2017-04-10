@@ -1401,7 +1401,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 127.0.0.1
+  m_Text: IP Address
 --- !u!222 &1295004002
 CanvasRenderer:
   m_ObjectHideFlags: 0

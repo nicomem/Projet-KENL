@@ -5,6 +5,7 @@ public class MapInfosScript : MonoBehaviour
 {
     [HideInInspector] public GameObject[] listPlayers;
     private bool[] playersInitiated;
+    public Vector3[] startPositions;
 
     public float xMinLimit, xMaxLimit, yMinLimit, yMaxLimit;
     private float currentY, currentX;
@@ -45,24 +46,27 @@ public class MapInfosScript : MonoBehaviour
         for (ushort i = 0; i < listPlayers.Length; i++) {
             var player = listPlayers[i];
             var playerScript = player.GetComponent<PlayerScript>();
+            var startPos = startPositions[i];
 
-            if (!playersInitiated[i] && playerScript.persoName != null
-                && playerScript.persoName != "") {
+            if (!playersInitiated[i]) {
+                player.transform.SetParent(null);
+
                 switch (playerScript.persoName) {
                     case "Stealth Char":
                         // Set Rotate90 as parent (& do things)
-                        var go = new GameObject("Stealth Char - Rotate90");
-                        go.transform.position = Vector3.zero;
-                        DontDestroyOnLoad(go);
-                        player.transform.localPosition = new Vector3(0, 1.5f, 0);
+                        var parent = new GameObject("Stealth Char - Rotate90");
+                        parent.transform.position = Vector3.zero;
+                        parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                        player.transform.SetParent(parent.transform);
                         player.transform.localRotation = Quaternion.identity;
-                        player.transform.SetParent(go.transform, true);
-                        go.transform.rotation = Quaternion.Euler(0, 90, 0);
                         break;
 
                     case "Player Test":
                         break;
                 }
+
+                player.transform.position = startPos;
 
                 if (playerScript.isIA)
                     player.AddComponent<IAScript>();

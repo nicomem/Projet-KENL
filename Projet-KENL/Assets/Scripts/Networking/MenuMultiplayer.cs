@@ -47,8 +47,7 @@ public class MenuMultiplayer : NetworkManager
     public void StartHostButton()
     {
         // When clicking on "Start Host" button
-
-        networkAddress = "127.0.0.1";
+        networkAddress = InputIPAdress.text;
         PlayerName = InputPlayerName.text;
 
         if (PlayerName == "")
@@ -228,7 +227,7 @@ public class MenuMultiplayer : NetworkManager
                     new Vector3(2.1f, 2.1f, 2.1f);
                 charaSelected.transform.localPosition +=
                     new Vector3(0, -2f, 0);
-                charaSelected.transform.Rotate(0, 180, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 persoName = "Stealth Char";
                 break;
 
@@ -361,16 +360,12 @@ public class MenuMultiplayer : NetworkManager
 
         // Create all persos (DontDestroyOnLoad & authority)
         GameObject go;
-        Debug.Log("[DEB] StartGame: ");
 
         for (short i = 0; i < 4; i++) {
             string persoName = persoNames[i];
-            Debug.Log(persoName);
 
             if (persoName == "" || persoName == null)
                 continue;
-
-            Debug.Log("[DEB] StartGame: " + persoName);
 
             switch (persoName) {
                 case "Stealth Char":
@@ -475,13 +470,7 @@ public class MenuMultiplayer : NetworkManager
 
         if (scene.name == "MainMenu") {
             // When entering the MainMenu scene
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player")) {
-                if (go.transform.parent != null)
-                    Destroy(go.transform.parent.gameObject);
-                else
-                    Destroy(go);
-                
-            }
+            Time.timeScale = 1.0f;
             Lobby_BackButton();
             offlineScene = "MainMenu";
             SceneManager.LoadScene("MainMenu");
