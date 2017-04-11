@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
@@ -13,6 +12,9 @@ public class PlayerScript : NetworkBehaviour
 
     [HideInInspector] [SyncVar] public Vector3 syncPos;
     [Command] public void CmdSyncPosXY(Vector3 _syncPos) { syncPos = _syncPos; }
+
+    [HideInInspector] [SyncVar] public Quaternion syncRotation;
+    [Command] public void CmdSyncRotation(Quaternion _syncRotation) { syncRotation = _syncRotation; }
 
     // Jump var (Editor)
     [Header("Jumping")]
@@ -81,56 +83,6 @@ public class PlayerScript : NetworkBehaviour
     public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
     public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
 
-    public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
-    {
-        /* Change the moveVector based on differents forces and inputs
-         * See the functions called Movement_x to see the detail */
-
-        // We update the timers
-        UpdateTimers();
-
-        if (hasAuthority)
-            CmdSyncPosXY(transform.localPosition);
-        else
-            transform.localPosition = Vector3.Lerp(transform.localPosition,
-                syncPos, 0.25f);
-            //transform.localPosition = syncPos;
-
-        // We reset moveVector and do things to velocities
-        moveVector = Vector3.zero;
-
-        if (isGrounded) {
-            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
-            horizontalVelocity = 0;
-        }
-
-        // Movement functions
-        if (animScript == null) {
-            // No animations
-            Movement_Run(xInput);
-            Movement_Jump(jumpButtonPressed);
-            Movement_Attack(inputs);
-        } else {
-            // With animations
-            animScript.isRunning = Movement_Run(xInput);
-            Movement_Jump(jumpButtonPressed);
-            animScript.isAttacking = Movement_Attack(inputs);
-
-            // Animations
-            animScript.do_animations(xInput, InvulnerableTimer);
-        }
-
-        // Other useful functions
-        CheckRotation(xInput);
-
-        // Added velocities
-        AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
-
-        // And finally move the player
-        charaControl.Move(moveVector * Time.deltaTime);
-        isGrounded = charaControl.isGrounded;
-    }
-
     public void AddMovement(Vector3 movement)
     {
         /* Call this function to add a movement to this player */
@@ -147,6 +99,72 @@ public class PlayerScript : NetworkBehaviour
         verticalVelocity += dvy;
     }
 
+    [Command] public void CmdChangeVelocities(float dvx, float dvy)
+    {
+        RpcChangeVelocities(dvx, dvy);
+    }
+
+    [ClientRpc] public void RpcChangeVelocities(float dvx, float dvy)
+    {
+        if (hasAuthority) {
+            horizontalVelocity += dvx;
+            verticalVelocity += dvy;
+        }
+    }
+
+    public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
+    {
+        /* Change the moveVector based on differents forces and inputs
+         * See the functions called Movement_x to see the detail */
+
+        // We update the timers
+        UpdateTimers();
+
+        if (hasAuthority) {
+            CmdSyncPosXY(transform.localPosition);
+            CmdSyncRotation(transform.localRotation);
+        }
+        else {
+            transform.localPosition = Vector3.Lerp(transform.localPosition,
+                syncPos, 0.25f);
+            transform.localRotation = syncRotation;
+        }
+
+        // We reset moveVector and do things to velocities
+        moveVector = Vector3.zero;
+
+        if (isGrounded) {
+            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
+            horizontalVelocity = 0;
+        }
+
+        // Movement functions
+        if (animScript == null || !hasAuthority) {
+            // No animations
+            Movement_Run(xInput);
+            Movement_Jump(jumpButtonPressed);
+            Movement_Attack(inputs);
+        } else {
+            // With animations
+            animScript.CmdSyncIsRunning(Movement_Run(xInput));
+            Movement_Jump(jumpButtonPressed);
+            animScript.CmdSyncIsAttacking(Movement_Attack(inputs));
+        }
+
+        if (animScript != null) // Animations
+            animScript.Do_animations(xInput, InvulnerableTimer);
+
+        // Other useful functions
+        CheckRotation(xInput);
+
+        // Added velocities
+        AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
+
+        // And finally move the player
+        charaControl.Move(moveVector * Time.deltaTime);
+        isGrounded = charaControl.isGrounded;
+    }
+
     public bool LookToRight()
     {
         /* Returns true if the player is facing to the right */
@@ -154,7 +172,6 @@ public class PlayerScript : NetworkBehaviour
         return Mathf.Abs(transform.localEulerAngles.y) <= 1f
             || transform.localEulerAngles.y >= 359f;
     }
-
 
     private void UpdateTimers()
     {

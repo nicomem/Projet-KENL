@@ -48,7 +48,8 @@ public class MapInfosScript : MonoBehaviour
             var playerScript = player.GetComponent<PlayerScript>();
             var startPos = startPositions[i];
 
-            if (!playersInitiated[i]) {
+            if (!playersInitiated[i] && playerScript.persoName != null 
+                && playerScript.persoName != "") {
                 player.transform.SetParent(null);
 
                 switch (playerScript.persoName) {
@@ -64,6 +65,10 @@ public class MapInfosScript : MonoBehaviour
 
                     case "Player Test":
                         break;
+
+                    default:
+                        Debug.Log("[ERR] persoName not recognized : " + playerScript.persoName);
+                        break;
                 }
 
                 player.transform.position = startPos;
@@ -77,6 +82,7 @@ public class MapInfosScript : MonoBehaviour
             }
         }
 
-        initPlayersFinished = playersInitiated.All(b => b);
+        initPlayersFinished = listPlayers.Length > 0
+            && playersInitiated.All(b => b);
     }
 }

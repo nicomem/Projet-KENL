@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 114898762796964738}
   - component: {fileID: 114413347525088982}
   - component: {fileID: 114044815082028570}
-  - component: {fileID: 114966648458241270}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -376,10 +375,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dirLastAttack: {x: 0.8, y: 0.2, z: 0}
   powerLastAttack: 10
-  multPushLastAttack: 2
+  multPushLastAttack: 5
   comboLength: 4
   inputKey: e
-  attackCollider: {fileID: 65349683932464952}
+  attackCollider: {fileID: 65415945184279236, guid: 985ce537c89ac5745a8488d37a62e2f6,
+    type: 2}
   attackCooldown: 0.5
 --- !u!114 &114898762796964738
 MonoBehaviour:
@@ -394,6 +394,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   persoName: 
   isIA: 0
+  syncPos: {x: 0, y: 0, z: 0}
+  syncRotation: {x: 0, y: 0, z: 0, w: 0}
   gravity: 14
   jumpForce: 11
   horizontalSpeed: 20
@@ -405,26 +407,6 @@ MonoBehaviour:
   period: 1
   animScript: {fileID: 0}
   percentHealth: 0
---- !u!114 &114966648458241270
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1058267956331638}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 4
-  m_SendInterval: 0.033333335
-  m_SyncRotationAxis: 0
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!136 &136448515731162552
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -444,7 +444,7 @@ Prefab:
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
       propertyPath: startPositions.Array.data[1].x
-      value: -10
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
@@ -459,7 +459,7 @@ Prefab:
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
       propertyPath: startPositions.Array.data[3].x
-      value: -10
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
