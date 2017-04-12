@@ -4,24 +4,34 @@ using UnityEngine.Networking;
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
 {
-    [SyncVar] public string persoName;
-    [Command] public void CmdSyncPersoName(string name) { persoName = name; }
+    [HideInInspector] [SyncVar] public string persoName;
+    [Command] public void CmdSyncPersoName(string s) { persoName = s; }
 
     [HideInInspector] [SyncVar] public bool isIA;
-    [Command] public void CmdSyncIsIA(bool _isIA) { isIA = _isIA; }
+    [Command] public void CmdSyncIsIA(bool b) { isIA = b; }
 
     [HideInInspector] [SyncVar] public Vector3 syncPos;
-    [Command] public void CmdSyncPosXY(Vector3 _syncPos) { syncPos = _syncPos; }
+    [Command] public void CmdSyncPosXY(Vector3 p) { syncPos = p; }
 
     [HideInInspector] [SyncVar] public Quaternion syncRotation;
-    [Command] public void CmdSyncRotation(Quaternion _syncRotation) { syncRotation = _syncRotation; }
+    [Command] public void CmdSyncRotation(Quaternion r) { syncRotation = r; }
+
+    [HideInInspector] [SyncVar] public bool isGrounded = true;
+    [Command] public void CmdSyncIsGrounded(bool b) { isGrounded = b; }
+
+    // If <= 0f, player can get hit, resets in function of the attack
+    [HideInInspector] [SyncVar] public float InvulnerableTimer;
+    [Command] public void CmdSyncInvulnerableTimer(float t) { InvulnerableTimer = t; }
+
+    [HideInInspector] [SyncVar] public float percentHealth = 0;
+    [Command] public void CmdSyncPercentHealth(float h) { percentHealth = h; }
 
     // Jump var (Editor)
     [Header("Jumping")]
     [Space(5)]
-    public float gravity = 14.0f;
-    public float jumpForce = 10.0f; // Y-velocity added when jumping
-    public float horizontalSpeed = 20.0f;
+    public float gravity = 60f;
+    public float jumpForce = 30f; // Y-velocity added when jumping
+    public float horizontalSpeed = 20f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
     public Collider jumpCollider;
@@ -42,27 +52,22 @@ public class PlayerScript : NetworkBehaviour
     private float verticalVelocity;
     private float horizontalVelocity; // Not jump, but goes with Y-velocity
     private int jumpCount = 0; // How many jumps done before grounded
-    [System.NonSerialized]
-    public bool isGrounded = true; // See if grounded (can be modified if
-                                   // needed, ex: attacks)
+    
     private Collider[] colliders;
 
 
     // Attack var (hidden)
-    public float percentHealth = 0; // pushReceived = 
-                                    // power * (1 + percentHealth / 100)
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
-
-    public float InvulnerableTimer { get; set; }
-    // If <= 0f, player can get hit, resets in function of the attack
+    
 
     // Other movements var (public)
     private float waySign; // If 1: player looks to the right
+    private bool wasGrounded;
 
     // Other movements var (private)
     private Vector3 moveVector;
@@ -80,31 +85,36 @@ public class PlayerScript : NetworkBehaviour
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
-    public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
-    public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
 
-    public void AddMovement(Vector3 movement)
+    [Command] public void CmdAddPosY(float y)
     {
-        /* Call this function to add a movement to this player */
-
-        moveVector += movement;
+        RpcAddPosY(y);
     }
 
-    public void ChangeVelocities(float dvx, float dvy)
+    [ClientRpc] private void RpcAddPosY(float y)
     {
-        /* Use that function if you want to change the X and/or Y velocities 
-         * ex: gravity, attack or any other force */
-
-        horizontalVelocity += dvx;
-        verticalVelocity += dvy;
+        if (hasAuthority)
+            transform.localPosition = new Vector3(transform.localPosition.x,
+                transform.localPosition.y + y, 0);
     }
 
-    [Command] public void CmdChangeVelocities(float dvx, float dvy)
+    [Command] public void CmdSetVerticalVelocity(float vel)
+    {
+        RpcSetVerticalVelocity(vel);
+    }
+
+    [ClientRpc] private void RpcSetVerticalVelocity(float vel)
+    {
+        if (hasAuthority)
+            verticalVelocity = vel;
+    }
+
+    [Command] public void CmdAddVelocities(float dvx, float dvy)
     {
         RpcChangeVelocities(dvx, dvy);
     }
 
-    [ClientRpc] public void RpcChangeVelocities(float dvx, float dvy)
+    [ClientRpc] private void RpcChangeVelocities(float dvx, float dvy)
     {
         if (hasAuthority) {
             horizontalVelocity += dvx;
@@ -134,9 +144,12 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
 
         if (isGrounded) {
-            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
-            horizontalVelocity = 0;
-        }
+            if (!wasGrounded) {
+                verticalVelocity = Mathf.Max(verticalVelocity, -1f);
+                horizontalVelocity = 0;
+                wasGrounded = true;
+            }
+        } else wasGrounded = false;
 
         // Movement functions
         if (animScript == null || !hasAuthority) {
@@ -158,7 +171,7 @@ public class PlayerScript : NetworkBehaviour
         CheckRotation(xInput);
 
         // Added velocities
-        AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
+        moveVector += new Vector3(horizontalVelocity, verticalVelocity, 0);
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
@@ -229,7 +242,7 @@ public class PlayerScript : NetworkBehaviour
     {
         /* Make the player run based on xInput */
         if (Mathf.Abs(xInput) >= 0.25) {
-            AddMovement(new Vector3(xInput * horizontalSpeed, 0, 0));
+            moveVector += new Vector3(xInput * horizontalSpeed, 0, 0);
             return true;
         } else { return false; }
     }

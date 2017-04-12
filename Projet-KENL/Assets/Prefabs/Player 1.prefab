@@ -396,8 +396,8 @@ MonoBehaviour:
   isIA: 0
   syncPos: {x: 0, y: 0, z: 0}
   syncRotation: {x: 0, y: 0, z: 0, w: 0}
-  gravity: 14
-  jumpForce: 11
+  gravity: 60
+  jumpForce: 30
   horizontalSpeed: 20
   jumpMax: 2
   jumpCollider: {fileID: 65997593750213504}

@@ -68,9 +68,11 @@ public class ComboTemplate : MonoBehaviour
             * multPush;
         y = attackDir.y * attackPower * healthMultiplier * multPush;
 
-        playerHit.CmdChangeVelocities(x, y);
-        playerHit.percentHealth += attackPower;
-        playerHit.InvulnerableTimer = attackCooldown;
-        playerHit.isGrounded = false;
+        // Place it in mid-air (== not grounded)
+        playerHit.CmdAddPosY(0.1f);
+        playerHit.CmdSyncIsGrounded(false);
+        playerHit.CmdAddVelocities(x, y);
+        playerHit.CmdSyncInvulnerableTimer(attackCooldown);
+        playerHit.CmdSyncPercentHealth(playerHit.percentHealth + attackPower);
     }
 }
