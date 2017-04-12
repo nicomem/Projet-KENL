@@ -1,19 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class AnimationsScript : MonoBehaviour {
+public class AnimationsScript : NetworkBehaviour {
 
     public Animator anim;
-    public bool isRunning = false;
-    public bool isAttacking = false;
+    [SyncVar] public bool isRunning = false;
+    [SyncVar] public bool isAttacking = false;
+
+    [Command] public void CmdSyncIsRunning(bool b) { isRunning = b; }
+    [Command] public void CmdSyncIsAttacking(bool b) { isAttacking = b; }
 
     private void Start()
     {
         anim = GetComponent<Animator>();
     }
 
-    public void do_animations(float inputX, float InvulnerableTimer)
+    public void Do_animations(float inputX, float InvulnerableTimer)
     {
         if (isAttacking)
         {

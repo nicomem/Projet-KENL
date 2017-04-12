@@ -1,14 +1,37 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [System.Serializable]
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : NetworkBehaviour
 {
+    [HideInInspector] [SyncVar] public string persoName;
+    [Command] public void CmdSyncPersoName(string s) { persoName = s; }
+
+    [HideInInspector] [SyncVar] public bool isIA;
+    [Command] public void CmdSyncIsIA(bool b) { isIA = b; }
+
+    [HideInInspector] [SyncVar] public Vector3 syncPos;
+    [Command] public void CmdSyncPosXY(Vector3 p) { syncPos = p; }
+
+    [HideInInspector] [SyncVar] public Quaternion syncRotation;
+    [Command] public void CmdSyncRotation(Quaternion r) { syncRotation = r; }
+
+    [HideInInspector] [SyncVar] public bool isGrounded = true;
+    [Command] public void CmdSyncIsGrounded(bool b) { isGrounded = b; }
+
+    // If <= 0f, player can get hit, resets in function of the attack
+    [HideInInspector] [SyncVar] public float InvulnerableTimer;
+    [Command] public void CmdSyncInvulnerableTimer(float t) { InvulnerableTimer = t; }
+
+    [HideInInspector] [SyncVar] public float percentHealth = 0;
+    [Command] public void CmdSyncPercentHealth(float h) { percentHealth = h; }
+
     // Jump var (Editor)
     [Header("Jumping")]
     [Space(5)]
-    public float gravity = 14.0f;
-    public float jumpForce = 10.0f; // Y-velocity added when jumping
-    public float horizontalSpeed = 20.0f;
+    public float gravity = 60f;
+    public float jumpForce = 30f; // Y-velocity added when jumping
+    public float horizontalSpeed = 20f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
     public Collider jumpCollider;
@@ -29,27 +52,22 @@ public class PlayerScript : MonoBehaviour
     private float verticalVelocity;
     private float horizontalVelocity; // Not jump, but goes with Y-velocity
     private int jumpCount = 0; // How many jumps done before grounded
-    [System.NonSerialized]
-    public bool isGrounded = true; // See if grounded (can be modified if
-                                   // needed, ex: attacks)
+    
     private Collider[] colliders;
 
 
     // Attack var (hidden)
-    public float percentHealth = 0; // pushReceived = 
-                                    // power * (1 + percentHealth / 100)
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
-
-    public float InvulnerableTimer { get; set; }
-    // If <= 0f, player can get hit, resets in function of the attack
+    
 
     // Other movements var (public)
     private float waySign; // If 1: player looks to the right
+    private bool wasGrounded;
 
     // Other movements var (private)
     private Vector3 moveVector;
@@ -57,14 +75,52 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+        // When lobby -> inGame
+        if (transform.parent == null)
+            DontDestroyOnLoad(gameObject);
+
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;
     }
 
     public Vector3 GetMoveVector() { return moveVector; }
-    public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
-    public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
+
+    [Command] public void CmdAddPosY(float y)
+    {
+        RpcAddPosY(y);
+    }
+
+    [ClientRpc] private void RpcAddPosY(float y)
+    {
+        if (hasAuthority)
+            transform.localPosition = new Vector3(transform.localPosition.x,
+                transform.localPosition.y + y, 0);
+    }
+
+    [Command] public void CmdSetVerticalVelocity(float vel)
+    {
+        RpcSetVerticalVelocity(vel);
+    }
+
+    [ClientRpc] private void RpcSetVerticalVelocity(float vel)
+    {
+        if (hasAuthority)
+            verticalVelocity = vel;
+    }
+
+    [Command] public void CmdAddVelocities(float dvx, float dvy)
+    {
+        RpcChangeVelocities(dvx, dvy);
+    }
+
+    [ClientRpc] private void RpcChangeVelocities(float dvx, float dvy)
+    {
+        if (hasAuthority) {
+            horizontalVelocity += dvx;
+            verticalVelocity += dvy;
+        }
+    }
 
     public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
     {
@@ -74,53 +130,52 @@ public class PlayerScript : MonoBehaviour
         // We update the timers
         UpdateTimers();
 
+        if (hasAuthority) {
+            CmdSyncPosXY(transform.localPosition);
+            CmdSyncRotation(transform.localRotation);
+        }
+        else {
+            transform.localPosition = Vector3.Lerp(transform.localPosition,
+                syncPos, 0.25f);
+            transform.localRotation = syncRotation;
+        }
+
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;
 
         if (isGrounded) {
-            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
-            horizontalVelocity = 0;
-        }
+            if (!wasGrounded) {
+                verticalVelocity = Mathf.Max(verticalVelocity, -1f);
+                horizontalVelocity = 0;
+                wasGrounded = true;
+            }
+        } else wasGrounded = false;
 
         // Movement functions
-        if (transform.name == "Player 2") {
+        if (animScript == null || !hasAuthority) {
+            // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(inputs);
         } else {
-            animScript.isRunning = Movement_Run(xInput);
+            // With animations
+            animScript.CmdSyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
-            animScript.isAttacking = Movement_Attack(inputs);
-
-            // Animations
-            animScript.do_animations(xInput, InvulnerableTimer);
+            animScript.CmdSyncIsAttacking(Movement_Attack(inputs));
         }
+
+        if (animScript != null) // Animations
+            animScript.Do_animations(xInput, InvulnerableTimer);
 
         // Other useful functions
         CheckRotation(xInput);
 
         // Added velocities
-        AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
+        moveVector += new Vector3(horizontalVelocity, verticalVelocity, 0);
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
         isGrounded = charaControl.isGrounded;
-    }
-
-    public void AddMovement(Vector3 movement)
-    {
-        /* Call this function to add a movement to this player */
-
-        moveVector += movement;
-    }
-
-    public void ChangeVelocities(float dvx, float dvy)
-    {
-        /* Use that function if you want to change the X and/or Y velocities 
-         * ex: gravity, attack or any other force */
-
-        horizontalVelocity += dvx;
-        verticalVelocity += dvy;
     }
 
     public bool LookToRight()
@@ -130,7 +185,6 @@ public class PlayerScript : MonoBehaviour
         return Mathf.Abs(transform.localEulerAngles.y) <= 1f
             || transform.localEulerAngles.y >= 359f;
     }
-
 
     private void UpdateTimers()
     {
@@ -188,7 +242,7 @@ public class PlayerScript : MonoBehaviour
     {
         /* Make the player run based on xInput */
         if (Mathf.Abs(xInput) >= 0.25) {
-            AddMovement(new Vector3(xInput * horizontalSpeed, 0, 0));
+            moveVector += new Vector3(xInput * horizontalSpeed, 0, 0);
             return true;
         } else { return false; }
     }

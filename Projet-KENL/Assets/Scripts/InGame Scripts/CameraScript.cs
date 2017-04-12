@@ -4,6 +4,7 @@ public class CameraScript : MonoBehaviour
 {
     private Camera mainCam;
     private GameObject[] listPlayers;
+    private MapInfosScript mapInfos;
     private float cameraRecul;
     private float CameraFOV;
     private float videoFormat;
@@ -12,29 +13,29 @@ public class CameraScript : MonoBehaviour
     private float xMax, xMin, yMax, yMin;
     private float posX, posY;
     private float xCamera, yCamera, zCamera;
+    private bool initCamera;
 
     // Use this for initialization
     void Start()
     {
-        mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        mainCam = Camera.main;
         cameraRecul = 1.5f;
 
         CameraFOV = Mathf.Deg2Rad * mainCam.fieldOfView; // radians
         videoFormat = mainCam.aspect; // Video format quotient (ex: 16/9)
 
-        MapInfosScript mapInfos = GameObject.Find("Map Infos")
-            .GetComponent<MapInfosScript>();
-
-        listPlayers = mapInfos.listPlayers;
-
-        // Change that
-        cameraXMin = mapInfos.xMinLimit;
-        cameraXMax = mapInfos.xMaxLimit;
-        cameraYMin = mapInfos.yMinLimit;
-        cameraYMax = mapInfos.yMaxLimit;
+        mapInfos = GameObject.Find("Map Infos").GetComponent<MapInfosScript>();
     }
 
     void Update()
+    {
+        if (!initCamera)
+            InitCamera();
+        else
+            MoveCameraAuto();
+    }
+
+    private void MoveCameraAuto()
     {
         xMax = cameraXMin;
         xMin = cameraXMax;
@@ -42,6 +43,9 @@ public class CameraScript : MonoBehaviour
         yMin = cameraYMax;
 
         foreach (GameObject player in listPlayers) {
+            if (player == null)
+                continue;
+
             posX = player.transform.position.x;
             posY = player.transform.position.y;
 
@@ -77,5 +81,20 @@ public class CameraScript : MonoBehaviour
         zCamera *= cameraRecul;
 
         transform.position = new Vector3(xCamera, yCamera, zCamera);
+    }
+
+    private void InitCamera()
+    {
+        if (mapInfos.initPlayersFinished) {
+            listPlayers = mapInfos.listPlayers;
+
+            // Change that
+            cameraXMin = mapInfos.xMinLimit;
+            cameraXMax = mapInfos.xMaxLimit;
+            cameraYMin = mapInfos.yMinLimit;
+            cameraYMax = mapInfos.yMaxLimit;
+
+            initCamera = true;
+        }
     }
 }
