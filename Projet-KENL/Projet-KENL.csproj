@@ -119,6 +119,7 @@
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\SingleplayerLobbyScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />

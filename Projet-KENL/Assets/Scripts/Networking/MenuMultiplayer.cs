@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuMultiplayer : NetworkManager
 {
-    private const int NUMBER_OF_MAPS = 1;
-
     private Text InputIPAdress;
     private Text InputPlayerName;
 
@@ -18,14 +16,15 @@ public class MenuMultiplayer : NetworkManager
 
     public GameObject[] lobbyPrefabs;
     public GameObject[] persoPrefabs;
-    public string[] gameScenes;
+    public string[] persosPrefabsNames;
+    public string[] mapScenes;
 
     public string PlayerName { get; private set; }
     private string persoName;
     private bool isHost;
     private bool mapChoosed;
     private PlayerType playerSelected = 0;
-    private MapType mapSelected = 0;
+    private int mapSelected = 0;
 
     [HideInInspector] public GameObject LobbyPlayer;
     [HideInInspector] public LobbyPlayerScript lobbyPlayerScript;
@@ -33,10 +32,10 @@ public class MenuMultiplayer : NetworkManager
     private int connectedPlayers;
 
     public enum PlayerType { PlayerTest, StealthChar };
-    public enum MapType { Plateforme };
 
     // Server vars
-    [HideInInspector] public NetworkConnection[] listNetworkConn =
+    [HideInInspector]
+    public NetworkConnection[] listNetworkConn =
         new NetworkConnection[4];
     [HideInInspector] public GameObject[] listPlayersGO = new GameObject[4];
     [HideInInspector] public bool[] isReadyPlayers = new bool[4];
@@ -228,20 +227,20 @@ public class MenuMultiplayer : NetworkManager
                 charaSelected.transform.localPosition +=
                     new Vector3(0, -2f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                persoName = "Stealth Char";
                 break;
 
             case PlayerType.PlayerTest:
                 charaSelected.transform.localScale =
                     new Vector3(1.5f, 2f, 1f);
-                persoName = "Player Test";
                 break;
 
             default:
                 break;
         }
 
-        playerScript.persoName  = persoName;
+        persoName = persosPrefabsNames[(int)playerSelected];
+
+        playerScript.persoName = persoName;
         charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
             .GetComponent<Text>().text = persoName;
     }
@@ -250,17 +249,16 @@ public class MenuMultiplayer : NetworkManager
     #region Map Selection
     public void Lobby_MapSelectLeftArrow()
     {
-        mapSelected = (MapType)((int)mapSelected - 1);
+        mapSelected = mapSelected - 1;
         if (mapSelected < 0)
-            mapSelected = (MapType)
-                ((int)mapSelected + NUMBER_OF_MAPS);
+            mapSelected = mapSelected + mapScenes.Length;
 
         UpdateMapInSelect();
     }
 
     public void Lobby_MapSelectRightArrow()
     {
-        mapSelected = (MapType) (((int)mapSelected + 1) % NUMBER_OF_MAPS);
+        mapSelected = (mapSelected + 1) % mapScenes.Length;
 
         UpdateMapInSelect();
     }
@@ -316,7 +314,7 @@ public class MenuMultiplayer : NetworkManager
     {
         // Change map in image & sync with clients
         mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
-            .GetComponent<Text>().text = mapSelected.ToString();
+            .GetComponent<Text>().text = mapScenes[mapSelected];
     }
     #endregion
 
@@ -328,32 +326,18 @@ public class MenuMultiplayer : NetworkManager
         if (_indexPlayer >= 0 && _indexPlayer <= 3)
             isReadyPlayers[_indexPlayer] = isReady;
 
-        if (mapChoosed){
+        if (mapChoosed) {
             // I know, this is bad code, but you'll probably not see this
             for (short i = 0; i < connectedPlayers; i++) {
                 if (!isReadyPlayers[i])
                     return;
             }
 
-            string mapSceneString = null;
-
-            switch (mapSelected) {
-                case MapType.Plateforme:
-                    mapSceneString = "Plateforme";
-                    break;
-
-                default:
-                    Debug.Log("[ERR] UpdateReady: Map selected not recognized," +
-                        " could not create string");
-                    break;
-            }
-
-            if (mapSceneString != null)
-                StartGame(mapSceneString);
+            StartGame();
         }
     }
 
-    public void StartGame(string mapSceneString)
+    public void StartGame()
     {
         // Called on server
         // Will start the game on every client
@@ -362,33 +346,35 @@ public class MenuMultiplayer : NetworkManager
         GameObject go;
 
         for (short i = 0; i < 4; i++) {
-            string persoName = persoNames[i];
+            int _playerSelectedIndex = 0;
 
-            if (persoName == "" || persoName == null)
-                continue;
+            // DO NOT REMOVE THIS !!!
+            if (persoNames[i] == null || persoNames[i] == "")
+                break;
 
-            switch (persoName) {
-                case "Stealth Char":
-                    go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
+            for (int k = 0; k < persosPrefabsNames.Length; k++) {
+                if (persoNames[i] == persosPrefabsNames[k]) {
+                    _playerSelectedIndex = k;
                     break;
-
-                case "Player Test":
-                    go = Instantiate(persoPrefabs[(int)PlayerType.PlayerTest]);
-                    break;
-
-                default:
-                    go = new GameObject();
-                    Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
-                        persoName);
-                    return;
+                }
             }
 
+            go = Instantiate(persoPrefabs[_playerSelectedIndex]);
+
             NetworkServer.SpawnWithClientAuthority(go, listNetworkConn[i]);
-            go.GetComponent<PlayerScript>().CmdSyncPersoName(persoName);
+            var playerScript = go.GetComponent<PlayerScript>();
+
+            playerScript.SyncPersoName(persoNames[i]);
+
+            // Get Player Name != Perso Name
+            Debug.Log("Panel Player - P" + (i + 1) + "(clone)");
+            var _playerName = canvas.transform.Find("Panel Player - P" + (i + 1) + "(Clone)")
+                .GetComponent<LobbyPlayerScript>().playerName;
+            playerScript.SyncPlayerName(_playerName);
         }
 
         Debug.Log("[INF] Starting game");
-        ServerChangeScene(mapSceneString);
+        ServerChangeScene(mapScenes[mapSelected]);
     }
     #endregion
 

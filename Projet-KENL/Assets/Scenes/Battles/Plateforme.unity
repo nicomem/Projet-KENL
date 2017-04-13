@@ -154,7 +154,7 @@ Transform:
   m_GameObject: {fileID: 45247066}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 5, z: 10}
-  m_LocalScale: {x: 18, y: 10, z: 6}
+  m_LocalScale: {x: 15, y: 1, z: 6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -196,7 +196,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d027af1092f6b434090f040565e7e656, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: d027af1092f6b434090f040565e7e656, type: 3}
       propertyPath: m_Name
@@ -375,11 +375,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1376045495}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53, y: 2.1, z: -29.3}
+  m_LocalPosition: {x: 0, y: 0, z: -30}
   m_LocalScale: {x: 1.062228, y: 1.0622282, z: 1.0622282}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1376045501
 MonoBehaviour:
@@ -392,6 +392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913572d15c78fad4e8dde0c418fed63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraXMin: -30
+  cameraXMax: 30
+  cameraYMin: -5
+  cameraYMax: 20
 --- !u!1001 &1531170270
 Prefab:
   m_ObjectHideFlags: 0
@@ -470,6 +474,26 @@ Prefab:
         type: 2}
       propertyPath: startPositions.Array.data[2].y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: yMinLimit
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: yMaxLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: xMaxLimit
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: xMinLimit
+      value: -35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32e937e6b4361fb4a9cc98a5465e50e3, type: 2}
@@ -553,7 +577,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d027af1092f6b434090f040565e7e656, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d027af1092f6b434090f040565e7e656, type: 3}
       propertyPath: m_LocalScale.y

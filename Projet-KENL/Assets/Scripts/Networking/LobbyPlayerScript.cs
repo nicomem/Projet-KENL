@@ -11,12 +11,12 @@ public class LobbyPlayerScript : NetworkBehaviour
     private Text PersoNameText;
     private Text IsReadyText;
 
-    [SyncVar] public string playerName;
-    [SyncVar] public string persoName;
-    [SyncVar] public bool isReady = false;
+    [HideInInspector] [SyncVar] public string playerName;
+    [HideInInspector] [SyncVar] public string persoName;
+    [HideInInspector] [SyncVar] public bool isReady = false;
 
-    [SyncVar] private Vector3 position;
-    [SyncVar] public int indexPlayer;
+    [HideInInspector] [SyncVar] private Vector3 position;
+    [HideInInspector] [SyncVar] public int indexPlayer;
 
     void Start()
     {

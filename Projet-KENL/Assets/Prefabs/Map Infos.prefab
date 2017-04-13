@@ -57,10 +57,15 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   startPositions:
-  - {x: 0, y: 5, z: 0}
-  - {x: 0, y: 5, z: 0}
-  - {x: 0, y: 5, z: 0}
-  - {x: 0, y: 5, z: 0}
+  - {x: -5, y: 5, z: 0}
+  - {x: -2, y: 2, z: 0}
+  - {x: 2, y: 2, z: 0}
+  - {x: 5, y: 5, z: 0}
+  respawnPositions:
+  - {x: -5, y: 5, z: 0}
+  - {x: -2, y: 5, z: 0}
+  - {x: 2, y: 5, z: 0}
+  - {x: 5, y: 5, z: 0}
   xMinLimit: -30
   xMaxLimit: 30
   yMinLimit: -5

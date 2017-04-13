@@ -26,6 +26,13 @@ public class ComboTemplate : MonoBehaviour
     protected float healthMultiplier;
     protected float x, y;
 
+    protected bool isNetworked;
+
+    private void Start()
+    {
+        isNetworked = GameObject.Find("Network Manager") != null;
+    }
+
     public void CollidersAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
@@ -69,10 +76,10 @@ public class ComboTemplate : MonoBehaviour
         y = attackDir.y * attackPower * healthMultiplier * multPush;
 
         // Place it in mid-air (== not grounded)
-        playerHit.CmdAddPosY(0.1f);
-        playerHit.CmdSyncIsGrounded(false);
-        playerHit.CmdAddVelocities(x, y);
-        playerHit.CmdSyncInvulnerableTimer(attackCooldown);
-        playerHit.CmdSyncPercentHealth(playerHit.percentHealth + attackPower);
+        playerHit.AddPosY(0.1f);
+        playerHit.SyncIsGrounded(false);
+        playerHit.AddVelocities(x, y);
+        playerHit.SyncInvulnerableTimer(attackCooldown);
+        playerHit.SyncPercentHealth(playerHit.percentHealth + attackPower);
     }
 }
