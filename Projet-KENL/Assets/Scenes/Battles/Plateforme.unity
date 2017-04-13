@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -242,6 +242,11 @@ Prefab:
       propertyPath: m_Name
       value: Player 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114898762796964738, guid: 0cca18718b6400148b74c8585e9f56e7,
+        type: 2}
+      propertyPath: hpBarTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: b9f023aa71a120d4bb3408fe69028bea, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
   m_IsPrefabParent: 0
@@ -345,11 +350,6 @@ Prefab:
     - {fileID: 5400000, guid: d027af1092f6b434090f040565e7e656, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: d027af1092f6b434090f040565e7e656, type: 3}
   m_IsPrefabParent: 0
---- !u!1 &1012230143 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7,
-    type: 2}
-  m_PrefabInternal: {fileID: 714627788}
 --- !u!1 &1271073642
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,17 +512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913572d15c78fad4e8dde0c418fed63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraXMin: -30
-  cameraXMax: 30
-  cameraYMin: 0
-  cameraYMax: 20
-  listPlayers:
-  - {fileID: 1607650954}
-  - {fileID: 1012230143}
---- !u!1 &1607650954 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
-  m_PrefabInternal: {fileID: 2091248049}
 --- !u!1001 &1694946217
 Prefab:
   m_ObjectHideFlags: 0

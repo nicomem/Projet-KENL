@@ -36,8 +36,16 @@ public class PlayerScript : MonoBehaviour
 
 
     // Attack var (hidden)
-    public float percentHealth = 0; // pushReceived = 
-                                    // power * (1 + percentHealth / 100)
+    public float percentHealth = 0f; // pushReceived = 
+                                     // power * (1 + percentHealth / 100)
+    //Code for usual Health Bar
+    public float MaxHealth = 100f;
+    public float Health = 100f;
+    public float percentOfHealth;
+    public float hpBarLength;
+    public Texture2D hpBarTexture;
+    //End of usual healthbar
+
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
@@ -123,6 +131,15 @@ public class PlayerScript : MonoBehaviour
         verticalVelocity += dvy;
     }
 
+    public void Update()
+    {
+        percentOfHealth = Health / MaxHealth;
+        hpBarLength = percentOfHealth * 100;
+        if (Health > 0)
+            GUI.DrawTexture(new Rect(10, 10, hpBarLength, 10), hpBarTexture);
+
+
+    }
     public bool LookToRight()
     {
         /* Returns true if the player is facing to the right */
