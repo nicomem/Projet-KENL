@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
 {
+    #region Variables
+    #region SyncVar region
     [HideInInspector] [SyncVar] public string persoName;
     [Command] public void CmdSyncPersoName(string s) { persoName = s; }
 
@@ -26,9 +28,17 @@ public class PlayerScript : NetworkBehaviour
     [HideInInspector] [SyncVar] public float percentHealth = 0;
     [Command] public void CmdSyncPercentHealth(float h) { percentHealth = h; }
 
-    // Jump var (Editor)
+    [HideInInspector] [SyncVar] public float persoLives = 3;
+    [Command] public void CmdSyncPersoLives(float l) { persoLives = l; }
+
+    [HideInInspector] [SyncVar] public bool isKO = false;
+    [Command] public void CmdSyncIsKO(bool b) { isKO = b; }
+    
+
+    #endregion
+
+    #region Editor modified
     [Header("Jumping")]
-    [Space(5)]
     public float gravity = 60f;
     public float jumpForce = 30f; // Y-velocity added when jumping
     public float horizontalSpeed = 20f;
@@ -36,42 +46,34 @@ public class PlayerScript : NetworkBehaviour
                             // before being grounded
     public Collider jumpCollider;
 
-    [Space]
-
-    // Attack var (Editor)
     [Header("Attacking")]
-    [Space(5)]
     public ComboTemplate[] listAttacks;
     public int maxCombo = 4;
     public float period = 1f; // Set the period between each attackCollider check
 
-    [Space]
+    [Header("Others")]
     public AnimationsScript animScript;
+    #endregion
 
-    // Jump var (hidden)
-    private float verticalVelocity;
-    private float horizontalVelocity; // Not jump, but goes with Y-velocity
+    #region Private vars
+    private float verticalVelocity, horizontalVelocity;
     private int jumpCount = 0; // How many jumps done before grounded
-    
     private Collider[] colliders;
 
-
-    // Attack var (hidden)
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
-    
 
-    // Other movements var (public)
     private float waySign; // If 1: player looks to the right
     private bool wasGrounded;
 
-    // Other movements var (private)
     private Vector3 moveVector;
     private CharacterController charaControl;
+    #endregion
+    #endregion
 
     private void Start()
     {
@@ -84,45 +86,7 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
     }
 
-    public Vector3 GetMoveVector() { return moveVector; }
-
-    [Command] public void CmdAddPosY(float y)
-    {
-        RpcAddPosY(y);
-    }
-
-    [ClientRpc] private void RpcAddPosY(float y)
-    {
-        if (hasAuthority)
-            transform.localPosition = new Vector3(transform.localPosition.x,
-                transform.localPosition.y + y, 0);
-    }
-
-    [Command] public void CmdSetVerticalVelocity(float vel)
-    {
-        RpcSetVerticalVelocity(vel);
-    }
-
-    [ClientRpc] private void RpcSetVerticalVelocity(float vel)
-    {
-        if (hasAuthority)
-            verticalVelocity = vel;
-    }
-
-    [Command] public void CmdAddVelocities(float dvx, float dvy)
-    {
-        RpcChangeVelocities(dvx, dvy);
-    }
-
-    [ClientRpc] private void RpcChangeVelocities(float dvx, float dvy)
-    {
-        if (hasAuthority) {
-            horizontalVelocity += dvx;
-            verticalVelocity += dvy;
-        }
-    }
-
-    public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
+    public void Movements(float xInput, bool jumpButtonPressed, bool[] attackInputs)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
@@ -133,8 +97,7 @@ public class PlayerScript : NetworkBehaviour
         if (hasAuthority) {
             CmdSyncPosXY(transform.localPosition);
             CmdSyncRotation(transform.localRotation);
-        }
-        else {
+        } else {
             transform.localPosition = Vector3.Lerp(transform.localPosition,
                 syncPos, 0.25f);
             transform.localRotation = syncRotation;
@@ -156,12 +119,12 @@ public class PlayerScript : NetworkBehaviour
             // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
-            Movement_Attack(inputs);
+            Movement_Attack(attackInputs);
         } else {
             // With animations
             animScript.CmdSyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
-            animScript.CmdSyncIsAttacking(Movement_Attack(inputs));
+            animScript.CmdSyncIsAttacking(Movement_Attack(attackInputs));
         }
 
         if (animScript != null) // Animations
@@ -178,66 +141,65 @@ public class PlayerScript : NetworkBehaviour
         isGrounded = charaControl.isGrounded;
     }
 
-    public bool LookToRight()
-    {
-        /* Returns true if the player is facing to the right */
-
-        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
-            || transform.localEulerAngles.y >= 359f;
-    }
-
     private void UpdateTimers()
     {
-        if (transform.name == "Player Human" && Input.GetKeyDown(KeyCode.H)) {
-            InvulnerableTimer = 0.5f;
-        }
+        var deltaTime = Time.deltaTime;
 
         // Attack Timer
-        if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
+        if (attackTimer > 0f) attackTimer -= deltaTime;
 
         // Invulnerable Timer
-        if (InvulnerableTimer > 0f) { InvulnerableTimer -= Time.deltaTime; }
+        if (InvulnerableTimer > 0f) InvulnerableTimer -= deltaTime;
 
         // Attack-Collision Timer
-        if (attackTimerActivated) {
-            currentPeriod = Mathf.Max(0f, currentPeriod - Time.deltaTime);
-
-            if (currentPeriod <= 0f) {
-                currentAttack.CollidersAttack();
-
-                // We reset the attack timer
-                currentPeriod = period;
-            }
-        }
-
-        // Change color if hit (DEBUG)
-        if (transform.name == "Player 2") {
-            if (InvulnerableTimer > 0) {
-                GetComponent<Renderer>().material.color = Color.gray;
-            } else {
-                GetComponent<Renderer>().material.color = Color.yellow;
-            }
-        }
-
-        // Color of attack collider
-        if (attackTimer > 0f) {
-            // Here should be called an attack animation
-            if (attackTimer < 0.5f) {
-                // Just for seeing when we can combo (DEBUG)
-                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                //.material.color = Color.yellow;
-            } else {
-                // Give a color to the collider (DEBUG)
-                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                //.material.color = Color.black;
-            }
-        } else if (currentAttack != null) { // Attack just finished
-                                            // Remove color of the collider (DEBUG)
-                                            //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                                            //    .material.color = Color.white;
-        }
+        if (attackTimerActivated) currentPeriod -= deltaTime;
     }
 
+    #region Server-Client exchange
+    [Command]
+    public void CmdAddPosY(float y)
+    {
+        RpcAddPosY(y);
+    }
+
+    [ClientRpc]
+    private void RpcAddPosY(float y)
+    {
+        if (hasAuthority)
+            transform.localPosition = new Vector3(transform.localPosition.x,
+                transform.localPosition.y + y, 0);
+    }
+
+    [Command]
+    public void CmdSetVerticalVelocity(float vel)
+    {
+        RpcSetVerticalVelocity(vel);
+    }
+
+    [ClientRpc]
+    private void RpcSetVerticalVelocity(float vel)
+    {
+        if (hasAuthority)
+            verticalVelocity = vel;
+    }
+
+    [Command]
+    public void CmdAddVelocities(float dvx, float dvy)
+    {
+        RpcChangeVelocities(dvx, dvy);
+    }
+
+    [ClientRpc]
+    private void RpcChangeVelocities(float dvx, float dvy)
+    {
+        if (hasAuthority) {
+            horizontalVelocity += dvx;
+            verticalVelocity += dvy;
+        }
+    }
+    #endregion
+
+    #region Movement functions
     private bool Movement_Run(float xInput)
     {
         /* Make the player run based on xInput */
@@ -303,6 +265,14 @@ public class PlayerScript : NetworkBehaviour
             }
         }
 
+        // Combo Timer
+        if (currentPeriod <= 0f) {
+            currentAttack.CollidersAttack();
+
+            // We reset the attack timer
+            currentPeriod = period;
+        }
+
         // Attacks & Combos
         if (currentAttack != null
           && inputs[inputAttackIndex]
@@ -319,7 +289,9 @@ public class PlayerScript : NetworkBehaviour
 
         return attackTimer > 0f;
     }
+    #endregion
 
+    #region Check functions
     private void CheckRotation(float xInput)
     {
         /* Check if the player is correctly rotated
@@ -332,6 +304,14 @@ public class PlayerScript : NetworkBehaviour
         }
     }
 
+    public bool LookToRight()
+    {
+        /* Returns true if the player is facing to the right */
+
+        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
+            || transform.localEulerAngles.y >= 359f;
+    }
+
     private bool CheckCollisionUp()
     {
         colliders = Physics.OverlapBox(jumpCollider.bounds.center,
@@ -341,4 +321,5 @@ public class PlayerScript : NetworkBehaviour
 
         return colliders.Length > 0;
     }
+    #endregion
 }

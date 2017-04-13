@@ -6,6 +6,7 @@ public class MapInfosScript : MonoBehaviour
     [HideInInspector] public GameObject[] listPlayers;
     private bool[] playersInitiated;
     public Vector3[] startPositions;
+    public Vector3[] respawnPositions;
 
     public float xMinLimit, xMaxLimit, yMinLimit, yMaxLimit;
     private float currentY, currentX;
@@ -30,13 +31,23 @@ public class MapInfosScript : MonoBehaviour
     private void CheckEjected()
     {
         for (short i = 0; i < listPlayers.Length; i++) {
-            currentY = listPlayers[i].transform.position.y;
-            currentX = listPlayers[i].transform.position.x;
+            var player = listPlayers[i];
+            currentY = player.transform.position.y;
+            currentX = player.transform.position.x;
 
             if (currentY < yMinLimit || currentY > yMaxLimit
              || currentX < xMinLimit || currentX > xMaxLimit) {
-                /* Animation ejected + remove player */
-                /* If --player.lives > 0 => respawn player */
+                var playerScript = player.GetComponent<PlayerScript>();
+                playerScript.CmdSyncPersoLives(--playerScript.persoLives);
+
+                if (playerScript.persoLives == 0) {
+                    playerScript.CmdSyncIsKO(true);
+                    Destroy(player);
+                }
+                else {
+                    /* Animation ejected */
+                    player.transform.position = respawnPositions[i];
+                }
             }
         }
     }
