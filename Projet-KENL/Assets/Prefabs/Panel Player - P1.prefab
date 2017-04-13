@@ -123,6 +123,7 @@ MonoBehaviour:
   playerName: 
   persoName: 
   isReady: 0
+  indexPlayer: 0
 --- !u!114 &114454714576950848
 MonoBehaviour:
   m_ObjectHideFlags: 1

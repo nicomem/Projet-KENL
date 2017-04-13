@@ -6,6 +6,7 @@ public class CharaControlScript : NetworkBehaviour
     private float xInput;
     private bool jumpButtonPressed;
     private bool[] inputs; // true if listAttack[i].inputKey is pressed
+    private bool isNetworked; // is in multi mode or single mode ?
 
     private PlayerScript player;
     private CharacterController charaControl;
@@ -16,13 +17,15 @@ public class CharaControlScript : NetworkBehaviour
         player = GetComponent<PlayerScript>();
         charaControl = GetComponent<CharacterController>();
 
+        isNetworked = GameObject.Find("Network Manager") != null;
+
         // All initialized at false by default
         inputs = new bool[player.listAttacks.Length];
     }
 
     private void Update()
     {
-        if (hasAuthority)
+        if (hasAuthority || !isNetworked)
             GetInputs();
 
         // Function for moving the player with input (!= IA)

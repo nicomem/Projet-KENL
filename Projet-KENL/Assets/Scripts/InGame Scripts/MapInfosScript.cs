@@ -45,6 +45,8 @@ public class MapInfosScript : MonoBehaviour
 
             if (!playersInitiated[i] && playerScript.persoName != null
                 && playerScript.persoName != "") {
+                // Remove DontDestroyOnLoad
+                player.transform.SetParent(transform);
                 player.transform.SetParent(null);
 
                 switch (playerScript.persoName) {
@@ -93,18 +95,18 @@ public class MapInfosScript : MonoBehaviour
              || currentX < xMinLimit || currentX > xMaxLimit) {
                 var playerScript = player.GetComponent<PlayerScript>();
 
-                playerScript.CmdSyncPersoLives(playerScript.persoLives - 1);
+                playerScript.SyncPersoLives(playerScript.persoLives - 1);
 
                 if (playerScript.persoLives <= 0) {
-                    playerScript.CmdSyncIsKO(true);
+                    playerScript.SyncIsKO(true);
                     // Do not destroy player but disable it
                     // So we can still get its infos
                     player.SetActive(false);
                 } else {
                     /* Animation ejected */
-                    player.transform.position = respawnPositions[i];
-                    playerScript.CmdSetVerticalVelocity(0);
-                    playerScript.CmdSetHorizontalVelocity(0);
+                    playerScript.SyncVerticalVelocity(0);
+                    playerScript.SyncHorizontalVelocity(0);
+                    playerScript.SyncPos(respawnPositions[i]);
                 }
             }
         }

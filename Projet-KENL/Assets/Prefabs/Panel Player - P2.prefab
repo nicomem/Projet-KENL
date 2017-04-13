@@ -254,6 +254,7 @@ MonoBehaviour:
   playerName: 
   persoName: 
   isReady: 0
+  indexPlayer: 0
 --- !u!222 &222234651141944988
 CanvasRenderer:
   m_ObjectHideFlags: 1
