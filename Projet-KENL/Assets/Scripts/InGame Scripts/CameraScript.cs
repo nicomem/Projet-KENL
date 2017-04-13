@@ -88,6 +88,6 @@ public class CameraScript : MonoBehaviour
 
         Vector3 unSmoothCameraPos = new Vector3(xCamera, yCamera, -zCamera);
         mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,
-            unSmoothCameraPos, Time.deltaTime * 2.5f);
+            unSmoothCameraPos, Time.deltaTime * 5f);
     }
 }

@@ -222,12 +222,12 @@ public class PlayerScript : NetworkBehaviour
 
         if (isNetworked) {
             if (hasAuthority) {
-                SyncPos(transform.localPosition);
-                SyncRotation(transform.localRotation);
+                SyncPos(transform.position);
+                SyncRotation(transform.rotation);
             } else {
-                transform.localPosition = Vector3.Lerp(transform.localPosition,
+                transform.position = Vector3.Lerp(transform.position,
                     syncPos, 0.25f);
-                transform.localRotation = syncRotation;
+                transform.rotation = syncRotation;
             }
         }
 

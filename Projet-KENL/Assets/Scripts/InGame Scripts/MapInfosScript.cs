@@ -94,8 +94,8 @@ public class MapInfosScript : MonoBehaviour
             if (currentY < yMinLimit || currentY > yMaxLimit
              || currentX < xMinLimit || currentX > xMaxLimit) {
                 var playerScript = player.GetComponent<PlayerScript>();
-
-                playerScript.SyncPersoLives(playerScript.persoLives - 1);
+                
+                playerScript.persoLives--; // Will be (maybe) synched auto
 
                 if (playerScript.persoLives <= 0) {
                     playerScript.SyncIsKO(true);
@@ -104,9 +104,9 @@ public class MapInfosScript : MonoBehaviour
                     player.SetActive(false);
                 } else {
                     /* Animation ejected */
-                    playerScript.SyncVerticalVelocity(0);
-                    playerScript.SyncHorizontalVelocity(0);
-                    playerScript.SyncPos(respawnPositions[i]);
+                    playerScript.verticalVelocity = 0;
+                    playerScript.horizontalVelocity = 0;
+                    player.transform.position = respawnPositions[i];
                 }
             }
         }
