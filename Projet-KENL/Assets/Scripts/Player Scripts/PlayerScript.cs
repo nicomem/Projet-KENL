@@ -186,6 +186,19 @@ public class PlayerScript : NetworkBehaviour
     }
 
     [Command]
+    public void CmdSetHorizontalVelocity(float vel)
+    {
+        RpcSetHorizontalVelocity(vel);
+    }
+
+    [ClientRpc]
+    private void RpcSetHorizontalVelocity(float vel)
+    {
+        if (hasAuthority)
+            horizontalVelocity = vel;
+    }
+
+    [Command]
     public void CmdAddVelocities(float dvx, float dvy)
     {
         RpcChangeVelocities(dvx, dvy);

@@ -153,8 +153,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 45247066}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 10, z: 10}
-  m_LocalScale: {x: 15, y: 10, z: 6}
+  m_LocalPosition: {x: 0, y: 5, z: 10}
+  m_LocalScale: {x: 15, y: 1, z: 6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -392,6 +392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913572d15c78fad4e8dde0c418fed63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraXMin: -30
+  cameraXMax: 30
+  cameraYMin: -5
+  cameraYMax: 20
 --- !u!1001 &1531170270
 Prefab:
   m_ObjectHideFlags: 0
@@ -474,12 +478,22 @@ Prefab:
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
       propertyPath: yMinLimit
-      value: -10
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
         type: 2}
       propertyPath: yMaxLimit
-      value: 15
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: xMaxLimit
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: xMinLimit
+      value: -35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32e937e6b4361fb4a9cc98a5465e50e3, type: 2}

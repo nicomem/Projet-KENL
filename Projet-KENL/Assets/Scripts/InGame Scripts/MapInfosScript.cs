@@ -91,7 +91,6 @@ public class MapInfosScript : MonoBehaviour
 
             if (currentY < yMinLimit || currentY > yMaxLimit
              || currentX < xMinLimit || currentX > xMaxLimit) {
-                Debug.Log(currentX + " " + currentY);
                 var playerScript = player.GetComponent<PlayerScript>();
 
                 playerScript.CmdSyncPersoLives(playerScript.persoLives - 1);
@@ -104,6 +103,8 @@ public class MapInfosScript : MonoBehaviour
                 } else {
                     /* Animation ejected */
                     player.transform.position = respawnPositions[i];
+                    playerScript.CmdSetVerticalVelocity(0);
+                    playerScript.CmdSetHorizontalVelocity(0);
                 }
             }
         }

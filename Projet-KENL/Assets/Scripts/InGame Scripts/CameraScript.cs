@@ -4,12 +4,13 @@ public class CameraScript : MonoBehaviour
 {
     private Camera mainCam;
     private GameObject[] listPlayers;
+    private PlayerScript[] listPlayerScripts;
     private MapInfosScript mapInfos;
     private float cameraRecul;
     private float CameraFOV;
     private float videoFormat;
 
-    private float cameraXMin, cameraXMax, cameraYMin, cameraYMax;
+    public float cameraXMin, cameraXMax, cameraYMin, cameraYMax;
     private float xMax, xMin, yMax, yMin;
     private float posX, posY;
     private float xCamera, yCamera, zCamera;
@@ -39,12 +40,12 @@ public class CameraScript : MonoBehaviour
     {
         if (mapInfos.InitPlayersFinished) {
             listPlayers = mapInfos.ListPlayers;
+            listPlayerScripts = mapInfos.ListPlayerScripts;
 
-            // Change that
-            cameraXMin = mapInfos.xMinLimit + 5;
-            cameraXMax = mapInfos.xMaxLimit - 5;
-            cameraYMin = mapInfos.yMinLimit + 5;
-            cameraYMax = mapInfos.yMaxLimit - 5;
+            cameraXMin /= cameraRecul;
+            cameraXMax /= cameraRecul;
+            cameraYMin /= cameraRecul;
+            cameraYMax /= cameraRecul;
 
             initCamera = true;
         }
@@ -56,9 +57,13 @@ public class CameraScript : MonoBehaviour
         xMin = cameraXMax;
         yMax = cameraYMin;
         yMin = cameraYMax;
+        
+        for (int i = 0; i < listPlayers.Length; i++) {
+            var player = listPlayers[i];
+            var playerScript = listPlayerScripts[i];
 
-        foreach (GameObject player in listPlayers) {
-            if (player == null)
+            // We don't couont if ko (== not in scene)
+            if (playerScript.isKO)
                 continue;
 
             posX = player.transform.position.x;
@@ -76,29 +81,13 @@ public class CameraScript : MonoBehaviour
         yMax = Mathf.Min(yMax, cameraYMax);
         yMin = Mathf.Max(yMin, cameraYMin);
 
-        /* Change that */
-        xCamera = (xMax + xMin) / 2;
-        yCamera = (yMax + yMin) / 2;
+        xCamera = xMin + ((xMax - xMin) / 2);
+        yCamera = yMin + ((yMax - yMin) / 2);
+        zCamera = (90 / mainCam.fieldOfView) * cameraRecul;
+        zCamera = Mathf.Max(25f, zCamera);
 
-        // On cherche la distance (z) entre la caméra et le plan
-        // Trigo:
-        // zX = (xMax - xMin) * 2 * tan(fov / 2)
-        // zY = (yMax - yMin) * 2 * tan(fov / 2)
-        // z = max(zX, zY)
-        //
-        // z = max(xMax - xMin, yMax - yMin) / tan(fov / 2)
-
-        zCamera = -Mathf.Max(15,
-            Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin)
-                / (2 * Mathf.Tan(CameraFOV / 2)));
-
-        // Les joueurs aux positions extremums sont aux bords de la caméra
-        // Pour ajouter de la visibilité, on recule un peu la caméra
-
-        zCamera *= cameraRecul;
-
-        transform.position = new Vector3(xCamera, yCamera, zCamera);
+        Vector3 unSmoothCameraPos = new Vector3(xCamera, yCamera, -zCamera);
+        mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,
+            unSmoothCameraPos, Time.deltaTime * 2.5f);
     }
-
-    
 }
