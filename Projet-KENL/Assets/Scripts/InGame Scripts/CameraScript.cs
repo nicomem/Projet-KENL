@@ -35,6 +35,21 @@ public class CameraScript : MonoBehaviour
             MoveCameraAuto();
     }
 
+    private void InitCamera()
+    {
+        if (mapInfos.InitPlayersFinished) {
+            listPlayers = mapInfos.ListPlayers;
+
+            // Change that
+            cameraXMin = mapInfos.xMinLimit + 5;
+            cameraXMax = mapInfos.xMaxLimit - 5;
+            cameraYMin = mapInfos.yMinLimit + 5;
+            cameraYMax = mapInfos.yMaxLimit - 5;
+
+            initCamera = true;
+        }
+    }
+
     private void MoveCameraAuto()
     {
         xMax = cameraXMin;
@@ -73,7 +88,9 @@ public class CameraScript : MonoBehaviour
         //
         // z = max(xMax - xMin, yMax - yMin) / tan(fov / 2)
 
-        zCamera = -Mathf.Max(15, Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin) / (2 * Mathf.Tan(CameraFOV / 2)));
+        zCamera = -Mathf.Max(15,
+            Mathf.Max((xMax - xMin) / videoFormat, yMax - yMin)
+                / (2 * Mathf.Tan(CameraFOV / 2)));
 
         // Les joueurs aux positions extremums sont aux bords de la caméra
         // Pour ajouter de la visibilité, on recule un peu la caméra
@@ -83,18 +100,5 @@ public class CameraScript : MonoBehaviour
         transform.position = new Vector3(xCamera, yCamera, zCamera);
     }
 
-    private void InitCamera()
-    {
-        if (mapInfos.initPlayersFinished) {
-            listPlayers = mapInfos.listPlayers;
-
-            // Change that
-            cameraXMin = mapInfos.xMinLimit;
-            cameraXMax = mapInfos.xMaxLimit;
-            cameraYMin = mapInfos.yMinLimit;
-            cameraYMax = mapInfos.yMaxLimit;
-
-            initCamera = true;
-        }
-    }
+    
 }

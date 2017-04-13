@@ -9,6 +9,10 @@ public class PlayerScript : NetworkBehaviour
     [HideInInspector] [SyncVar] public string persoName;
     [Command] public void CmdSyncPersoName(string s) { persoName = s; }
 
+    // TODO: give playerName to each in menuMulti
+    [HideInInspector] [SyncVar] public string playerName;
+    [Command] public void CmdSyncPlayerName(string s) { playerName = s; }
+
     [HideInInspector] [SyncVar] public bool isIA;
     [Command] public void CmdSyncIsIA(bool b) { isIA = b; }
 
@@ -33,8 +37,6 @@ public class PlayerScript : NetworkBehaviour
 
     [HideInInspector] [SyncVar] public bool isKO = false;
     [Command] public void CmdSyncIsKO(bool b) { isKO = b; }
-    
-
     #endregion
 
     #region Editor modified
@@ -266,7 +268,7 @@ public class PlayerScript : NetworkBehaviour
         }
 
         // Combo Timer
-        if (currentPeriod <= 0f) {
+        if (attackTimerActivated && currentPeriod <= 0f) {
             currentAttack.CollidersAttack();
 
             // We reset the attack timer
