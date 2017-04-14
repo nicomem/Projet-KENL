@@ -183,9 +183,6 @@ public class PlayerScript : NetworkBehaviour
     private int jumpCount = 0; // How many jumps done before grounded
     private Collider[] colliders;
 
-    // Attack var (hidden)
-    public float percentHealth = 0f; // pushReceived = 
-                                     // power * (1 + percentHealth / 100)
     //Code for usual Health Bar
     public float MaxHealth = 100f;
     public float Health = 100f;
