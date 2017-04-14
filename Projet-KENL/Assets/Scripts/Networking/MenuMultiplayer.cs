@@ -78,12 +78,16 @@ public class MenuMultiplayer : NetworkManager
         StartClient();
         GameObject.Find("Canvas").transform.Find("Connection Client")
             .gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("MainMenu")
+            .gameObject.SetActive(false);
     }
 
     public void StopClientButton()
     {
         GameObject.Find("Canvas").transform.Find("Connection Client")
             .gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("MainMenu")
+            .gameObject.SetActive(true);
         StopClient();
     }
 
@@ -367,7 +371,6 @@ public class MenuMultiplayer : NetworkManager
             playerScript.SyncPersoName(persoNames[i]);
 
             // Get Player Name != Perso Name
-            Debug.Log("Panel Player - P" + (i + 1) + "(clone)");
             var _playerName = canvas.transform.Find("Panel Player - P" + (i + 1) + "(Clone)")
                 .GetComponent<LobbyPlayerScript>().playerName;
             playerScript.SyncPlayerName(_playerName);

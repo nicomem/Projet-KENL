@@ -183,6 +183,13 @@ public class PlayerScript : NetworkBehaviour
     private int jumpCount = 0; // How many jumps done before grounded
     private Collider[] colliders;
 
+    //Code for usual Health Bar
+    public float MaxHealth = 100f;
+    public float Health = 100f;
+    public float percentOfHealth;
+    public float hpBarLength;
+    public Texture2D hpBarTexture;
+    //End of usual healthbar
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
