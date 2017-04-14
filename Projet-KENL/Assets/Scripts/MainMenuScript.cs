@@ -3,6 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour {
 
+    private void Start()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void Load_Choose()
     {
         SceneManager.LoadScene("MainMenuChoose");

@@ -84,7 +84,7 @@ public class CameraScript : MonoBehaviour
         xCamera = xMin + ((xMax - xMin) / 2);
         yCamera = yMin + ((yMax - yMin) / 2);
         zCamera = (90 / mainCam.fieldOfView) * cameraRecul;
-        zCamera = Mathf.Max(25f, zCamera);
+        zCamera = Mathf.Max(20f, zCamera);
 
         Vector3 unSmoothCameraPos = new Vector3(xCamera, yCamera, -zCamera);
         mainCam.transform.position = Vector3.Lerp(mainCam.transform.position,
