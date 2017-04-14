@@ -8,7 +8,6 @@ public class ComboTemplate : MonoBehaviour
 
     // Combo properties
     public Vector3 dirLastAttack;
-    [Range(0, 20)]
     public float powerLastAttack;
     public float multPushLastAttack = 1; // For throwing farther with the same power
     public int comboLength;
@@ -27,6 +26,13 @@ public class ComboTemplate : MonoBehaviour
     protected float healthMultiplier;
     protected float x, y;
 
+    protected bool isNetworked;
+
+    private void Start()
+    {
+        isNetworked = GameObject.Find("Network Manager") != null;
+    }
+
     public void CollidersAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
@@ -43,18 +49,14 @@ public class ComboTemplate : MonoBehaviour
             if (colliders[i].transform.name != transform.name) {
                 playerHit = colliders[i].GetComponent<PlayerScript>();
 
-                if (playerHit.transform.position.x - transform.position.x > 0) {
-                    attackDirection = 1f;
-                } else {
-                    attackDirection = -1f;
-                }
+                attackDirection = GetComponent<PlayerScript>()
+                    .LookToRight() ? 1f : -1f;
 
                 // If player can get hit
                 if (playerHit.InvulnerableTimer <= 0.5f) {
                     if (actualCombo < comboLength - 1) {
                         GiveAttack(Vector3.zero, 0f, 0f, 0f);
                     } else {
-                        print(actualCombo);
                         GiveAttack(dirLastAttack, powerLastAttack,
                             attackDirection, multPushLastAttack);
                     }
@@ -66,15 +68,18 @@ public class ComboTemplate : MonoBehaviour
     protected void GiveAttack(Vector3 attackDir, float attackPower,
         float attackDirection, float multPush)
     {
+        // TODO: Verify health system
         healthMultiplier = (1 + (playerHit.percentHealth / 100));
 
         x = attackDir.x * attackPower * attackDirection * healthMultiplier
             * multPush;
         y = attackDir.y * attackPower * healthMultiplier * multPush;
 
-        playerHit.ChangeVelocities(x, y);
-        playerHit.percentHealth += attackPower;
-        playerHit.InvulnerableTimer = attackCooldown;
-        playerHit.isGrounded = false;
+        // Place it in mid-air (== not grounded)
+        playerHit.AddPosY(0.1f);
+        playerHit.SyncIsGrounded(false);
+        playerHit.AddVelocities(x, y);
+        playerHit.SyncInvulnerableTimer(attackCooldown);
+        playerHit.SyncPercentHealth(playerHit.percentHealth + attackPower);
     }
 }

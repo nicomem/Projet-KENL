@@ -18,7 +18,7 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
+    <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -69,9 +66,6 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
@@ -112,20 +106,20 @@
     <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneTags.cs" />
     <Compile Include="Assets\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\guiTextSet.cs" />
     <Compile Include="Assets\Personnages\Script\playerstealhchar.cs" />
-    <Compile Include="Assets\Scripts\AnimationsScript.cs" />
-    <Compile Include="Assets\Scripts\CameraScript.cs" />
     <Compile Include="Assets\Scripts\CameraTest.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\ComboTemplate.cs" />
     <Compile Include="Assets\Scripts\Combos Scripts\Combo_Basic.cs" />
-    <Compile Include="Assets\Scripts\GUIScript.cs" />
+    <Compile Include="Assets\Scripts\InGame Scripts\AnimationsScript.cs" />
+    <Compile Include="Assets\Scripts\InGame Scripts\CameraScript.cs" />
+    <Compile Include="Assets\Scripts\InGame Scripts\GUIScript.cs" />
+    <Compile Include="Assets\Scripts\InGame Scripts\MapInfosScript.cs" />
     <Compile Include="Assets\Scripts\MainMenuScript.cs" />
-    <Compile Include="Assets\Scripts\MapInfosScript.cs" />
-    <Compile Include="Assets\Scripts\Networking\LobbyScript.cs" />
+    <Compile Include="Assets\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Scripts\Networking\MenuMultiplayer.cs" />
-    <Compile Include="Assets\Scripts\Networking\MessageTypes.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\SingleplayerLobbyScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />

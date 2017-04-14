@@ -30,7 +30,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public void Load_NormalGame()
     {
-        SceneManager.LoadScene("Plateforme");
+        SceneManager.LoadScene("SingleplayerLobby");
     }
 
     public void Load_Multiplayer()

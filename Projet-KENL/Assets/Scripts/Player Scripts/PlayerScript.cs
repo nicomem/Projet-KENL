@@ -1,39 +1,187 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [System.Serializable]
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : NetworkBehaviour
 {
-    // Jump var (Editor)
+    #region Variables
+    #region SyncVar region
+    #region SyncVar: persoName
+    [HideInInspector] [SyncVar] public string persoName;
+    public void SyncPersoName(string s)
+    {
+        if (isServer || !isNetworked) persoName = s;
+        else CmdSyncPersoName(s);
+    }
+    [Command] private void CmdSyncPersoName(string s) { persoName = s; }
+    #endregion
+
+    // TODO: give playerName to each in menuMulti
+    #region SyncVar: playerName
+    [HideInInspector] [SyncVar] public string playerName;
+    public void SyncPlayerName(string s)
+    {
+        if (isServer || !isNetworked) playerName = s;
+        else CmdSyncPlayerName(s);
+    }
+    [Command] private void CmdSyncPlayerName(string s) { playerName = s; }
+    #endregion
+
+    #region SyncVar: isIA
+    [HideInInspector] [SyncVar] public bool isIA;
+    public void SyncIsIA(bool b)
+    {
+        if (isServer || !isNetworked) isIA = b;
+        else CmdSyncIsIA(b);
+    }
+    [Command] private void CmdSyncIsIA(bool b) { isIA = b; }
+    #endregion
+
+    #region SyncVar: syncPos
+    [HideInInspector] [SyncVar] public Vector3 syncPos;
+    public void SyncPos(Vector3 p)
+    {
+        if (isServer || !isNetworked) syncPos = p;
+        else CmdSyncPos(p);
+    }
+    [Command] private void CmdSyncPos(Vector3 p) { syncPos = p; }
+    #endregion
+
+    #region SyncVar: syncRotation
+    [HideInInspector] [SyncVar] public Quaternion syncRotation;
+    public void SyncRotation(Quaternion r)
+    {
+        if (isServer || !isNetworked) syncRotation = r;
+        else CmdSyncRotation(r);
+    }
+    [Command] private void CmdSyncRotation(Quaternion r) { syncRotation = r; }
+    #endregion
+
+    #region SyncVar: isGrounded
+    [HideInInspector] [SyncVar] public bool isGrounded = true;
+    public void SyncIsGrounded(bool b)
+    {
+        if (isServer || !isNetworked) isGrounded = b;
+        else CmdSyncIsGrounded(b);
+    }
+    [Command] private void CmdSyncIsGrounded(bool b) { isGrounded = b; }
+    #endregion
+
+    #region SyncVar: InvulnerableTimer
+    // If <= 0f, player can get hit, resets in function of the attack
+    [HideInInspector] [SyncVar] public float InvulnerableTimer;
+    public void SyncInvulnerableTimer(float f)
+    {
+        if (isServer || !isNetworked) InvulnerableTimer = f;
+        else CmdSyncInvulnerableTimer(f);
+    }
+    [Command] private void CmdSyncInvulnerableTimer(float t) { InvulnerableTimer = t; }
+    #endregion
+
+    #region SyncVar: percentHealth
+    [HideInInspector] [SyncVar] public float percentHealth = 0;
+    public void SyncPercentHealth(float f)
+    {
+        if (isServer || !isNetworked) percentHealth = f;
+        else CmdSyncPercentHealth(f);
+    }
+    [Command] private void CmdSyncPercentHealth(float h) { percentHealth = h; }
+    #endregion
+
+    #region SyncVar: persoLives
+    [HideInInspector] [SyncVar] public float persoLives = 3;
+    public void SyncPersoLives(float f)
+    {
+        if (isServer || !isNetworked) persoLives = f;
+        else CmdSyncPersoLives(f);
+    }
+    [Command] private void CmdSyncPersoLives(float l) { persoLives = l; }
+    #endregion
+
+    #region SyncVar: isKO
+    [HideInInspector] [SyncVar] public bool isKO = false;
+    public void SyncIsKO(bool b)
+    {
+        if (isServer || !isNetworked) isKO = b;
+        else CmdSyncIsKO(b);
+    }
+    [Command] private void CmdSyncIsKO(bool b) { isKO = b; }
+    #endregion
+
+    #region SyncVar: verticalVelocity
+    [HideInInspector] [SyncVar] public float verticalVelocity;
+    public void SyncVerticalVelocity(float f)
+    {
+        if (isServer || !isNetworked) verticalVelocity = f;
+        else CmdSyncVerticalVelocity(f);
+    }
+    [Command] private void CmdSyncVerticalVelocity(float f) { verticalVelocity = f; }
+    #endregion
+
+    #region SyncVar: horizontalVelocity
+    [HideInInspector] [SyncVar] public float horizontalVelocity;
+    public void SyncHorizontalVelocity(float f)
+    {
+        if (isServer || !isNetworked) horizontalVelocity = f;
+        else CmdSyncHorizontalVelocity(f);
+    }
+    [Command] private void CmdSyncHorizontalVelocity(float f) { horizontalVelocity = f; }
+    #endregion
+
+    #region Others
+    public void AddPosY(float y)
+    {
+        if (isServer || !isNetworked)
+            syncPos = new Vector3(transform.localPosition.x,
+                transform.localPosition.y + y, 0);
+        else
+            CmdAddPosY(y);
+    }
+    [Command]
+    private void CmdAddPosY(float y)
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x,
+            transform.localPosition.y + y, 0);
+    }
+
+    public void AddVelocities(float dvx, float dvy)
+    {
+        if (isServer || !isNetworked) {
+            horizontalVelocity += dvx;
+            verticalVelocity += dvy;
+        } else
+            CmdChangeVelocities(dvx, dvy);
+    }
+    [Command]
+    private void CmdChangeVelocities(float dvx, float dvy)
+    {
+        horizontalVelocity += dvx;
+        verticalVelocity += dvy;
+    }
+    #endregion
+    #endregion
+
+    #region Editor modified
     [Header("Jumping")]
-    [Space(5)]
-    public float gravity = 14.0f;
-    public float jumpForce = 10.0f; // Y-velocity added when jumping
-    public float horizontalSpeed = 20.0f;
+    public float gravity = 60f;
+    public float jumpForce = 30f; // Y-velocity added when jumping
+    public float horizontalSpeed = 20f;
     public int jumpMax = 2; // How many jumps the player can do
                             // before being grounded
     public Collider jumpCollider;
 
-    [Space]
-
-    // Attack var (Editor)
     [Header("Attacking")]
-    [Space(5)]
     public ComboTemplate[] listAttacks;
     public int maxCombo = 4;
     public float period = 1f; // Set the period between each attackCollider check
 
-    [Space]
+    [Header("Others")]
     public AnimationsScript animScript;
+    #endregion
 
-    // Jump var (hidden)
-    private float verticalVelocity;
-    private float horizontalVelocity; // Not jump, but goes with Y-velocity
+    #region Private vars
     private int jumpCount = 0; // How many jumps done before grounded
-    [System.NonSerialized]
-    public bool isGrounded = true; // See if grounded (can be modified if
-                                   // needed, ex: attacks)
     private Collider[] colliders;
-
 
     // Attack var (hidden)
     public float percentHealth = 0f; // pushReceived = 
@@ -45,7 +193,6 @@ public class PlayerScript : MonoBehaviour
     public float hpBarLength;
     public Texture2D hpBarTexture;
     //End of usual healthbar
-
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
@@ -53,28 +200,29 @@ public class PlayerScript : MonoBehaviour
     private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
 
-    public float InvulnerableTimer { get; set; }
-    // If <= 0f, player can get hit, resets in function of the attack
-
-    // Other movements var (public)
     private float waySign; // If 1: player looks to the right
+    private bool wasGrounded;
+    private bool isNetworked; // See CharaControlScript
 
-    // Other movements var (private)
     private Vector3 moveVector;
     private CharacterController charaControl;
+    #endregion
+    #endregion
 
     private void Start()
     {
+        // When lobby -> inGame
+        if (transform.parent == null)
+            DontDestroyOnLoad(gameObject);
+
         charaControl = GetComponent<CharacterController>();
         InvulnerableTimer = 0f;
         moveVector = Vector3.zero;
+
+        isNetworked = GameObject.Find("Network Manager") != null;
     }
 
-    public Vector3 GetMoveVector() { return moveVector; }
-    public void SetHorizontalVelocity(float vel) { horizontalVelocity = vel; }
-    public void SetVerticalVelocity(float vel) { verticalVelocity = vel; }
-
-    public void Movements(float xInput, bool jumpButtonPressed, bool[] inputs)
+    public void Movements(float xInput, bool jumpButtonPressed, bool[] attackInputs)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
@@ -82,130 +230,74 @@ public class PlayerScript : MonoBehaviour
         // We update the timers
         UpdateTimers();
 
+        if (isNetworked) {
+            if (hasAuthority) {
+                SyncPos(transform.position);
+                SyncRotation(transform.rotation);
+            } else {
+                transform.position = Vector3.Lerp(transform.position,
+                    syncPos, 0.25f);
+                transform.rotation = syncRotation;
+            }
+        }
+
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;
 
         if (isGrounded) {
-            verticalVelocity = Mathf.Max(verticalVelocity, -1f);
-            horizontalVelocity = 0;
-        }
+            if (!wasGrounded) {
+                verticalVelocity = Mathf.Max(verticalVelocity, -1f);
+                horizontalVelocity = 0;
+                wasGrounded = true;
+            }
+        } else wasGrounded = false;
 
         // Movement functions
-        if (transform.name == "Player 2") {
+        if (animScript == null || (!hasAuthority && isNetworked)) {
+            // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
-            Movement_Attack(inputs);
+            Movement_Attack(attackInputs);
         } else {
-            animScript.isRunning = Movement_Run(xInput);
+            animScript.SyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
-            animScript.isAttacking = Movement_Attack(inputs);
-
-            // Animations
-            animScript.do_animations(xInput, InvulnerableTimer);
+            animScript.SyncIsAttacking(Movement_Attack(attackInputs));
         }
+
+        if (animScript != null) // Animations
+            animScript.Do_animations(xInput, InvulnerableTimer);
 
         // Other useful functions
         CheckRotation(xInput);
 
         // Added velocities
-        AddMovement(new Vector3(horizontalVelocity, verticalVelocity, 0));
+        moveVector += new Vector3(horizontalVelocity, verticalVelocity, 0);
 
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
         isGrounded = charaControl.isGrounded;
     }
 
-    public void AddMovement(Vector3 movement)
-    {
-        /* Call this function to add a movement to this player */
-
-        moveVector += movement;
-    }
-
-    public void ChangeVelocities(float dvx, float dvy)
-    {
-        /* Use that function if you want to change the X and/or Y velocities 
-         * ex: gravity, attack or any other force */
-
-        horizontalVelocity += dvx;
-        verticalVelocity += dvy;
-    }
-
-    public void Update()
-    {
-        percentOfHealth = Health / MaxHealth;
-        hpBarLength = percentOfHealth * 100;
-        if (Health > 0)
-            GUI.DrawTexture(new Rect(10, 10, hpBarLength, 10), hpBarTexture);
-
-
-    }
-    public bool LookToRight()
-    {
-        /* Returns true if the player is facing to the right */
-
-        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
-            || transform.localEulerAngles.y >= 359f;
-    }
-
-
     private void UpdateTimers()
     {
-        if (transform.name == "Player Human" && Input.GetKeyDown(KeyCode.H)) {
-            InvulnerableTimer = 0.5f;
-        }
+        var deltaTime = Time.deltaTime;
 
         // Attack Timer
-        if (attackTimer > 0f) { attackTimer -= Time.deltaTime; }
+        if (attackTimer > 0f) attackTimer -= deltaTime;
 
         // Invulnerable Timer
-        if (InvulnerableTimer > 0f) { InvulnerableTimer -= Time.deltaTime; }
+        if (InvulnerableTimer > 0f) InvulnerableTimer -= deltaTime;
 
         // Attack-Collision Timer
-        if (attackTimerActivated) {
-            currentPeriod = Mathf.Max(0f, currentPeriod - Time.deltaTime);
-
-            if (currentPeriod <= 0f) {
-                currentAttack.CollidersAttack();
-
-                // We reset the attack timer
-                currentPeriod = period;
-            }
-        }
-
-        // Change color if hit (DEBUG)
-        if (transform.name == "Player 2") {
-            if (InvulnerableTimer > 0) {
-                GetComponent<Renderer>().material.color = Color.gray;
-            } else {
-                GetComponent<Renderer>().material.color = Color.yellow;
-            }
-        }
-
-        // Color of attack collider
-        if (attackTimer > 0f) {
-            // Here should be called an attack animation
-            if (attackTimer < 0.5f) {
-                // Just for seeing when we can combo (DEBUG)
-                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                //.material.color = Color.yellow;
-            } else {
-                // Give a color to the collider (DEBUG)
-                //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                //.material.color = Color.black;
-            }
-        } else if (currentAttack != null) { // Attack just finished
-                                            // Remove color of the collider (DEBUG)
-                                            //currentAttack.attackCollider.gameObject.GetComponent<Renderer>()
-                                            //    .material.color = Color.white;
-        }
+        if (attackTimerActivated) currentPeriod -= deltaTime;
     }
 
+    #region Movement functions
     private bool Movement_Run(float xInput)
     {
         /* Make the player run based on xInput */
         if (Mathf.Abs(xInput) >= 0.25) {
-            AddMovement(new Vector3(xInput * horizontalSpeed, 0, 0));
+            moveVector += new Vector3(xInput * horizontalSpeed, 0, 0);
             return true;
         } else { return false; }
     }
@@ -266,6 +358,14 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
+        // Combo Timer
+        if (attackTimerActivated && currentPeriod <= 0f) {
+            currentAttack.CollidersAttack();
+
+            // We reset the attack timer
+            currentPeriod = period;
+        }
+
         // Attacks & Combos
         if (currentAttack != null
           && inputs[inputAttackIndex]
@@ -282,7 +382,9 @@ public class PlayerScript : MonoBehaviour
 
         return attackTimer > 0f;
     }
+    #endregion
 
+    #region Check functions
     private void CheckRotation(float xInput)
     {
         /* Check if the player is correctly rotated
@@ -295,6 +397,14 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public bool LookToRight()
+    {
+        /* Returns true if the player is facing to the right */
+
+        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
+            || transform.localEulerAngles.y >= 359f;
+    }
+
     private bool CheckCollisionUp()
     {
         colliders = Physics.OverlapBox(jumpCollider.bounds.center,
@@ -304,4 +414,5 @@ public class PlayerScript : MonoBehaviour
 
         return colliders.Length > 0;
     }
+    #endregion
 }

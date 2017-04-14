@@ -17,10 +17,15 @@ public class IAScript : MonoBehaviour
     {
         player = GetComponent<PlayerScript>();
         charaControl = GetComponent<CharacterController>();
-        otherPlayer = GameObject.Find("Player Human");
-        otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
 
-        GetComponent<Renderer>().material.color = Color.yellow;
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player")) {
+            if (!player.GetComponent<PlayerScript>().isKO) {
+                otherPlayer = player;
+                break;
+            }
+        }
+
+        otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
 
         // All initialized at false by default
         inputs = new bool[player.listAttacks.Length];
@@ -37,8 +42,10 @@ public class IAScript : MonoBehaviour
 
     private void GetInputsIA()
     {
-        for (int i = 0; i < inputs.Length; i++) {
-            inputs[i] = false;
+        if (inputs != null) {
+            for (int i = 0; i < inputs.Length; i++) {
+                inputs[i] = false;
+            }
         }
 
         if (otherPlayer.transform.position.x < transform.position.x - 2)
