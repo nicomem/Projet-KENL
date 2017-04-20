@@ -3565,7 +3565,7 @@ Transform:
   m_GameObject: {fileID: 1351285491652628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0.5}
-  m_LocalScale: {x: 0.5, y: 0.2, z: 1}
+  m_LocalScale: {x: 1.5, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 400154}
   m_RootOrder: 9
@@ -3695,9 +3695,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   persoName: 
+  playerName: 
   isIA: 0
   syncPos: {x: 0, y: 0, z: 0}
   syncRotation: {x: 0, y: 0, z: 0, w: 0}
+  isGrounded: 1
+  InvulnerableTimer: 0
+  percentHealth: 0
+  persoLives: 3
+  isKO: 0
+  verticalVelocity: 0
+  horizontalVelocity: 0
   gravity: 60
   jumpForce: 30
   horizontalSpeed: 20
@@ -3708,7 +3716,11 @@ MonoBehaviour:
   maxCombo: 4
   period: 1
   animScript: {fileID: 114950666320621718}
-  percentHealth: 0
+  MaxHealth: 100
+  Health: 100
+  percentOfHealth: 0
+  hpBarLength: 0
+  hpBarTexture: {fileID: 0}
 --- !u!114 &114456792117123444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3723,7 +3735,7 @@ MonoBehaviour:
   dirLastAttack: {x: 0.8, y: 0.2, z: 0}
   powerLastAttack: 10
   multPushLastAttack: 5
-  comboLength: 4
+  comboLength: 1
   inputKey: e
   attackCollider: {fileID: 65415945184279236}
   attackCooldown: 0.5
