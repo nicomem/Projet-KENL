@@ -218,18 +218,20 @@ public class PlayerScript : NetworkBehaviour
         UpdateTimers();
 
         if (isNetworked) {
-            if (isServer) {
+            if (hasAuthority) {
                 SyncPos(transform.position);
                 SyncRotation(transform.rotation);
             } else {
                 transform.position = Vector3.Lerp(transform.position,
-                    syncPos, 0.5f);
+                    syncPos, 0.33f);
                 transform.rotation = syncRotation;
             }
         }
 
         // We reset moveVector and do things to velocities
         moveVector = Vector3.zero;
+
+        horizontalVelocity /= (1 + 3 * Time.deltaTime);
 
         if (isGrounded) {
             verticalVelocity = Mathf.Max(-1f, verticalVelocity);
@@ -243,13 +245,14 @@ public class PlayerScript : NetworkBehaviour
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(attackInputs);
         } else {
-            animScript.isRunning = Movement_Run(xInput);
+            animScript.SyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
-            animScript.isAttacking = Movement_Attack(attackInputs);
+            animScript.SyncIsAttacking(Movement_Attack(attackInputs));
+            animScript.SyncIsHit(InvulnerableTimer > 0);
         }
 
         if (animScript != null) // Animations
-            animScript.Do_animations(xInput, InvulnerableTimer);
+            animScript.Do_animations();
 
         // Other useful functions
         CheckRotation(xInput);
@@ -295,7 +298,8 @@ public class PlayerScript : NetworkBehaviour
             jumpCount = 0;
         } else {
             if (verticalVelocity > 0 && CheckCollisionUp()) {
-                verticalVelocity = 0;
+                if (hasAuthority) SyncVerticalVelocity(0);
+                else verticalVelocity = 0;
             }
 
             // Gravity here
@@ -305,7 +309,8 @@ public class PlayerScript : NetworkBehaviour
         if (jumpButtonPressed
           && jumpCount < jumpMax
           && verticalVelocity < 0.5f * jumpForce) {
-            verticalVelocity = jumpForce;
+            SyncVerticalVelocity(jumpForce);
+            SyncHorizontalVelocity(0.25f * horizontalVelocity);
             jumpCount++;
             return true;
         }

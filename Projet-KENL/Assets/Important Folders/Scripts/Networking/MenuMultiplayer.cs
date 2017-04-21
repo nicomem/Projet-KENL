@@ -229,7 +229,7 @@ public class MenuMultiplayer : NetworkManager
                 charaSelected.transform.localScale =
                     new Vector3(2.1f, 2.1f, 2.1f);
                 charaSelected.transform.localPosition +=
-                    new Vector3(0, -2f, 0);
+                    new Vector3(0, -1f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
@@ -242,6 +242,7 @@ public class MenuMultiplayer : NetworkManager
                 break;
         }
 
+        charaSelected.transform.localScale *= 0.75f;
         persoName = persosPrefabsNames[(int)playerSelected];
 
         playerScript.persoName = persoName;
@@ -480,17 +481,19 @@ public class MenuMultiplayer : NetworkManager
 
         Button.ButtonClickedEvent button;
 
-        button = GameObject.Find("StartHost Button").GetComponent<Button>()
+        var mainMenu = GameObject.Find("Canvas").transform.Find("MainMenu");
+
+        button = mainMenu.Find("StartHost Button").GetComponent<Button>()
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(StartHostButton);
 
-        button = GameObject.Find("JoinGame Button").GetComponent<Button>()
+        button = mainMenu.Find("JoinGame Button").GetComponent<Button>()
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(StartClientButton);
 
-        button = GameObject.Find("MainMenu Button").GetComponent<Button>()
+        button = mainMenu.Find("MainMenu Button").GetComponent<Button>()
             .onClick;
         button.RemoveAllListeners();
         button.AddListener(Load_MainMenu);

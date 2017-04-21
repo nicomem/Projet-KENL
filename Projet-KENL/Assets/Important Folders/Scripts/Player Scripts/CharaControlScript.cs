@@ -71,7 +71,6 @@ public class CharaControlScript : NetworkBehaviour
         if (hasAuthority || !isNetworked)
             GetInputs();
 
-        // Function for moving the player with input (!= IA)
         MovementPlayer();
     }
 

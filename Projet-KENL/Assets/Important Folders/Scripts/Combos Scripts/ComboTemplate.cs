@@ -43,18 +43,19 @@ public class ComboTemplate : MonoBehaviour
                                        LayerMask.GetMask("Hitbox"));
 
         for (int i = 0; i < colliders.Length; i++) {
-            // No self-hitting here !
             playerHit = colliders[i].transform.parent
                 .GetComponent<PlayerScript>();
 
-            if (playerHit.transform.name != transform.name) {
+            // No self-hitting
+            if (playerHit.transform.GetInstanceID() != transform.GetInstanceID()) {
                 leftRight = GetComponent<PlayerScript>()
                     .LookToRight() ? 1f : -1f;
 
                 // If player can get hit
                 if (playerHit.InvulnerableTimer <= 0.5f) {
                     if (actualCombo < comboLength - 1) {
-                        GiveAttack(Vector3.zero, 0f, 0f, 0f);
+                        GiveAttack(dirLastAttack, powerLastAttack / 2,
+                            leftRight, multPushLastAttack / 5);
                     } else {
                         GiveAttack(dirLastAttack, powerLastAttack,
                             leftRight, multPushLastAttack);

@@ -6,7 +6,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 {
     // Script derived from MenuMultiplayer, if you do a modification on
     // this last, make sure to update this script if necessary
-
+    
     private GameObject canvas;
     private GameObject charaSelectBox;
     private GameObject readyButton;

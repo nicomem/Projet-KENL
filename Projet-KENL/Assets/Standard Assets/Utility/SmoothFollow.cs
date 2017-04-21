@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable
+
+using UnityEngine;
 
 namespace UnityStandardAssets.Utility
 {
