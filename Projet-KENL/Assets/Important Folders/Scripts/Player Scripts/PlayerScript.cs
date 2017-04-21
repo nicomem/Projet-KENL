@@ -57,16 +57,6 @@ public class PlayerScript : NetworkBehaviour
     [Command] private void CmdSyncRotation(Quaternion r) { syncRotation = r; }
     #endregion
 
-    #region SyncVar: isGrounded
-    [HideInInspector] [SyncVar] public bool isGrounded = true;
-    public void SyncIsGrounded(bool b)
-    {
-        if (isServer || !isNetworked) isGrounded = b;
-        else CmdSyncIsGrounded(b);
-    }
-    [Command] private void CmdSyncIsGrounded(bool b) { isGrounded = b; }
-    #endregion
-
     #region SyncVar: InvulnerableTimer
     // If <= 0f, player can get hit, resets in function of the attack
     [HideInInspector] [SyncVar] public float InvulnerableTimer;
@@ -196,9 +186,9 @@ public class PlayerScript : NetworkBehaviour
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
     private int inputAttackIndex = 0;
+    private bool isGrounded;
 
     private float waySign; // If 1: player looks to the right
-    private bool wasGrounded;
     private bool isNetworked; // See CharaControlScript
 
     private Vector3 moveVector;
@@ -219,7 +209,7 @@ public class PlayerScript : NetworkBehaviour
         isNetworked = GameObject.Find("Network Manager") != null;
     }
 
-    public void Movements(float xInput, bool jumpButtonPressed, bool[] attackInputs)
+    public void Movements(float xInput, bool jumpButtonPressed, SyncListBool attackInputs)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
@@ -228,12 +218,12 @@ public class PlayerScript : NetworkBehaviour
         UpdateTimers();
 
         if (isNetworked) {
-            if (hasAuthority) {
+            if (isServer) {
                 SyncPos(transform.position);
                 SyncRotation(transform.rotation);
             } else {
                 transform.position = Vector3.Lerp(transform.position,
-                    syncPos, 0.25f);
+                    syncPos, 0.5f);
                 transform.rotation = syncRotation;
             }
         }
@@ -242,12 +232,9 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
 
         if (isGrounded) {
-            if (!wasGrounded) {
-                verticalVelocity = Mathf.Max(verticalVelocity, -1f);
-                horizontalVelocity = 0;
-                wasGrounded = true;
-            }
-        } else wasGrounded = false;
+            verticalVelocity = Mathf.Max(-1f, verticalVelocity);
+            horizontalVelocity *= 0.75f;
+        }
 
         // Movement functions
         if (animScript == null || (!hasAuthority && isNetworked)) {
@@ -256,9 +243,9 @@ public class PlayerScript : NetworkBehaviour
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(attackInputs);
         } else {
-            animScript.SyncIsRunning(Movement_Run(xInput));
+            animScript.isRunning = Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
-            animScript.SyncIsAttacking(Movement_Attack(attackInputs));
+            animScript.isAttacking = Movement_Attack(attackInputs);
         }
 
         if (animScript != null) // Animations
@@ -326,7 +313,7 @@ public class PlayerScript : NetworkBehaviour
         return false;
     }
 
-    private bool Movement_Attack(bool[] inputs)
+    private bool Movement_Attack(SyncListBool attackInputs)
     {
         /* Check if an attack can be made, if so, make the player attack
          * There is also combos (& combos limit)
@@ -345,7 +332,7 @@ public class PlayerScript : NetworkBehaviour
 
             // We check if new attack
             for (int i = 0; i < listAttacks.Length; i++) {
-                if (inputs[i]) {
+                if (attackInputs[i]) {
                     currentAttack = listAttacks[i];
                     inputAttackIndex = i;
                 }
@@ -362,7 +349,7 @@ public class PlayerScript : NetworkBehaviour
 
         // Attacks & Combos
         if (currentAttack != null
-          && inputs[inputAttackIndex]
+          && attackInputs[inputAttackIndex]
           && attackTimer < 0.5f
           && currentAttack.actualCombo < currentAttack.comboLength - 1) {
             // We activate the attack timer

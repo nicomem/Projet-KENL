@@ -22,7 +22,7 @@ public class ComboTemplate : MonoBehaviour
                                  // so at first attack will be at 0
     protected Collider[] colliders;
     protected PlayerScript playerHit; // Player script of hit player
-    protected float attackDirection; // 1f if attack to the right, -1f else
+    protected float leftRight; // 1f if attack to the right, -1f else
     protected float healthMultiplier;
     protected float x, y;
 
@@ -42,14 +42,13 @@ public class ComboTemplate : MonoBehaviour
                                        attackCollider.transform.rotation,
                                        LayerMask.GetMask("Hitbox"));
 
-        // Colliders gives 2 references to 2 Hitbox-Colliders
-        // So we only take one half
-        for (int i = 0; i < colliders.Length / 2; i++) {
+        for (int i = 0; i < colliders.Length; i++) {
             // No self-hitting here !
-            if (colliders[i].transform.name != transform.name) {
-                playerHit = colliders[i].GetComponent<PlayerScript>();
+            playerHit = colliders[i].transform.parent
+                .GetComponent<PlayerScript>();
 
-                attackDirection = GetComponent<PlayerScript>()
+            if (playerHit.transform.name != transform.name) {
+                leftRight = GetComponent<PlayerScript>()
                     .LookToRight() ? 1f : -1f;
 
                 // If player can get hit
@@ -58,7 +57,7 @@ public class ComboTemplate : MonoBehaviour
                         GiveAttack(Vector3.zero, 0f, 0f, 0f);
                     } else {
                         GiveAttack(dirLastAttack, powerLastAttack,
-                            attackDirection, multPushLastAttack);
+                            leftRight, multPushLastAttack);
                     }
                 }
             }
@@ -66,18 +65,17 @@ public class ComboTemplate : MonoBehaviour
     }
 
     protected void GiveAttack(Vector3 attackDir, float attackPower,
-        float attackDirection, float multPush)
+        float leftRight, float multPush)
     {
         // TODO: Verify health system
-        healthMultiplier = (1 + (playerHit.percentHealth / 100));
+        healthMultiplier = 1 + (playerHit.percentHealth / 100);
 
-        x = attackDir.x * attackPower * attackDirection * healthMultiplier
+        x = attackDir.x * attackPower * leftRight * healthMultiplier
             * multPush;
         y = attackDir.y * attackPower * healthMultiplier * multPush;
 
         // Place it in mid-air (== not grounded)
         playerHit.AddPosY(0.1f);
-        playerHit.SyncIsGrounded(false);
         playerHit.AddVelocities(x, y);
         playerHit.SyncInvulnerableTimer(attackCooldown);
         playerHit.SyncPercentHealth(playerHit.percentHealth + attackPower);

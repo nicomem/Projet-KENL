@@ -4,9 +4,11 @@ using UnityEngine.Networking;
 public class AnimationsScript : NetworkBehaviour
 {
     public Animator anim;
-    private bool isNetworked;
+    //private bool isNetworked;
+    public bool isRunning = false;
+    public bool isAttacking = false;
 
-    #region SyncVar: isRunning
+    /*#region SyncVar: isRunning
     [SyncVar] public bool isRunning = false;
     public void SyncIsRunning(bool b)
     {
@@ -28,12 +30,12 @@ public class AnimationsScript : NetworkBehaviour
             CmdSyncIsAttacking(b);
     }
     [Command] private void CmdSyncIsAttacking(bool b) { isAttacking = b; }
-    #endregion
+    #endregion*/
 
     private void Start()
     {
         anim = GetComponent<Animator>();
-        isNetworked = GameObject.Find("Network Manager") != null;
+        //isNetworked = GameObject.Find("Network Manager") != null;
     }
 
     public void Do_animations(float inputX, float InvulnerableTimer)

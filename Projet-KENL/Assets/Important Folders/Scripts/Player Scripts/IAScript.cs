@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-using System;
+using UnityEngine.Networking;
 
-public class IAScript : MonoBehaviour
+public class IAScript : NetworkBehaviour
 {
     private float xInput;
     private bool jumpButtonPressed;
-    private bool[] inputs; // true if listAttack[i].inputKey is pressed
+    private SyncListBool attackInputs = new SyncListBool();
+        // true if listAttack[i].inputKey is pressed
 
     private PlayerScript player;
     private CharacterController charaControl;
@@ -28,7 +29,8 @@ public class IAScript : MonoBehaviour
         otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
 
         // All initialized at false by default
-        inputs = new bool[player.listAttacks.Length];
+        for (int i = 0; i < player.listAttacks.Length; i++)
+            attackInputs.Add(false);
     }
 
     private void Update()
@@ -42,9 +44,9 @@ public class IAScript : MonoBehaviour
 
     private void GetInputsIA()
     {
-        if (inputs != null) {
-            for (int i = 0; i < inputs.Length; i++) {
-                inputs[i] = false;
+        if (attackInputs != null) {
+            for (int i = 0; i < attackInputs.Count; i++) {
+                attackInputs[i] = false;
             }
         }
 
@@ -74,7 +76,7 @@ public class IAScript : MonoBehaviour
 
         // Le time évite le bug au début ou le perso saute sans raison
         if ((!otherPlayerCharaControl.isGrounded && Time.deltaTime > 1.0f)
-            || (otherPlayer.transform.position.y > transform.position.y))
+            || (otherPlayer.transform.position.y - transform.position.y > 0.2f))
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
@@ -84,7 +86,7 @@ public class IAScript : MonoBehaviour
     {
         /* To move the player with input */
 
-        player.Movements(xInput, jumpButtonPressed, inputs);
+        player.Movements(xInput, jumpButtonPressed, attackInputs);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(
