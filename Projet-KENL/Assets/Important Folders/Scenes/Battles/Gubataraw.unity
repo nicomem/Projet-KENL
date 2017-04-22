@@ -495,6 +495,41 @@ Prefab:
       propertyPath: xMinLimit
       value: -35
       objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[0].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[0].y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[1].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[1].y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[2].x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[2].y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114735248416632214, guid: 32e937e6b4361fb4a9cc98a5465e50e3,
+        type: 2}
+      propertyPath: respawnPositions.Array.data[3].y
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32e937e6b4361fb4a9cc98a5465e50e3, type: 2}
   m_IsPrefabParent: 0

@@ -29,6 +29,7 @@ public class GUIScript : MonoBehaviour {
                 Time.timeScale = 1.0f;
         }
     }
+
     private void OnGUI()
     {
         if (isPaused) {
@@ -38,7 +39,20 @@ public class GUIScript : MonoBehaviour {
 
             if (GUI.Button(new Rect(buttonX, button2Y, buttonWidth, buttonHeight),
                             "Back to main menu"))
-                SceneManager.LoadScene("MainMenu");
+                GoToMainMenu();
         }
+    }
+
+    private void GoToMainMenu()
+    {
+        var mapInfosScript = GameObject.Find("Map Infos")
+            .GetComponent<MapInfosScript>();
+
+        // We destroy them by hand or else they'll reappear in multi mode
+        // \- don't ask me why...
+        foreach (GameObject go in mapInfosScript.ListPlayers)
+            Destroy(go);
+
+        SceneManager.LoadScene("MainMenu");
     }
 }
