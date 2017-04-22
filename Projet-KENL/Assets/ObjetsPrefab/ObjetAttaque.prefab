@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 65599429576689966}
   - component: {fileID: 23978391226369768}
   - component: {fileID: 114156872287219964}
+  - component: {fileID: 114393748260007864}
   m_Layer: 0
   m_Name: ObjetAttaque
   m_TagString: Objet
@@ -53,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1140984939910206}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 35, y: 6, z: 0}
+  m_LocalPosition: {x: 35, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4581158815108662}
@@ -165,6 +166,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1140984939910206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1e46a406ecb25e47a13f2791d80debf, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ad9023efdd4cce4fb754eacd873d668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114393748260007864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1140984939910206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64feeb4a93cd0094c988e03cfd5db349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amplitude: 2
+  speed: 2
+  rotationSpeed: 90

@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PickUpObjects : MonoBehaviour {
 
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Objet"))
-            other.gameObject.SetActive(false);
+        if (other.gameObject.CompareTag("Player"))
+            gameObject.SetActive(false);
     }
+
     // Use this for initialization
     void Start () {
 		

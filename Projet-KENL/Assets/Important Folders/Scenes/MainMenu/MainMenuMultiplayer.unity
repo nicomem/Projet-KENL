@@ -1976,10 +1976,10 @@ MonoBehaviour:
   - Player Test
   - Stealth Char
   mapScenes:
-  - Plateforme
-  - Map_Rain
-  - Map_snow
-  - Map_City
+  - Gubataraw
+  - Lungsod
+  - Gubatgabi
+  - Bundok
   LobbyPlayer: {fileID: 0}
   lobbyPlayerScript: {fileID: 0}
   listPlayersGO:

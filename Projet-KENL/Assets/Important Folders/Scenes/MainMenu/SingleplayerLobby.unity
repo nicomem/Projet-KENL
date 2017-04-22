@@ -2038,10 +2038,10 @@ MonoBehaviour:
   - Player Test
   - Stealth Char
   mapScenes:
-  - Plateforme
-  - Map_Rain
-  - Map_snow
-  - Map_City
+  - Gubataraw
+  - Lungsod
+  - Gubatgabi
+  - Bundok
 --- !u!1 &658806929
 GameObject:
   m_ObjectHideFlags: 0

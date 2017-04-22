@@ -116,12 +116,12 @@
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\MenuMultiplayer.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
-    <Compile Include="Assets\PickUpObjects.cs" />
-    <Compile Include="Assets\Up_Down.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Brick Substance\Documentation\Eula.txt" />

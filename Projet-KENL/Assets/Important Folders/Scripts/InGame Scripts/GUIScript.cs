@@ -2,34 +2,43 @@
 using UnityEngine.SceneManagement;
 
 public class GUIScript : MonoBehaviour {
+
     private bool isPaused;
-	// Use this for initialization
-	void Start () {
+    private int buttonX, button1Y, button2Y, buttonWidth, buttonHeight;
+
+    private void Start()
+    {
         isPaused = false;
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+        buttonWidth = Screen.width / 2;
+        buttonHeight = Screen.height / 10;
+
+        buttonX = (Screen.width - buttonWidth) / 2;
+        button1Y = (int)(0.4f * Screen.height);
+        button2Y = (int)(0.6f * Screen.height);
+    }
+
+    void Update ()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             isPaused = !isPaused;
-        if (isPaused)
-            Time.timeScale = 0f;
-        else
-            Time.timeScale = 1.0f;
+
+            if (isPaused)
+                Time.timeScale = 0f;
+            else
+                Time.timeScale = 1.0f;
+        }
     }
     private void OnGUI()
     {
-        if (isPaused) 
-        {
-            if (GUI.Button(new Rect(Screen.width / 2 - 320, Screen.height / 2 - 120, 640, 80), "Continue"))
+        if (isPaused) {
+            if (GUI.Button(new Rect(buttonX, button1Y, buttonWidth, buttonHeight),
+                           "Continue"))
                 isPaused = false;
-            if (GUI.Button(new Rect(Screen.width / 2 - 320, Screen.height / 2 + 80, 640, 80), "Back to main menu" ))
-                {
-                //Application.Quit();
+
+            if (GUI.Button(new Rect(buttonX, button2Y, buttonWidth, buttonHeight),
+                            "Back to main menu"))
                 SceneManager.LoadScene("MainMenu");
-            }
         }
- 
     }
 }
