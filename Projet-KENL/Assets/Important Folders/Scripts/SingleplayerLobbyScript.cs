@@ -16,6 +16,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     public GameObject[] persoPrefabs;
     public string[] persosPrefabsNames;
     public string[] mapScenes;
+    public Texture[] mapScreenshots;
 
     private string persoName;
     private PlayerType playerSelected = 0;
@@ -179,6 +180,8 @@ public class SingleplayerLobbyScript : MonoBehaviour
         // Change map in image & sync with clients
         mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
             .GetComponent<Text>().text = mapScenes[mapSelected];
+        mapSelectBox.transform.Find("Map Image").GetComponent<RawImage>().texture =
+            mapScreenshots[mapSelected];
     }
     #endregion
 
@@ -197,7 +200,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
         // Player
         switch (persoName) {
-            case "Stealth Char":
+            case "Gianluigi Conti":
                 go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
                 break;
 

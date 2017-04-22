@@ -1980,6 +1980,11 @@ MonoBehaviour:
   - Lungsod
   - Gubatgabi
   - Bundok
+  mapScreenshots:
+  - {fileID: 2800000, guid: 8f068da8925ad8e4684621873a1f6cb3, type: 3}
+  - {fileID: 2800000, guid: 744584e0600f62b4496b49825ff67976, type: 3}
+  - {fileID: 2800000, guid: 835930a7b08322c489ce869ba0d624a5, type: 3}
+  - {fileID: 2800000, guid: ff753e133ce848c4d8e30c2911f04c64, type: 3}
   LobbyPlayer: {fileID: 0}
   lobbyPlayerScript: {fileID: 0}
   listPlayersGO:

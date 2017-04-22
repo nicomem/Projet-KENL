@@ -12,22 +12,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Important Folders/Scenes/MainMenu/MainMenuCredits.unity
   - enabled: 1
-    path: Assets/Important Folders/Scenes/MainMenu/MainMenuSettings.unity
-  - enabled: 1
-    path: Assets/Important Folders/Scenes/Battles/MenuPause.unity
-  - enabled: 1
     path: Assets/Important Folders/Scenes/MainMenu/MainMenuMultiplayer.unity
+  - enabled: 1
+    path: Assets/Important Folders/Scenes/MainMenu/MainMenuSettings.unity
   - enabled: 1
     path: Assets/Important Folders/Scenes/MainMenu/MultiplayerLobby.unity
   - enabled: 1
-    path: Assets/Important Folders/Scenes/Battles/Map_City.unity
-  - enabled: 1
-    path: Assets/Important Folders/Scenes/Battles/Map_Rain.unity
-  - enabled: 1
-    path: Assets/Important Folders/Scenes/Battles/Map_snow.unity
-  - enabled: 1
-    path: Assets/Important Folders/Scenes/Battles/Plateforme.unity
-  - enabled: 0
-    path: Assets/Scenes/DestroyNetworkScene.unity
-  - enabled: 1
     path: Assets/Important Folders/Scenes/MainMenu/SingleplayerLobby.unity
+  - enabled: 1
+    path: Assets/Important Folders/Scenes/Battles/Bundok.unity
+  - enabled: 1
+    path: Assets/Important Folders/Scenes/Battles/Gubataraw.unity
+  - enabled: 1
+    path: Assets/Important Folders/Scenes/Battles/Gubatgabi.unity
+  - enabled: 1
+    path: Assets/Important Folders/Scenes/Battles/Lungsod.unity

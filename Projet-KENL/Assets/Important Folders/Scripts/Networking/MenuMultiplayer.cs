@@ -18,6 +18,7 @@ public class MenuMultiplayer : NetworkManager
     public GameObject[] persoPrefabs;
     public string[] persosPrefabsNames;
     public string[] mapScenes;
+    public Texture[] mapScreenshots;
 
     public string PlayerName { get; private set; }
     private string persoName;
@@ -320,6 +321,8 @@ public class MenuMultiplayer : NetworkManager
         // Change map in image & sync with clients
         mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
             .GetComponent<Text>().text = mapScenes[mapSelected];
+        mapSelectBox.transform.Find("Map Image").GetComponent<RawImage>().texture =
+            mapScreenshots[mapSelected];
     }
     #endregion
 

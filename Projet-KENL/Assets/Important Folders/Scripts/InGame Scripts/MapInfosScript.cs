@@ -50,7 +50,7 @@ public class MapInfosScript : MonoBehaviour
                 player.transform.SetParent(null);
 
                 switch (playerScript.persoName) {
-                    case "Stealth Char":
+                    case "Gianluigi Conti":
                         // Set Rotate90 as parent (& do things)
                         var parent = new GameObject("Stealth Char - Rotate90");
                         parent.transform.position = Vector3.zero;
