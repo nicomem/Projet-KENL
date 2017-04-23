@@ -154,19 +154,17 @@ public class MapInfosScript : MonoBehaviour
                     message = "The game has ended: " + victoryName + " has won!";
                 else
                     message = "It's a tie!";*/
-            }            
+            }
 
-            int buttonWidth = Screen.width / 2;
-            int buttonHeight = Screen.height / 10;
+            message += "\n\nBack to main menu";
+
+            int buttonWidth = Screen.width / 3;
+            int buttonHeight = Screen.height / 5;
             int buttonX = (Screen.width - buttonWidth) / 2;
             int button1Y = (int)(0.4f * Screen.height);
-            int button2Y = (int)(0.6f * Screen.height);
 
-            GUI.Box(new Rect(buttonX, button1Y, buttonWidth, buttonHeight), "");
-            GUI.Label(new Rect(buttonX + (0.45f * buttonWidth), button1Y + (buttonHeight / 3), buttonWidth, buttonHeight), message);
-
-            if (GUI.Button(new Rect(buttonX, button2Y, buttonWidth, buttonHeight),
-                            "Back to main menu"))
+            if (GUI.Button(new Rect(buttonX, button1Y, buttonWidth, buttonHeight),
+                            message))
                 GoToMainMenu();
         }
     }
