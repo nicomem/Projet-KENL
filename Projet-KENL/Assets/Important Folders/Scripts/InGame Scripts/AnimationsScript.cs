@@ -58,6 +58,5 @@ public class AnimationsScript : NetworkBehaviour
             anim.Play("run00", -1);
         else
             anim.Play("idle02", -1);
-
     }
 }

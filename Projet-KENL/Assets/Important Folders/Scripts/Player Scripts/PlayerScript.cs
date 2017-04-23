@@ -163,7 +163,7 @@ public class PlayerScript : NetworkBehaviour
     [Header("Attacking")]
     public ComboTemplate[] listAttacks;
     public int maxCombo = 4;
-    public float period = 1f; // Set the period between each attackCollider check
+    public float period = 0.2f; // Set the period between each attackCollider check
 
     [Header("Others")]
     public AnimationsScript animScript;
@@ -322,7 +322,7 @@ public class PlayerScript : NetworkBehaviour
     {
         /* Check if an attack can be made, if so, make the player attack
          * There is also combos (& combos limit)
-         * Returns true if an attack has been made (else false) */
+         * Returns true if an attack is being made (else false) */
 
         // When attack just finished
         if (attackTimer <= 0f && currentAttack != null) {
@@ -402,6 +402,16 @@ public class PlayerScript : NetworkBehaviour
     {
         return currentAttack != null && attackTimer < 0.5f
           && currentAttack.actualCombo < currentAttack.comboLength - 1;
+    }
+
+    public bool CanBeHit()
+    {
+        return InvulnerableTimer <= 0.5f;
+    }
+
+    public bool IsHit()
+    {
+        return InvulnerableTimer > 0;
     }
     #endregion
 }

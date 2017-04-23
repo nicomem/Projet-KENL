@@ -59,7 +59,7 @@ public class IAScript : NetworkBehaviour
         }*/
 
         // Lorsque IA touchée
-        if (player.InvulnerableTimer > 0f) {
+        if (player.IsHit()) {
             if (otherPlayer.transform.position.x < transform.position.x)
                 xInput = 1.0f;
             else
