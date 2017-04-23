@@ -5,8 +5,7 @@ public class IAScript : NetworkBehaviour
 {
     private float xInput;
     private bool jumpButtonPressed;
-    private SyncListBool attackInputs = new SyncListBool();
-        // true if listAttack[i].inputKey is pressed
+    private int attackSelected;
 
     private PlayerScript player;
     private CharacterController charaControl;
@@ -27,10 +26,6 @@ public class IAScript : NetworkBehaviour
         }
 
         otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
-
-        // All initialized at false by default
-        for (int i = 0; i < player.listAttacks.Length; i++)
-            attackInputs.Add(false);
     }
 
     private void Update()
@@ -44,11 +39,8 @@ public class IAScript : NetworkBehaviour
 
     private void GetInputsIA()
     {
-        if (attackInputs != null) {
-            for (int i = 0; i < attackInputs.Count; i++) {
-                attackInputs[i] = false;
-            }
-        }
+        // If -1 => no attacks
+        attackSelected = -1;
 
         if (otherPlayer.transform.position.x < transform.position.x - 2)
             xInput = -1.0f;
@@ -86,7 +78,7 @@ public class IAScript : NetworkBehaviour
     {
         /* To move the player with input */
 
-        player.Movements(xInput, jumpButtonPressed, attackInputs);
+        player.Movements(xInput, jumpButtonPressed, attackSelected);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(

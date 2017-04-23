@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 public class CharaControlScript : NetworkBehaviour
 {
@@ -25,22 +24,18 @@ public class CharaControlScript : NetworkBehaviour
     [Command] private void CmdSyncJumpButtonPressed(bool b) { jumpButtonPressed = b; }
     #endregion
 
-    #region SyncVar: attackInputs
-    // true if listAttack[i].inputKey is pressed
-    [HideInInspector] [SyncVar] public SyncListBool attackInputs = new SyncListBool();
-    public void SyncAttackInputs(SyncListBool bList)
+    #region SyncVar: attackSelected
+    // If -1: no attack selected
+    // If 0 <= ... < listAttacks.length: listAttacks[i] selected
+    [HideInInspector] [SyncVar] public int attackSelected;
+    public void SyncAttackSelected(int i)
     {
-        if (isServer || !isNetworked) attackInputs = bList;
-        else {
-            bool[] bArray = new bool[bList.Count];
-            bList.CopyTo(bArray, 0);
-            CmdSyncAttackInputs(bArray);
-        }
+        if (isServer || !isNetworked) attackSelected = i;
+        else CmdSyncAttackSelected(i);
     }
-    [Command] private void CmdSyncAttackInputs(bool[] bArray)
+    [Command] private void CmdSyncAttackSelected(int i)
     {
-        for (int i = 0; i < bArray.Length; i++)
-            attackInputs[i] = bArray[i];
+        attackSelected = i;
     }
     #endregion
     #endregion
@@ -60,10 +55,7 @@ public class CharaControlScript : NetworkBehaviour
         charaControl = GetComponent<CharacterController>();
 
         isNetworked = GameObject.Find("Network Manager") != null;
-
-        // All initialized at false by default
-        for (int i = 0; i < player.listAttacks.Length; i++)
-            attackInputs.Add(false);
+        SyncAttackSelected(-1);
     }
 
     private void Update()
@@ -79,20 +71,24 @@ public class CharaControlScript : NetworkBehaviour
         xInput = Input.GetAxis("Horizontal");
         jumpButtonPressed = Input.GetButtonDown("Jump");
 
+        attackSelected = -1;
         for (int i = 0; i < player.listAttacks.Length; i++) {
-            attackInputs[i] = Input.GetKeyDown(player.listAttacks[i].inputKey);
+            if (Input.GetKeyDown(player.listAttacks[i].inputKey)) {
+                attackSelected = i;
+                break;
+            }
         }
 
         SyncXInput(xInput);
         SyncJumpButtonPressed(jumpButtonPressed);
-        SyncAttackInputs(attackInputs);
+        SyncAttackSelected(attackSelected);
     }
 
     private void MovementPlayer()
     {
         /* To move the player with input */
 
-        player.Movements(xInput, jumpButtonPressed, attackInputs);
+        player.Movements(xInput, jumpButtonPressed, attackSelected);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(
