@@ -158,10 +158,10 @@
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_BumpedSpecular.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShader.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShaderCUTOUT.shader" />
+    <None Include="Assets\Important Folders\Personnages\ManyWorlds\SpartanKing\animations.txt" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\StealthChar.txt" />
     <None Include="Assets\KajamansRoads\FileNamesDescription.txt" />
     <None Include="Assets\KajamansRoads\Free\ReadMe.txt" />
-    <None Include="Assets\SpartanKing\animations.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

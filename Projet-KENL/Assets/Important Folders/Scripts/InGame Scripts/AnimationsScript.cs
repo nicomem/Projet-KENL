@@ -3,7 +3,9 @@ using UnityEngine.Networking;
 
 public class AnimationsScript : NetworkBehaviour
 {
-    public Animator anim;
+    private Animator anim;
+    private Animation anim2;
+    public bool useAnimator = true;
     private bool isNetworked;
 
     #region SyncVar: isRunning
@@ -44,19 +46,34 @@ public class AnimationsScript : NetworkBehaviour
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
+        if (useAnimator)
+            anim = GetComponent<Animator>();
+        else
+            anim2 = GetComponent<Animation>();
+
         isNetworked = GameObject.Find("Network Manager") != null;
     }
 
     public void Do_animations()
     {
-        if (isAttacking)
-            anim.Play("attack05", -1);
-        else if (isHit)
-            anim.Play("gethit01", -1);
-        else if (isRunning)
-            anim.Play("run00", -1);
-        else
-            anim.Play("idle02", -1);
+        if (useAnimator) {
+            if (isAttacking)
+                anim.Play("attack05", -1);
+            else if (isHit)
+                anim.Play("gethit01", -1);
+            else if (isRunning)
+                anim.Play("run00", -1);
+            else
+                anim.Play("idle02", -1);
+        } else {
+            if (isAttacking)
+                anim2.Play("attack05");
+            else if (isHit)
+                anim2.Play("gethit01");
+            else if (isRunning)
+                anim2.Play("run00");
+            else
+                anim2.Play("idle02");
+        }
     }
 }

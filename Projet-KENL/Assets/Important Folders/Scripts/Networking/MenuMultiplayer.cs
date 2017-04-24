@@ -32,7 +32,7 @@ public class MenuMultiplayer : NetworkManager
     private GameObject charaSelected;
     private int connectedPlayers;
 
-    public enum PlayerType { PlayerTest, StealthChar };
+    public enum PlayerType { PlayerTest, StealthChar, Spartan };
 
     // Server vars
     [HideInInspector]
@@ -237,6 +237,11 @@ public class MenuMultiplayer : NetworkManager
             case PlayerType.PlayerTest:
                 charaSelected.transform.localScale =
                     new Vector3(1.5f, 2f, 1f);
+                break;
+
+            case PlayerType.Spartan:
+                charaSelected.transform.localScale =
+                    new Vector3(10f, 10f, 10f);
                 break;
 
             default:

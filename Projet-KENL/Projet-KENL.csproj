@@ -120,7 +120,6 @@
     <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
-    <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerNameScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
   </ItemGroup>
@@ -139,10 +138,10 @@
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_BumpedSpecular.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShader.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShaderCUTOUT.shader" />
+    <None Include="Assets\Important Folders\Personnages\ManyWorlds\SpartanKing\animations.txt" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\StealthChar.txt" />
     <None Include="Assets\KajamansRoads\FileNamesDescription.txt" />
     <None Include="Assets\KajamansRoads\Free\ReadMe.txt" />
-    <None Include="Assets\SpartanKing\animations.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />

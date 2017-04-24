@@ -71,6 +71,11 @@ public class MapInfosScript : MonoBehaviour
                     case "Player Test":
                         break;
 
+                    case "Leonidas":
+                        transform.localScale = new Vector3(1, 1, 1);
+                        transform.rotation = Quaternion.Euler(0, 90, 0);
+                        break;
+
                     default:
                         Debug.Log("[ERR] MapInfosScript/InitPlayers: " +
                             "persoName not recognized : " + playerScript.persoName);
