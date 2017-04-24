@@ -67,7 +67,7 @@ public class AnimationsScript : NetworkBehaviour
                 anim.Play("idle02", -1);
         } else {
             if (isAttacking)
-                anim2.Play("attack05");
+                anim2.Play("SpartanKing/attack05");
             else if (isHit)
                 anim2.Play("gethit01");
             else if (isRunning)

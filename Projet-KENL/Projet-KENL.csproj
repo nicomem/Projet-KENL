@@ -122,6 +122,7 @@
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Brick Substance\Documentation\Eula.txt" />
