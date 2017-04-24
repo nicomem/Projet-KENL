@@ -48,6 +48,9 @@ public class ComboTemplate : MonoBehaviour
 
             // No self-hitting
             if (playerHit.transform.GetInstanceID() != transform.GetInstanceID()) {
+
+                Debug.Log(playerHit.transform.name);
+
                 leftRight = GetComponent<PlayerScript>()
                     .LookToRight() ? 1f : -1f;
 
