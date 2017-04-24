@@ -194,6 +194,8 @@ public class PlayerScript : NetworkBehaviour
 
     private Vector3 moveVector;
     private CharacterController charaControl;
+
+    
     #endregion
     #endregion
 

@@ -11,6 +11,7 @@ public class IAScript : NetworkBehaviour
     private CharacterController charaControl;
     private GameObject otherPlayer;
     private CharacterController otherPlayerCharaControl;
+    private bool Training;
 
     // Use this for initialization
     void Start()
@@ -39,8 +40,18 @@ public class IAScript : NetworkBehaviour
 
     private void GetInputsIA()
     {
-        // If -1 => no attacks
-        attackSelected = -1;
+        /*if (attackInputs != null) {
+            for (int i = 0; i < attackInputs.Count; i++) {
+                attackInputs[i] = true;
+                
+            }
+        }*/
+
+        // check if ennemy close, if it is , launch an attack
+        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 5 && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 5)
+            attackInputs[0] = true;
+        else
+            attackInputs[0] = false;
 
         if (otherPlayer.transform.position.x < transform.position.x - 2)
             xInput = -1.0f;
