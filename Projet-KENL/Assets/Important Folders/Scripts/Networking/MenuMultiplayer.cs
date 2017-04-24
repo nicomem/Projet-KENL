@@ -32,7 +32,7 @@ public class MenuMultiplayer : NetworkManager
     private GameObject charaSelected;
     private int connectedPlayers;
 
-    public enum PlayerType { PlayerTest, StealthChar, Spartan };
+    public enum PlayerType { PlayerTest, StealthChar, Antiope };
 
     // Server vars
     [HideInInspector]
@@ -239,16 +239,16 @@ public class MenuMultiplayer : NetworkManager
                     new Vector3(1.5f, 2f, 1f);
                 break;
 
-            case PlayerType.Spartan:
+            case PlayerType.Antiope:
                 charaSelected.transform.localScale =
-                    new Vector3(10f, 10f, 10f);
+                    new Vector3(2f, 2f, 2f);
                 break;
 
             default:
                 break;
         }
 
-        charaSelected.transform.localScale *= 0.75f;
+        charaSelected.transform.localScale *= 0.8f;
         persoName = persosPrefabsNames[(int)playerSelected];
 
         playerScript.persoName = persoName;

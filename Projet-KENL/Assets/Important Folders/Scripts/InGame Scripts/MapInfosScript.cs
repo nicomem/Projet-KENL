@@ -57,10 +57,13 @@ public class MapInfosScript : MonoBehaviour
                 player.transform.SetParent(transform);
                 player.transform.SetParent(null);
 
+                Debug.Log(playerScript.persoName);
+                GameObject parent;
+
                 switch (playerScript.persoName) {
                     case "Gianluigi Conti":
                         // Set Rotate90 as parent (& do things)
-                        var parent = new GameObject("Stealth Char - Rotate90");
+                        parent = new GameObject("Stealth Char - Rotate90");
                         parent.transform.position = Vector3.zero;
                         parent.transform.rotation = Quaternion.Euler(0, 90, 0);
 
@@ -71,9 +74,16 @@ public class MapInfosScript : MonoBehaviour
                     case "Player Test":
                         break;
 
-                    case "Leonidas":
-                        transform.localScale = new Vector3(1, 1, 1);
-                        transform.rotation = Quaternion.Euler(0, 90, 0);
+                    case "Antiope":
+                        parent = new GameObject("Antiope - Rotate90");
+                        parent.transform.position = Vector3.zero;
+                        parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                        player.transform.SetParent(parent.transform);
+                        player.transform.localRotation = Quaternion.identity;
+
+                        player.transform.localScale = new Vector3(2f, 2f, 2f);
+                        //player.transform.rotation = Quaternion.Euler(0, 90, 0);
                         break;
 
                     default:

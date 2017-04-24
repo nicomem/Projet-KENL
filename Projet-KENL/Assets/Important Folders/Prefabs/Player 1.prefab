@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 114898762796964738}
   - component: {fileID: 114413347525088982}
   - component: {fileID: 114044815082028570}
+  - component: {fileID: 114941901496859284}
   m_Layer: 10
   m_Name: Player 1
   m_TagString: Player
@@ -494,11 +495,21 @@ MonoBehaviour:
   maxCombo: 4
   period: 1
   animScript: {fileID: 0}
-  MaxHealth: 100
-  Health: 100
-  percentOfHealth: 0
   hpBarLength: 0
   hpBarTexture: {fileID: 0}
+--- !u!114 &114941901496859284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058267956331638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad9023efdd4cce4fb754eacd873d668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesseBonus: 1.5
+  BonusWanted: 0
 --- !u!143 &143781255430388002
 CharacterController:
   m_ObjectHideFlags: 1

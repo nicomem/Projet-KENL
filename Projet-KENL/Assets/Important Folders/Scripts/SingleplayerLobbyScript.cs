@@ -27,7 +27,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private GameObject charaSelected;
 
-    public enum PlayerType { PlayerTest, StealthChar, Spartan };
+    public enum PlayerType { PlayerTest, StealthChar, Antiope };
 
     private void Start()
     {
@@ -127,9 +127,9 @@ public class SingleplayerLobbyScript : MonoBehaviour
         switch (playerSelected) {
             case PlayerType.StealthChar:
                 charaSelected.transform.localScale =
-                    new Vector3(2.1f, 2.1f, 2.1f);
+                    new Vector3(3f, 3f, 3f);
                 charaSelected.transform.localPosition +=
-                    new Vector3(0, -2f, 0);
+                    new Vector3(0, -2.5f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
@@ -138,11 +138,11 @@ public class SingleplayerLobbyScript : MonoBehaviour
                     new Vector3(1.5f, 2f, 1f);
                 break;
 
-            case PlayerType.Spartan:
+            case PlayerType.Antiope:
                 charaSelected.transform.localScale =
-                    new Vector3(11f, 11f, 11f);
+                    new Vector3(3f, 3f, 3f);
                 charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
+                    new Vector3(0, -1.2f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
@@ -216,8 +216,8 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 go = Instantiate(persoPrefabs[(int)PlayerType.PlayerTest]);
                 break;
 
-            case "Leonidas":
-                go = Instantiate(persoPrefabs[(int)PlayerType.Spartan]);
+            case "Antiope":
+                go = Instantiate(persoPrefabs[(int)PlayerType.Antiope]);
                 break;
 
             default:

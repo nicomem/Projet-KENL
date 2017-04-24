@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -70,9 +67,6 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
@@ -87,6 +81,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CamTarget.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CharacterDemoController.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\MouseOrbit.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\Outfitter.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\RootMotionOff.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\SkinnedMeshCombiner.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneAlarmLight.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneCCTVPlayerDetection.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserBlinking.cs" />

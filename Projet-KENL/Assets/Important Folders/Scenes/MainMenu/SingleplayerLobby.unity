@@ -1939,9 +1939,11 @@ MonoBehaviour:
   persoPrefabs:
   - {fileID: 1058267956331638, guid: 0cca18718b6400148b74c8585e9f56e7, type: 2}
   - {fileID: 100158, guid: 985ce537c89ac5745a8488d37a62e2f6, type: 2}
+  - {fileID: 1497030576984708, guid: f79d502904235954482cdce039d9a6f2, type: 2}
   persosPrefabsNames:
   - Player Test
   - Gianluigi Conti
+  - Antiope
   mapScenes:
   - Gubataraw
   - Lungsod

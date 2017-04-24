@@ -51,9 +51,9 @@ public class IAScript : NetworkBehaviour
         if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 5 && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 5)
             attackSelected = 0;
 
-        if (otherPlayer.transform.position.x < transform.position.x - 2)
+        if (otherPlayer.transform.position.x < transform.position.x - 1)
             xInput = -1.0f;
-        else if (otherPlayer.transform.position.x > transform.position.x + 2)
+        else if (otherPlayer.transform.position.x > transform.position.x + 1)
             xInput = 1.0f;
         else
             xInput = 0f;
