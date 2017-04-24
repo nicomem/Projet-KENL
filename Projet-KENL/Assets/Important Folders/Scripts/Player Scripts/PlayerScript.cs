@@ -163,7 +163,7 @@ public class PlayerScript : NetworkBehaviour
     [Header("Attacking")]
     public ComboTemplate[] listAttacks;
     public int maxCombo = 4;
-    public float period = 1f; // Set the period between each attackCollider check
+    public float period = 0.2f; // Set the period between each attackCollider check
 
     [Header("Others")]
     public AnimationsScript animScript;
@@ -180,6 +180,7 @@ public class PlayerScript : NetworkBehaviour
     public float hpBarLength;
     public Texture2D hpBarTexture;
     //End of usual healthbar
+
     private float attackTimer = 0f; // If 0f, the player can attack
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
@@ -211,7 +212,7 @@ public class PlayerScript : NetworkBehaviour
         isNetworked = GameObject.Find("Network Manager") != null;
     }
 
-    public void Movements(float xInput, bool jumpButtonPressed, SyncListBool attackInputs)
+    public void Movements(float xInput, bool jumpButtonPressed, int attackSelected)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
@@ -245,11 +246,11 @@ public class PlayerScript : NetworkBehaviour
             // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
-            Movement_Attack(attackInputs);
+            Movement_Attack(attackSelected);
         } else {
             animScript.SyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
-            animScript.SyncIsAttacking(Movement_Attack(attackInputs));
+            animScript.SyncIsAttacking(Movement_Attack(attackSelected));
             animScript.SyncIsHit(InvulnerableTimer > 0);
         }
 
@@ -320,30 +321,18 @@ public class PlayerScript : NetworkBehaviour
         return false;
     }
 
-    private bool Movement_Attack(SyncListBool attackInputs)
+    private bool Movement_Attack(int attackSelected)
     {
         /* Check if an attack can be made, if so, make the player attack
          * There is also combos (& combos limit)
-         * Returns true if an attack has been made (else false) */
+         * Returns true if an attack is being made (else false) */
 
-        if (attackTimer <= 0f) { // Attack finished || No attack
-
-            // Here we should finish an attack animation
-
-            if (currentAttack != null) { // Attack just finished
-                currentAttack.actualCombo = -1; // We reset the combo
-                currentAttack = null;
-                inputAttackIndex = 0;
-                attackTimerActivated = false; // And also the attacks timer
-            }
-
-            // We check if new attack
-            for (int i = 0; i < listAttacks.Length; i++) {
-                if (attackInputs[i]) {
-                    currentAttack = listAttacks[i];
-                    inputAttackIndex = i;
-                }
-            }
+        // When attack just finished
+        if (attackTimer <= 0f && currentAttack != null) {
+            currentAttack.actualCombo = -1; // We reset the combo
+            currentAttack = null;
+            inputAttackIndex = 0;
+            attackTimerActivated = false; // And also the attacks timer
         }
 
         // Combo Timer
@@ -355,10 +344,9 @@ public class PlayerScript : NetworkBehaviour
         }
 
         // Attacks & Combos
-        if (currentAttack != null
-          && attackInputs[inputAttackIndex]
-          && attackTimer < 0.5f
-          && currentAttack.actualCombo < currentAttack.comboLength - 1) {
+        if (attackSelected != -1 && CanAttack()) {
+            currentAttack = listAttacks[attackSelected];
+
             // We activate the attack timer
             attackTimerActivated = true;
             currentPeriod = period;
@@ -401,6 +389,32 @@ public class PlayerScript : NetworkBehaviour
                                        LayerMask.GetMask("Plateform"));
 
         return colliders.Length > 0;
+    }
+
+    public bool CanAttack()
+    {
+        return CanStartAttack() || CanContinueCombo();
+    }
+
+    public bool CanStartAttack()
+    {
+        return attackTimer <= 0f;
+    }
+
+    public bool CanContinueCombo()
+    {
+        return currentAttack != null && attackTimer < 0.5f
+          && currentAttack.actualCombo < currentAttack.comboLength - 1;
+    }
+
+    public bool CanBeHit()
+    {
+        return InvulnerableTimer <= 0.5f;
+    }
+
+    public bool IsHit()
+    {
+        return InvulnerableTimer > 0;
     }
     #endregion
 }

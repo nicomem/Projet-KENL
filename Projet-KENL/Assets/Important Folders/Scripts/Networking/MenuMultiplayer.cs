@@ -47,7 +47,7 @@ public class MenuMultiplayer : NetworkManager
     public void StartHostButton()
     {
         // When clicking on "Start Host" button
-        networkAddress = InputIPAdress.text;
+        networkAddress = "127.0.0.1";
         PlayerName = InputPlayerName.text;
 
         if (PlayerName == "")

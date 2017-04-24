@@ -52,7 +52,7 @@ public class ComboTemplate : MonoBehaviour
                     .LookToRight() ? 1f : -1f;
 
                 // If player can get hit
-                if (playerHit.InvulnerableTimer <= 0.5f) {
+                if (playerHit.CanBeHit()) {
                     if (actualCombo < comboLength - 1) {
                         GiveAttack(dirLastAttack, powerLastAttack / 2,
                             leftRight, multPushLastAttack / 5);

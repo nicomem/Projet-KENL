@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapInfosScript : MonoBehaviour
 {
     public GameObject[] ListPlayers { get; private set; }
     public PlayerScript[] ListPlayerScripts { get; private set; }
-    private bool[] playersInitiated;
     public Vector3[] startPositions;
     public Vector3[] respawnPositions;
 
     public float xMinLimit, xMaxLimit, yMinLimit, yMaxLimit;
+
+    private bool[] playersInitiated;
     private float currentY, currentX;
     public bool InitPlayersFinished { get; private set; }
+
+    private bool gameHasEnded;
+    private string victoryName;
+    private bool isNetworked;
 
     private void Start()
     {
@@ -23,6 +29,8 @@ public class MapInfosScript : MonoBehaviour
             ListPlayerScripts[i] = ListPlayers[i].GetComponent<PlayerScript>();
 
         playersInitiated = new bool[ListPlayers.Length];
+
+        isNetworked = GameObject.Find("Network Manager") != null;
     }
 
     // Update is called once per frame
@@ -32,7 +40,7 @@ public class MapInfosScript : MonoBehaviour
             InitPlayers();
         else {
             CheckEjected();
-            //CheckVictory();
+            if (!gameHasEnded) CheckVictory();
         }
     }
 
@@ -94,8 +102,9 @@ public class MapInfosScript : MonoBehaviour
             if (currentY < yMinLimit || currentY > yMaxLimit
              || currentX < xMinLimit || currentX > xMaxLimit) {
                 var playerScript = player.GetComponent<PlayerScript>();
-                
-                playerScript.persoLives--; // Will be (maybe) synched auto
+
+                if (!gameHasEnded) // Player will not die when end screen
+                    playerScript.persoLives--; // Will be (maybe) synched auto
 
                 if (playerScript.persoLives <= 0) {
                     playerScript.SyncIsKO(true);
@@ -114,15 +123,62 @@ public class MapInfosScript : MonoBehaviour
 
     private void CheckVictory()
     {
+        // Check victory
         List<PlayerScript> activePlayerScripts = new List<PlayerScript>();
         foreach (var playerScript in ListPlayerScripts) {
             if (!playerScript.isKO)
                 activePlayerScripts.Add(playerScript);
         }
 
-        if (activePlayerScripts.Count == 1)
-            Debug.Log("[INF] Victory: " + activePlayerScripts[0].playerName);
-        else if (activePlayerScripts.Count == 0)
-            Debug.Log("[INF] It's a tie");
+        // If victory or tie
+        if (activePlayerScripts.Count <= 1) {
+            gameHasEnded = true;
+
+            if (activePlayerScripts.Count == 1)
+                victoryName = activePlayerScripts[0].playerName;
+            else victoryName = "";
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (gameHasEnded) {
+            string message = "";
+
+            if (!isNetworked) {
+                message = "The game has ended!";
+            } else {
+                // Until we player names arer synched
+                message = "The game has ended!";
+                /*if (victoryName != "")
+                    message = "The game has ended: " + victoryName + " has won!";
+                else
+                    message = "It's a tie!";*/
+            }
+
+            message += "\n\nBack to main menu";
+
+            int buttonWidth = Screen.width / 3;
+            int buttonHeight = Screen.height / 5;
+            int buttonX = (Screen.width - buttonWidth) / 2;
+            int button1Y = (int)(0.4f * Screen.height);
+
+            if (GUI.Button(new Rect(buttonX, button1Y, buttonWidth, buttonHeight),
+                            message))
+                GoToMainMenu();
+        }
+    }
+
+    private void GoToMainMenu()
+    {
+        var mapInfosScript = GameObject.Find("Map Infos")
+            .GetComponent<MapInfosScript>();
+
+        // We destroy them by hand or else they'll reappear in multi mode
+        // \- don't ask me why...
+        foreach (GameObject go in mapInfosScript.ListPlayers)
+            Destroy(go);
+
+        SceneManager.LoadScene("MainMenu");
     }
 }
