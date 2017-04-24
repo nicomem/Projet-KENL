@@ -8,6 +8,9 @@ public class SoundManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (GameObject.Find("Sound Manager") != gameObject)
+            Destroy(gameObject);
+
         DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
     }
