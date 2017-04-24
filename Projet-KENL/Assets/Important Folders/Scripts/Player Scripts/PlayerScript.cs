@@ -174,9 +174,9 @@ public class PlayerScript : NetworkBehaviour
     private Collider[] colliders;
 
     //Code for usual Health Bar
-    public float MaxHealth = 100f;
-    public float Health = 100f;
-    public float percentOfHealth;
+    //public float MaxHealth = 100f;
+    //public float Health = 100f;
+    //public float percentOfHealth;
     public float hpBarLength;
     public Texture2D hpBarTexture;
     //End of usual healthbar

@@ -2919,7 +2919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!199 &352204207
 ParticleSystemRenderer:
   serializedVersion: 2
@@ -2934,7 +2934,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 68fbb9946fa614e48adf25b9356d416f, type: 2}
+  - {fileID: 2100000, guid: 9749bd84800bf2d4d99ff86f5c5b6d42, type: 2}
   - {fileID: 2100000, guid: 68fbb9946fa614e48adf25b9356d416f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -3025,7 +3025,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1468536914
+  randomSeed: 1879203486
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5614,7 +5614,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 352204206}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -31.7, y: 38, z: 0}
+  m_LocalPosition: {x: -34.1, y: 38.2, z: 0}
   m_LocalScale: {x: 1, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 355027528}

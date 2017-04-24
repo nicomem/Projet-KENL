@@ -96,12 +96,16 @@ public class MapInfosScript : MonoBehaviour
     {
         for (short i = 0; i < ListPlayers.Length; i++) {
             var player = ListPlayers[i];
+            var playerScript = player.GetComponent<PlayerScript>();
             currentY = player.transform.position.y;
             currentX = player.transform.position.x;
 
-            if (currentY < yMinLimit || currentY > yMaxLimit
-             || currentX < xMinLimit || currentX > xMaxLimit) {
-                var playerScript = player.GetComponent<PlayerScript>();
+            bool ejected = currentY < yMinLimit || currentY > yMaxLimit
+             || currentX < xMinLimit || currentX > xMaxLimit;
+
+            bool ko = playerScript.percentHealth >= 100;
+
+            if (ejected || ko) {
 
                 if (!gameHasEnded) // Player will not die when end screen
                     playerScript.persoLives--; // Will be (maybe) synched auto
@@ -115,6 +119,7 @@ public class MapInfosScript : MonoBehaviour
                     /* Animation ejected */
                     playerScript.verticalVelocity = 0;
                     playerScript.horizontalVelocity = 0;
+                    playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
                 }
             }
