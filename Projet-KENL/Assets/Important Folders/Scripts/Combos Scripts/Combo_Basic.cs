@@ -1,3 +1,4 @@
-﻿public class Combo_Basic : ComboTemplate {
-    
+﻿public class Combo_Basic : ComboTemplate
+{
+
 }

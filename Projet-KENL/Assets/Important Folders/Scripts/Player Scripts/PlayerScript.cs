@@ -377,7 +377,7 @@ public class PlayerScript : NetworkBehaviour
     {
         /* Returns true if the player is facing to the right */
 
-        return Mathf.Abs(transform.localEulerAngles.y) <= 1f
+        return transform.localEulerAngles.y <= 1f
             || transform.localEulerAngles.y >= 359f;
     }
 

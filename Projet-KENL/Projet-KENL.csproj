@@ -18,7 +18,7 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
+    <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -81,6 +81,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CamTarget.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CharacterDemoController.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\MouseOrbit.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\Outfitter.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\RootMotionOff.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\SkinnedMeshCombiner.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneAlarmLight.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneCCTVPlayerDetection.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserBlinking.cs" />

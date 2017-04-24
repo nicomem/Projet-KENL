@@ -8,11 +8,9 @@ using System.IO;
 [Serializable]
 public class Outfitter : MonoBehaviour 
 {
-	
 	CharacterDemoController ac;
 	int oldWeaponIndex;
-	[SerializeField]
-	public List<WeaponSlot> weapons;
+	[SerializeField] public List<WeaponSlot> weapons;
 	
 	// Use this for initialization
 	void Start () 
