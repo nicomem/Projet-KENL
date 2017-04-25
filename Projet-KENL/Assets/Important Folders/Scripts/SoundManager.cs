@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    private AudioSource audioSource;
-    public AudioSource introtheme;
-    public AudioSource fighttheme;
-    public AudioSource volcanchoises;
-    public AudioSource NightForest;
+    public Dictionary<string, GameObject> musicsGO;
+    public GameObject activeMusicGO;
+
+    public GameObject introTheme;
+    public GameObject fightTheme;
+    public GameObject volcanChoices;
+    public GameObject nightForest;
 
     // Use this for initialization
     void Start()
@@ -16,64 +19,33 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-        audioSource = GetComponent<AudioSource>();
+
+        musicsGO = new Dictionary<string, GameObject> {
+            { "MainMenu", introTheme },
+            { "MainMenuMultiplayer", introTheme },
+            { "SingleplayerLobby", volcanChoices },
+            { "MultiplayerLobby", volcanChoices },
+            { "Bundok", fightTheme },
+            { "Gubataraw", fightTheme },
+            { "Gubatgabi", nightForest },
+            { "Lungsod", fightTheme }
+        };
+
+        activeMusicGO = musicsGO["MainMenu"];
+        activeMusicGO.SetActive(true);
     }
 
     private void OnLevelWasLoaded(int level)
     {
-        string activeScene = SceneManager.GetActiveScene().ToString();
+        string activeScene = SceneManager.GetActiveScene().name;
+        GameObject newMusicGO;
 
-        switch (activeScene) {
-            case "MainMenu":
-                fighttheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Stop();
-                introtheme.Play();
-                break;
+        if (musicsGO.TryGetValue(activeScene, out newMusicGO)
+            && newMusicGO != activeMusicGO) {
 
-            case "SingleplayerLobby":
-                fighttheme.Stop();
-                introtheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Play();
-
-                break;
-
-            case "MultiplayerLobby":
-                fighttheme.Stop();
-                introtheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Play();
-
-                break;
-
-            case "Bundok":
-                introtheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Stop();
-                fighttheme.Play();
-                break;
-
-            case "Gutabaraw":
-                introtheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Stop();
-                fighttheme.Play();
-                break;
-
-            case "Gubatadgi":
-                introtheme.Stop();
-                fighttheme.Stop();
-                volcanchoises.Stop();
-                NightForest.Play();
-                break;
-
-            case "Lungsod":
-                introtheme.Stop();
-                NightForest.Stop();
-                volcanchoises.Stop();
-                fighttheme.Play();
-                break;
+            activeMusicGO.SetActive(false);
+            newMusicGO.SetActive(true);
+            activeMusicGO = newMusicGO;
         }
     }
 }

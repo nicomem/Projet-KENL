@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projet-KENL.Plugins", "Projet-KENL.Plugins.csproj", "{F2045F3A-0F64-6F50-B21C-54C062950865}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projet-KENL", "Projet-KENL.csproj", "{776BDDE0-06C2-40AF-13B8-5950EDF75D5E}"
