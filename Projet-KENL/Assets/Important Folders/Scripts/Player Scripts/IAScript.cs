@@ -47,9 +47,12 @@ public class IAScript : NetworkBehaviour
             }
         }*/
 
-        // check if ennemy close, if it is , launch an attack
-        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 5 && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 5)
+        // check if ennemy close, if it is, launch an attack
+        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 3
+            && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 3)
             attackSelected = 0;
+        else
+            attackSelected = -1;
 
         if (otherPlayer.transform.position.x < transform.position.x - 1)
             xInput = -1.0f;

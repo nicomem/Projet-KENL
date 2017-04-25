@@ -4,13 +4,19 @@ using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    public Dictionary<string, GameObject> musicsGO;
-    public GameObject activeMusicGO;
+    private Dictionary<string, AudioSource> musics;
+    private Dictionary<string, AudioSource> bruitagesAS;
+    private AudioSource activeMusic;
 
-    public GameObject introTheme;
-    public GameObject fightTheme;
-    public GameObject volcanChoices;
-    public GameObject nightForest;
+    [Header("Musics")]
+    public AudioSource introTheme;
+    public AudioSource fightTheme;
+    public AudioSource volcanChoices;
+    public AudioSource nightForest;
+
+    [Header("Bruitages")]
+    public AudioSource attackSound;
+    public AudioSource respawnSound;
 
     // Use this for initialization
     void Start()
@@ -20,7 +26,7 @@ public class SoundManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        musicsGO = new Dictionary<string, GameObject> {
+        musics = new Dictionary<string, AudioSource> {
             { "MainMenu", introTheme },
             { "MainMenuMultiplayer", introTheme },
             { "SingleplayerLobby", volcanChoices },
@@ -31,21 +37,35 @@ public class SoundManager : MonoBehaviour
             { "Lungsod", fightTheme }
         };
 
-        activeMusicGO = musicsGO["MainMenu"];
-        activeMusicGO.SetActive(true);
+        bruitagesAS = new Dictionary<string, AudioSource> {
+            { "Attack", attackSound },
+            { "Respawn", respawnSound }
+        };
+
+        activeMusic = musics["MainMenu"];
+        activeMusic.Play();
     }
 
     private void OnLevelWasLoaded(int level)
     {
         string activeScene = SceneManager.GetActiveScene().name;
-        GameObject newMusicGO;
+        AudioSource newMusic;
 
-        if (musicsGO.TryGetValue(activeScene, out newMusicGO)
-            && newMusicGO != activeMusicGO) {
+        if (musics.TryGetValue(activeScene, out newMusic)
+            && newMusic != activeMusic) {
 
-            activeMusicGO.SetActive(false);
-            newMusicGO.SetActive(true);
-            activeMusicGO = newMusicGO;
+            activeMusic.Stop();
+            newMusic.Play();
+            activeMusic = newMusic;
         }
+    }
+
+    public void DoBruitages(string soundCode)
+    {
+        AudioSource bruitage;
+
+        if (bruitagesAS.TryGetValue(soundCode, out bruitage)
+            && !bruitage.isPlaying)
+            bruitagesAS[soundCode].Play();
     }
 }

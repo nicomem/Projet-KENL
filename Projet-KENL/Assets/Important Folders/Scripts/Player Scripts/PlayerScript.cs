@@ -249,13 +249,19 @@ public class PlayerScript : NetworkBehaviour
             Movement_Attack(attackSelected);
         } else {
             animScript.SyncIsRunning(Movement_Run(xInput));
+
             Movement_Jump(jumpButtonPressed);
-            animScript.SyncIsAttacking(Movement_Attack(attackSelected));
+
+            Movement_Attack(attackSelected);
+            animScript.SyncIsAttacking(attackTimerActivated);
+
             animScript.SyncIsHit(InvulnerableTimer > 0);
         }
 
-        if (animScript != null) // Animations
-            animScript.Do_animations();
+        if (animScript != null) {
+            animScript.DoAnimations();
+            animScript.DoSounds();
+        }
 
         // Other useful functions
         CheckRotation(xInput);
@@ -354,9 +360,11 @@ public class PlayerScript : NetworkBehaviour
             currentAttack.actualCombo++;
             currentAttack.CollidersAttack();
             attackTimer = currentAttack.attackCooldown;
+
+            return true;
         }
 
-        return attackTimer > 0f;
+        return false;
     }
     #endregion
 

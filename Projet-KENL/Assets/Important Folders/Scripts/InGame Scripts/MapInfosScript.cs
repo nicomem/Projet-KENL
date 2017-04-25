@@ -20,6 +20,8 @@ public class MapInfosScript : MonoBehaviour
     private string victoryName;
     private bool isNetworked;
 
+    private SoundManager soundManager;
+
     private void Start()
     {
         ListPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -31,6 +33,9 @@ public class MapInfosScript : MonoBehaviour
         playersInitiated = new bool[ListPlayers.Length];
 
         isNetworked = GameObject.Find("Network Manager") != null;
+
+        soundManager = GameObject.Find("Sound Manager")
+            .GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -57,7 +62,6 @@ public class MapInfosScript : MonoBehaviour
                 player.transform.SetParent(transform);
                 player.transform.SetParent(null);
 
-                Debug.Log(playerScript.persoName);
                 GameObject parent;
 
                 switch (playerScript.persoName) {
@@ -136,6 +140,8 @@ public class MapInfosScript : MonoBehaviour
                     playerScript.horizontalVelocity = 0;
                     playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
+
+                    soundManager.DoBruitages("Respawn");
                 }
             }
         }

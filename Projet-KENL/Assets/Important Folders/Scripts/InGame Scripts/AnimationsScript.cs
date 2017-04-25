@@ -8,6 +8,7 @@ public class AnimationsScript : NetworkBehaviour
     private bool isNetworked;
 
     private string persoName;
+    private SoundManager soundManager;
 
     #region SyncVar: isRunning
     [SyncVar] public bool isRunning = false;
@@ -51,44 +52,58 @@ public class AnimationsScript : NetworkBehaviour
 
         isNetworked = GameObject.Find("Network Manager") != null;
         persoName = GetComponent<PlayerScript>().persoName;
+        soundManager = GameObject.Find("Sound Manager")
+            .GetComponent<SoundManager>();
     }
 
-    public void Do_animations()
+    public void DoSounds()
+    {
+        if (isAttacking)
+            soundManager.DoBruitages("Attack");
+    }
+
+    public void DoAnimations()
     {
         switch (persoName) {
             case "Gianluigi Conti":
-                if (isAttacking)
-                    anim.Play("attack05", -1);
-                else if (isHit)
-                    anim.Play("gethit01", -1);
-                else if (isRunning)
-                    anim.Play("run00", -1);
-                else
-                    anim.Play("idle02", -1);
+                AnimationsGuianluigi();
                 break;
 
             case "Antiope":
-                if (isAttacking)
-                    anim.SetBool("Use", true);
-                else {
-                    anim.SetBool("Use", false);
-
-                    if (isHit)
-                        anim.SetBool("Pain", true);
-                    //anim.Play("Pain", -1);
-                    else if (isRunning)
-                        anim.SetBool("Idling", false);
-                    //anim.Play("SSCombatMove", -1);
-                    else
-                        anim.SetBool("Idling", true);
-                    //anim.Play("SSCombatIdle", -1);
-                }
-
+                AnimationsAntiope();
                 break;
 
             default:
                 Debug.Log("[ERR] Animations : persoName not recognized");
                 break;
+        }
+    }
+
+    private void AnimationsGuianluigi()
+    {
+        if (isAttacking)
+            anim.Play("attack05", -1);
+        else if (isHit)
+            anim.Play("gethit01", -1);
+        else if (isRunning)
+            anim.Play("run00", -1);
+        else
+            anim.Play("idle02", -1);
+    }
+
+    private void AnimationsAntiope()
+    {
+        if (isAttacking)
+            anim.SetBool("Use", true);
+        else {
+            anim.SetBool("Use", false);
+
+            if (isHit)
+                anim.SetBool("Pain", true);
+            else if (isRunning)
+                anim.SetBool("Idling", false);
+            else
+                anim.SetBool("Idling", true);
         }
     }
 }
