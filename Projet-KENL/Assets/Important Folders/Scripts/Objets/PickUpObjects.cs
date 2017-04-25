@@ -12,9 +12,9 @@ public class PickUpObjects : MonoBehaviour
 
     private int OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Vitesse")) BonusWanted = 1;
-        else if (other.gameObject.CompareTag("HP")) BonusWanted = 2;
-        else if (other.gameObject.CompareTag("Attaque")) BonusWanted = 3;
+        if (other.gameObject.CompareTag("Objet-Vitesse")) BonusWanted = 1;
+        else if (other.gameObject.CompareTag("Objet-HP")) BonusWanted = 2;
+        else if (other.gameObject.CompareTag("Objet-Attaque")) BonusWanted = 3;
         else return 0;
 
         other.gameObject.SetActive(false);
