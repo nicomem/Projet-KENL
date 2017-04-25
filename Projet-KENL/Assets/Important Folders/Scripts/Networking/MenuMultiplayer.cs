@@ -242,13 +242,14 @@ public class MenuMultiplayer : NetworkManager
             case PlayerType.Antiope:
                 charaSelected.transform.localScale =
                     new Vector3(2f, 2f, 2f);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             default:
                 break;
         }
 
-        charaSelected.transform.localScale *= 0.8f;
+        charaSelected.transform.localScale *= 0.6f;
         persoName = persosPrefabsNames[(int)playerSelected];
 
         playerScript.persoName = persoName;

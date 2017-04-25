@@ -142,7 +142,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 charaSelected.transform.localScale =
                     new Vector3(3f, 3f, 3f);
                 charaSelected.transform.position +=
-                    new Vector3(0, -1.2f, 0);
+                    new Vector3(0, -2.5f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
@@ -151,6 +151,8 @@ public class SingleplayerLobbyScript : MonoBehaviour
                     "Unrecognized character");
                 break;
         }
+
+        charaSelected.transform.localScale *= 0.75f;
 
         persoName = persosPrefabsNames[(int)playerSelected];
 
