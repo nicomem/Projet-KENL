@@ -385,8 +385,9 @@ public class MenuMultiplayer : NetworkManager
                 .GetComponent<LobbyPlayerScript>().playerName;
             playerScript.SyncPlayerName(_playerName);
         }
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Starting game");
+#endif
         ServerChangeScene(mapScenes[mapSelected]);
     }
     #endregion
@@ -403,9 +404,10 @@ public class MenuMultiplayer : NetworkManager
             if (listNetworkConn[i] == null) {
                 listNetworkConn[i] = conn;
                 connectedPlayers++;
-
+#if UNITY_EDITOR
                 Debug.Log("[INF] OnServerConnect: Player " + i +
                     " connected");
+#endif
                 return;
             }
         }
@@ -447,9 +449,10 @@ public class MenuMultiplayer : NetworkManager
 
                 listPlayersGO[i].GetComponent<LobbyPlayerScript>()
                     .CmdDisconnect();
-
+#if UNITY_EDITOR
                 Debug.Log("[INF] OnServerDisconnected: Player " + i +
                     " disconnected");
+#endif
                 break;
             }
         }
@@ -464,8 +467,9 @@ public class MenuMultiplayer : NetworkManager
     {
         // When a scene is loaded
         // Launch functions for setting the buttons
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Loaded scene: " + scene.name);
+#endif
 
         if (scene.name == "MainMenu") {
             // When entering the MainMenu scene

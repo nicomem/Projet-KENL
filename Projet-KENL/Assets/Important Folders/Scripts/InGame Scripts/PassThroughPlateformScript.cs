@@ -11,10 +11,13 @@ public class PassThroughPlateformScript : MonoBehaviour
     {
         float cos = Mathf.Cos(maxAngle);
         MeshCollider MC = GetComponent<MeshCollider>();
+
+#if UNITY_EDITOR
         if (MC == null) {
             Debug.LogError("PlatformCollision needs a MeshCollider");
             return;
         }
+#endif
 
         Mesh M = new Mesh();
         Vector3[] verts = MC.sharedMesh.vertices;
