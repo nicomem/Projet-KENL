@@ -168,21 +168,16 @@ public class MapInfosScript : MonoBehaviour
 
     private void OnGUI()
     {
+        Vector3 pos;
+        foreach (PlayerScript script in ListPlayerScripts) {
+            pos = Camera.main.WorldToScreenPoint(script.transform.position);
+            GUI.Label(new Rect(pos.x - (4 * script.playerName.Length),
+                                Screen.height - pos.y - 115, 100, 25),
+                script.playerName);
+        }
+
         if (gameHasEnded) {
-            string message = "";
-
-            if (!isNetworked) {
-                message = "The game has ended!";
-            } else {
-                // Until we player names arer synched
-                message = "The game has ended!";
-                /*if (victoryName != "")
-                    message = "The game has ended: " + victoryName + " has won!";
-                else
-                    message = "It's a tie!";*/
-            }
-
-            message += "\n\nBack to main menu";
+            string message = "The game has ended!\n\nBack to main menu";
 
             int buttonWidth = Screen.width / 3;
             int buttonHeight = Screen.height / 5;

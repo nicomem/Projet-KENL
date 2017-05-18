@@ -234,16 +234,18 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 return;
         }
 
-        go.GetComponent<PlayerScript>().persoName = persoName;
+        PlayerScript script = go.GetComponent<PlayerScript>();
+        script.persoName = persoName;
+        script.playerName = "Human";
 
         // IA
         for (int i = 0; i < 3; i++) {
             if (enabledIA[i]) {
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
-                var playerScript = go.GetComponent<PlayerScript>();
-                playerScript.persoName =
-                    persosPrefabsNames[(int)playerSelectedIA[i]];
-                playerScript.isIA = true;
+                script = go.GetComponent<PlayerScript>();
+                script.persoName = persosPrefabsNames[(int)playerSelectedIA[i]];
+                script.playerName = "IA " + i.ToString();
+                script.isIA = true;
             }
         }
 
