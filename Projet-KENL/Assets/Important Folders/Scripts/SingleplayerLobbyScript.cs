@@ -6,7 +6,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 {
     // Script derived from MenuMultiplayer, if you do a modification on
     // this last, make sure to update this script if necessary
-    
+
     private GameObject canvas;
     private GameObject charaSelectBox;
     private GameObject readyButton;
@@ -147,8 +147,10 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 break;
 
             default:
+#if UNITY_EDITOR
                 Debug.Log("[ERR] SingleplayerLobbyScript/UpdatePersoInSelect: " +
                     "Unrecognized character");
+#endif
                 break;
         }
 
@@ -199,8 +201,9 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         // Will be detroyed after (look a bit under)
         DontDestroyOnLoad(gameObject);
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Starting game");
+#endif
         SceneManager.LoadScene(mapScenes[mapSelected]);
     }
 
@@ -224,21 +227,25 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
             default:
                 go = new GameObject();
+#if UNITY_EDITOR
                 Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
                     persoName);
+#endif
                 return;
         }
 
-        go.GetComponent<PlayerScript>().persoName = persoName;
+        PlayerScript script = go.GetComponent<PlayerScript>();
+        script.persoName = persoName;
+        script.playerName = "Human";
 
         // IA
         for (int i = 0; i < 3; i++) {
             if (enabledIA[i]) {
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
-                var playerScript = go.GetComponent<PlayerScript>();
-                playerScript.persoName =
-                    persosPrefabsNames[(int)playerSelectedIA[i]];
-                playerScript.isIA = true;
+                script = go.GetComponent<PlayerScript>();
+                script.persoName = persosPrefabsNames[(int)playerSelectedIA[i]];
+                script.playerName = "IA " + i.ToString();
+                script.isIA = true;
             }
         }
 
@@ -348,7 +355,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         ButtonRightIA(0);
     }
-    
+
     public void ButtonLeftIA2()
     {
         ButtonLeftIA(1);
@@ -393,7 +400,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         canvas.transform.Find("IA Selection " + (IANumber + 1))
             .Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = 
+            .GetComponent<Text>().text =
             persosPrefabsNames[(int)playerSelectedIA[IANumber]];
     }
     #endregion

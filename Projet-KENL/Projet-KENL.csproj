@@ -119,6 +119,7 @@
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\CameraScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\GUIScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\PassThroughPlateformScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\MenuMultiplayer.cs" />
