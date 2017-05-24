@@ -32,7 +32,7 @@ public class MenuMultiplayer : NetworkManager
     private GameObject charaSelected;
     private int connectedPlayers;
 
-    public enum PlayerType { PlayerTest, StealthChar, Antiope };
+    public enum PlayerType { StealthChar, Antiope };
 
     // Server vars
     [HideInInspector]
@@ -232,11 +232,6 @@ public class MenuMultiplayer : NetworkManager
                 charaSelected.transform.localPosition +=
                     new Vector3(0, -1f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.PlayerTest:
-                charaSelected.transform.localScale =
-                    new Vector3(1.5f, 2f, 1f);
                 break;
 
             case PlayerType.Antiope:

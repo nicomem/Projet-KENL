@@ -4,7 +4,6 @@ using UnityEngine.Networking;
 public class AnimationsScript : NetworkBehaviour
 {
     private Animator anim;
-    private Animation anim2;
     private bool isNetworked;
 
     private string persoName;
@@ -46,6 +45,18 @@ public class AnimationsScript : NetworkBehaviour
     [Command] private void CmdSyncIsHit(bool b) { isHit = b; }
     #endregion
 
+    #region SyncVar: isBlocking
+    [SyncVar] public bool isBlocking = false;
+    public void SyncIsBlocking(bool b)
+    {
+        if (isServer || !isNetworked)
+            isBlocking = b;
+        else
+            CmdSyncIsBlocking(b);
+    }
+    [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
+    #endregion
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -81,7 +92,10 @@ public class AnimationsScript : NetworkBehaviour
 
     private void AnimationsGuianluigi()
     {
-        if (isAttacking)
+        if (isBlocking)
+            // Put block anim
+            anim.Play("idle02", -1);
+        else if (isAttacking)
             anim.Play("attack05", -1);
         else if (isHit)
             anim.Play("gethit01", -1);
@@ -93,17 +107,24 @@ public class AnimationsScript : NetworkBehaviour
 
     private void AnimationsAntiope()
     {
-        if (isAttacking)
-            anim.SetBool("Use", true);
+        if (isBlocking)
+            // Put block anim
+            anim.SetBool("Idling", true);
         else {
-            anim.SetBool("Use", false);
+            anim.SetBool("Idling", false);
 
-            if (isHit)
-                anim.SetBool("Pain", true);
-            else if (isRunning)
-                anim.SetBool("Idling", false);
-            else
-                anim.SetBool("Idling", true);
+            if (isAttacking)
+                anim.SetBool("Use", true);
+            else {
+                anim.SetBool("Use", false);
+
+                if (isHit)
+                    anim.SetBool("Pain", true);
+                else if (isRunning)
+                    anim.SetBool("Idling", false);
+                else
+                    anim.SetBool("Idling", true);
+            }
         }
     }
 }

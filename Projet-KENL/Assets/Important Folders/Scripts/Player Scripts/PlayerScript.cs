@@ -15,8 +15,7 @@ public class PlayerScript : NetworkBehaviour
     }
     [Command] private void CmdSyncPersoName(string s) { persoName = s; }
     #endregion
-
-    // TODO: give playerName to each in menuMulti
+    
     #region SyncVar: playerName
     [HideInInspector] [SyncVar] public string playerName;
     public void SyncPlayerName(string s)
@@ -118,6 +117,16 @@ public class PlayerScript : NetworkBehaviour
     [Command] private void CmdSyncHorizontalVelocity(float f) { horizontalVelocity = f; }
     #endregion
 
+    #region SyncVar: isBlocking
+    [HideInInspector] [SyncVar] public bool isBlocking;
+    public void SyncIsBlocking(bool b)
+    {
+        if (isServer || !isNetworked) isBlocking = b;
+        else CmdSyncIsBlocking(b);
+    }
+    [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
+    #endregion
+
     #region Others
     public void AddPosY(float y)
     {
@@ -186,7 +195,6 @@ public class PlayerScript : NetworkBehaviour
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private ComboTemplate currentAttack;
-    private int inputAttackIndex = 0;
     private bool isGrounded;
 
     private float waySign; // If 1: player looks to the right
@@ -195,6 +203,7 @@ public class PlayerScript : NetworkBehaviour
     private Vector3 moveVector;
     private CharacterController charaControl;
 
+    [HideInInspector] public BlockScript blockScript;
     
     #endregion
     #endregion
@@ -210,9 +219,12 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
 
         isNetworked = GameObject.Find("Network Manager") != null;
+
+        blockScript = GetComponent<BlockScript>();
     }
 
-    public void Movements(float xInput, bool jumpButtonPressed, int attackSelected)
+    public void Movements(float xInput, bool jumpButtonPressed,
+        int attackSelected, bool blockPressed)
     {
         /* Change the moveVector based on differents forces and inputs
          * See the functions called Movement_x to see the detail */
@@ -241,21 +253,31 @@ public class PlayerScript : NetworkBehaviour
             horizontalVelocity *= 0.75f;
         }
 
+        // Block is "blocking" other actions
+        if (!isGrounded)
+            blockPressed = false;
+
+        if (blockPressed) {
+            xInput = 0;
+            jumpButtonPressed = false;
+            attackSelected = -1;
+        }
+
         // Movement functions
         if (animScript == null || (!hasAuthority && isNetworked)) {
-            // No animations
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(attackSelected);
+            Movement_Block(blockPressed);
         } else {
             animScript.SyncIsRunning(Movement_Run(xInput));
-
             Movement_Jump(jumpButtonPressed);
-
             Movement_Attack(attackSelected);
-            animScript.SyncIsAttacking(attackTimerActivated);
+            Movement_Block(blockPressed);
 
+            animScript.SyncIsAttacking(attackTimerActivated);
             animScript.SyncIsHit(InvulnerableTimer > 0);
+            animScript.SyncIsBlocking(blockPressed);
         }
 
         if (animScript != null) {
@@ -337,7 +359,6 @@ public class PlayerScript : NetworkBehaviour
         if (attackTimer <= 0f && currentAttack != null) {
             currentAttack.actualCombo = -1; // We reset the combo
             currentAttack = null;
-            inputAttackIndex = 0;
             attackTimerActivated = false; // And also the attacks timer
         }
 
@@ -365,6 +386,16 @@ public class PlayerScript : NetworkBehaviour
         }
 
         return false;
+    }
+
+    private bool Movement_Block(bool blockPressed)
+    {
+        if (blockPressed)
+            blockScript.Block();
+        else
+            blockScript.StopBlocking();
+
+        return blockPressed;
     }
     #endregion
 
