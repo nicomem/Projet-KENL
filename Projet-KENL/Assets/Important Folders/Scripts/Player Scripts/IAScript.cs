@@ -6,6 +6,7 @@ public class IAScript : NetworkBehaviour
     private float xInput;
     private bool jumpButtonPressed;
     private int attackSelected;
+    private bool blockPressed;
 
     private PlayerScript player;
     private CharacterController charaControl;
@@ -90,7 +91,7 @@ public class IAScript : NetworkBehaviour
     {
         /* To move the player with input */
 
-        player.Movements(xInput, jumpButtonPressed, attackSelected);
+        player.Movements(xInput, jumpButtonPressed, attackSelected, blockPressed);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(

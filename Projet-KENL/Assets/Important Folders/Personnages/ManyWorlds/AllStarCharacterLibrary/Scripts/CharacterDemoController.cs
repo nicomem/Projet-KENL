@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+#pragma warning disable
+
 public class CharacterDemoController : MonoBehaviour 
 {
 	Animator animator;

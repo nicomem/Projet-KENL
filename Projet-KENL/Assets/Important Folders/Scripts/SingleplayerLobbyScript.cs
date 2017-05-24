@@ -27,7 +27,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private GameObject charaSelected;
 
-    public enum PlayerType { PlayerTest, StealthChar, Antiope };
+    public enum PlayerType { StealthChar, Antiope };
 
     private void Start()
     {
@@ -133,24 +133,15 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
-            case PlayerType.PlayerTest:
-                charaSelected.transform.localScale =
-                    new Vector3(1.5f, 2f, 1f);
-                break;
-
             case PlayerType.Antiope:
                 charaSelected.transform.localScale =
                     new Vector3(3f, 3f, 3f);
                 charaSelected.transform.position +=
-                    new Vector3(0, -2.5f, 0);
+                    new Vector3(0, -1f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             default:
-#if UNITY_EDITOR
-                Debug.Log("[ERR] SingleplayerLobbyScript/UpdatePersoInSelect: " +
-                    "Unrecognized character");
-#endif
                 break;
         }
 
@@ -215,10 +206,6 @@ public class SingleplayerLobbyScript : MonoBehaviour
         switch (persoName) {
             case "Gianluigi Conti":
                 go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
-                break;
-
-            case "Player Test":
-                go = Instantiate(persoPrefabs[(int)PlayerType.PlayerTest]);
                 break;
 
             case "Antiope":
