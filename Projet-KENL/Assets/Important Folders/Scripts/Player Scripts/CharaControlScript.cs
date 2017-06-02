@@ -27,7 +27,7 @@ public class CharaControlScript : NetworkBehaviour
     #region SyncVar: attackSelected
     // If -1: no attack selected
     // If 0 <= ... < listAttacks.length: listAttacks[i] selected
-    [HideInInspector] [SyncVar] public int attackSelected;
+    [HideInInspector] [SyncVar] public int attackSelected = -1;
     public void SyncAttackSelected(int i)
     {
         if (isServer || !isNetworked) attackSelected = i;

@@ -5,9 +5,9 @@ public class AnimationsScript : NetworkBehaviour
 {
     private Animator anim;
     private bool isNetworked;
-
-    private string persoName;
+    
     private SoundManager soundManager;
+    private PlayerScript playerScript;
 
     #region SyncVar: isRunning
     [SyncVar] public bool isRunning = false;
@@ -62,7 +62,7 @@ public class AnimationsScript : NetworkBehaviour
         anim = GetComponent<Animator>();
 
         isNetworked = GameObject.Find("Network Manager") != null;
-        persoName = GetComponent<PlayerScript>().persoName;
+        playerScript = GetComponent<PlayerScript>();
         soundManager = GameObject.Find("Sound Manager")
             .GetComponent<SoundManager>();
     }
@@ -75,7 +75,7 @@ public class AnimationsScript : NetworkBehaviour
 
     public void DoAnimations()
     {
-        switch (persoName) {
+        switch (playerScript.persoName) {
             case "Gianluigi Conti":
                 AnimationsGuianluigi();
                 break;
