@@ -15,7 +15,7 @@ public class PlayerScript : NetworkBehaviour
     }
     [Command] private void CmdSyncPersoName(string s) { persoName = s; }
     #endregion
-    
+
     #region SyncVar: playerName
     [HideInInspector] [SyncVar] public string playerName;
     public void SyncPlayerName(string s)
@@ -204,7 +204,7 @@ public class PlayerScript : NetworkBehaviour
     private CharacterController charaControl;
 
     [HideInInspector] public BlockScript blockScript;
-    
+
     #endregion
     #endregion
 
@@ -219,7 +219,6 @@ public class PlayerScript : NetworkBehaviour
         moveVector = Vector3.zero;
 
         isNetworked = GameObject.Find("Network Manager") != null;
-
         blockScript = GetComponent<BlockScript>();
     }
 
@@ -264,12 +263,7 @@ public class PlayerScript : NetworkBehaviour
         }
 
         // Movement functions
-        if (animScript == null || (!hasAuthority && isNetworked)) {
-            Movement_Run(xInput);
-            Movement_Jump(jumpButtonPressed);
-            Movement_Attack(attackSelected);
-            Movement_Block(blockPressed);
-        } else {
+        if (!isNetworked || hasAuthority) {
             animScript.SyncIsRunning(Movement_Run(xInput));
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(attackSelected);
@@ -278,12 +272,16 @@ public class PlayerScript : NetworkBehaviour
             animScript.SyncIsAttacking(attackTimerActivated);
             animScript.SyncIsHit(InvulnerableTimer > 0);
             animScript.SyncIsBlocking(blockPressed);
+        } else {
+            Movement_Run(xInput);
+            Movement_Jump(jumpButtonPressed);
+            Movement_Attack(attackSelected);
+            Movement_Block(blockPressed);
         }
 
-        if (animScript != null) {
-            animScript.DoAnimations();
-            animScript.DoSounds();
-        }
+
+        animScript.DoAnimations();
+        animScript.DoSounds();
 
         // Other useful functions
         CheckRotation(xInput);
