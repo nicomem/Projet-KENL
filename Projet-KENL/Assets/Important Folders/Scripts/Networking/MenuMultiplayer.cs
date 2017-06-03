@@ -580,6 +580,9 @@ public class MenuMultiplayer : NetworkManager
                         canvas.transform.position.y,
                         -10);
         mapChoosed = false;
+
+        if (isHost)
+            canvas.transform.Find("IP Server").gameObject.SetActive(true);
     }
 
     void OnEnable()
