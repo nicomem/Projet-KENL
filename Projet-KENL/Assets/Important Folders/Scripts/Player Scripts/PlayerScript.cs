@@ -170,7 +170,7 @@ public class PlayerScript : NetworkBehaviour
     public Collider jumpCollider;
 
     [Header("Attacking")]
-    public ComboTemplate[] listAttacks;
+    public AttackTemplate[] listAttacks;
     public int maxCombo = 4;
     public float period = 0.2f; // Set the period between each attackCollider check
 
@@ -194,7 +194,6 @@ public class PlayerScript : NetworkBehaviour
                                     // again (no combos)
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
-    private ComboTemplate currentAttack;
     private bool isGrounded;
 
     private float waySign; // If 1: player looks to the right
@@ -279,7 +278,6 @@ public class PlayerScript : NetworkBehaviour
             Movement_Block(blockPressed);
         }
 
-
         animScript.DoAnimations();
         animScript.DoSounds();
 
@@ -353,32 +351,19 @@ public class PlayerScript : NetworkBehaviour
          * There is also combos (& combos limit)
          * Returns true if an attack is being made (else false) */
 
-        // When attack just finished
-        if (attackTimer <= 0f && currentAttack != null) {
-            currentAttack.actualCombo = -1; // We reset the combo
-            currentAttack = null;
-            attackTimerActivated = false; // And also the attacks timer
-        }
+        // When attack finished => indicate we're not attacking
+        if (CanAttack())
+            attackTimerActivated = false;
 
-        // Combo Timer
-        if (attackTimerActivated && currentPeriod <= 0f) {
-            currentAttack.CollidersAttack();
-
-            // We reset the attack timer
-            currentPeriod = period;
-        }
-
-        // Attacks & Combos
+        // Attacks
         if (attackSelected != -1 && CanAttack()) {
-            currentAttack = listAttacks[attackSelected];
-
             // We activate the attack timer
             attackTimerActivated = true;
             currentPeriod = period;
 
-            currentAttack.actualCombo++;
-            currentAttack.CollidersAttack();
-            attackTimer = currentAttack.attackCooldown;
+            AttackTemplate attack = listAttacks[attackSelected];
+            attack.Attack();
+            attackTimer = attack.attackCooldown;
 
             return true;
         }
@@ -430,18 +415,7 @@ public class PlayerScript : NetworkBehaviour
 
     public bool CanAttack()
     {
-        return CanStartAttack() || CanContinueCombo();
-    }
-
-    public bool CanStartAttack()
-    {
         return attackTimer <= 0f;
-    }
-
-    public bool CanContinueCombo()
-    {
-        return currentAttack != null && attackTimer < 0.5f
-          && currentAttack.actualCombo < currentAttack.comboLength - 1;
     }
 
     public bool CanBeHit()
