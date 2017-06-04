@@ -63,12 +63,17 @@ public class AnimationsScript : NetworkBehaviour
 
         isNetworked = GameObject.Find("Network Manager") != null;
         playerScript = GetComponent<PlayerScript>();
-        soundManager = GameObject.Find("Sound Manager")
-            .GetComponent<SoundManager>();
+
+        GameObject soundManagerGO = GameObject.Find("Sound Manager");
+        if (soundManagerGO != null)
+            soundManager = soundManagerGO.GetComponent<SoundManager>();
     }
 
     public void DoSounds()
     {
+        if (soundManager == null)
+            return;
+
         if (isAttacking)
             soundManager.DoBruitages("Attack");
     }

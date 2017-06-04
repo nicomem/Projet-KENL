@@ -34,8 +34,9 @@ public class MapInfosScript : MonoBehaviour
 
         isNetworked = GameObject.Find("Network Manager") != null;
 
-        soundManager = GameObject.Find("Sound Manager")
-            .GetComponent<SoundManager>();
+        GameObject soundManagerGO = GameObject.Find("Sound Manager");
+        if (soundManagerGO != null)
+            soundManager = soundManagerGO.GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -140,8 +141,9 @@ public class MapInfosScript : MonoBehaviour
                     playerScript.horizontalVelocity = 0;
                     playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
-
-                    soundManager.DoBruitages("Respawn");
+                    
+                    if (soundManager != null)
+                        soundManager.DoBruitages("Respawn");
                 }
             }
         }
@@ -170,6 +172,9 @@ public class MapInfosScript : MonoBehaviour
     {
         Vector3 pos;
         foreach (PlayerScript script in ListPlayerScripts) {
+            if (script == null || script.isKO)
+                continue;
+
             pos = Camera.main.WorldToScreenPoint(script.transform.position);
             GUI.Label(new Rect(pos.x - (4 * script.playerName.Length),
                                 Screen.height - pos.y - 115, 100, 25),

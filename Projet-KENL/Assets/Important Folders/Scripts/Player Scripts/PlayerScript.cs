@@ -136,8 +136,7 @@ public class PlayerScript : NetworkBehaviour
         else
             CmdAddPosY(y);
     }
-    [Command]
-    private void CmdAddPosY(float y)
+    [Command] private void CmdAddPosY(float y)
     {
         transform.localPosition = new Vector3(transform.localPosition.x,
             transform.localPosition.y + y, 0);
@@ -151,8 +150,7 @@ public class PlayerScript : NetworkBehaviour
         } else
             CmdChangeVelocities(dvx, dvy);
     }
-    [Command]
-    private void CmdChangeVelocities(float dvx, float dvy)
+    [Command] private void CmdChangeVelocities(float dvx, float dvy)
     {
         horizontalVelocity += dvx;
         verticalVelocity += dvy;
@@ -171,7 +169,6 @@ public class PlayerScript : NetworkBehaviour
 
     [Header("Attacking")]
     public AttackTemplate[] listAttacks;
-    public int maxCombo = 4;
     public float period = 0.2f; // Set the period between each attackCollider check
 
     [Header("Others")]

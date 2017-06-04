@@ -115,6 +115,7 @@
     <Compile Include="Assets\Important Folders\Scripts\CameraTest.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\AttackTemplate.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BlockScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BulletScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\Combo_Basic.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\ShootAttack.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\AnimationsScript.cs" />
