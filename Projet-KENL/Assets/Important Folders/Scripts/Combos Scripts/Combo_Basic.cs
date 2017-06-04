@@ -10,10 +10,8 @@ public class Combo_Basic : AttackTemplate
     public Vector3 dir = new Vector3(0.8f, 0.2f, 0);
     public float power = 11;
     public float multPush = 5; // For throwing farther with the same power
-
-    public new string inputKey = "e";
+    
     public Collider attackCollider;
-    public new float attackCooldown = 0.5f;
 
     // Other variables
     private float leftRight; // 1f if attack to the right, -1f else
@@ -25,6 +23,9 @@ public class Combo_Basic : AttackTemplate
     private void Start()
     {
         isNetworked = GameObject.Find("Network Manager") != null;
+
+        inputKey = "e";
+        attackCooldown = 0.5f;
     }
 
     public override void Attack()
