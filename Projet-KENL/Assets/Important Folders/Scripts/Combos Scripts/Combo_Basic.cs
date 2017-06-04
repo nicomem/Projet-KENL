@@ -3,20 +3,11 @@
 [System.Serializable]
 public class Combo_Basic : AttackTemplate
 {
-    /* Do not use this monoClass. Instead, create another monoClass that
-     * inherit from this one (and sets its value) to create a combo */
-
-    // Combo properties
     public Vector3 dir = new Vector3(0.8f, 0.2f, 0);
     public float power = 11;
     public float multPush = 5; // For throwing farther with the same power
     
     public Collider attackCollider;
-
-    // Other variables
-    private float leftRight; // 1f if attack to the right, -1f else
-    private float healthMultiplier;
-    private float x, y;
     private bool isNetworked;
 
 
@@ -64,11 +55,11 @@ public class Combo_Basic : AttackTemplate
     private void GiveAttack(PlayerScript playerHit, Vector3 attackDir,
         float attackPower, float leftRight, float multPush)
     {
-        healthMultiplier = 1 + (playerHit.percentHealth / 100);
+        float healthMultiplier = 1 + (playerHit.percentHealth / 100);
 
-        x = attackDir.x * attackPower * leftRight * healthMultiplier
+        float x = attackDir.x * attackPower * leftRight * healthMultiplier
             * multPush;
-        y = attackDir.y * attackPower * healthMultiplier * multPush;
+        float y = attackDir.y * attackPower * healthMultiplier * multPush;
 
         // Place it in mid-air (== not grounded)
         playerHit.AddPosY(0.1f);
