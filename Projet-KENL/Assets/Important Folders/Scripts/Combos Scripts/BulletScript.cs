@@ -26,8 +26,28 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // TODO: If collide with other player
+        // No self-hitting
+        if (other.transform.GetInstanceID() == player.transform.GetInstanceID())
+            return;
+
+        // Destroy when hitting a plateform
+        if (other.transform.CompareTag("Plateform")) {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Do attacking & stuffs
+        if (other.transform.CompareTag("Player")) {
+            GiveAttack(other.transform.GetComponent<PlayerScript>());
+            // Destroy when 1 hit or continue ?
+            // return;
+        }
+    }
+
+    private void GiveAttack(PlayerScript other)
+    {
+        Debug.Log(player.persoName + " is hitting on " + other.persoName);
     }
 }
