@@ -228,23 +228,24 @@ public class MenuMultiplayer : NetworkManager
         switch (playerSelected) {
             case PlayerType.StealthChar:
                 charaSelected.transform.localScale =
-                    new Vector3(2.1f, 2.1f, 2.1f);
+                    new Vector3(2.5f, 2.5f, 2.5f);
                 charaSelected.transform.localPosition +=
-                    new Vector3(0, -1f, 0);
+                    new Vector3(0, -2.5f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             case PlayerType.Antiope:
+                charaSelected.transform.localPosition +=
+                    new Vector3(0, -2.5f, 0);
                 charaSelected.transform.localScale =
-                    new Vector3(2f, 2f, 2f);
+                    new Vector3(2.5f, 2.5f, 2.5f);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             default:
                 break;
         }
-
-        charaSelected.transform.localScale *= 0.6f;
+        
         persoName = persosPrefabsNames[(int)playerSelected];
 
         playerScript.persoName = persoName;

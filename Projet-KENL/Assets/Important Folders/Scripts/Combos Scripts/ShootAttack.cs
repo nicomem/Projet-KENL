@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 public class ShootAttack : AttackTemplate
 {
@@ -23,6 +24,8 @@ public class ShootAttack : AttackTemplate
 
         GameObject bullet = Instantiate(bulletPrefab, pos,
             bulletPrefab.transform.rotation);
+
+        NetworkServer.Spawn(bullet);
 
         BulletScript script = bullet.GetComponent<BulletScript>();
         script.dirX = player.LookToRight() ? 1f : -1f;

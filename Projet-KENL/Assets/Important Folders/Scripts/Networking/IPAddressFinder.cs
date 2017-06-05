@@ -1,22 +1,26 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Net;
+using System.Net.Sockets;
 
 public class IPAddressFinder : MonoBehaviour
 {
-    private IEnumerator Start()
+    private void Start()
     {
-        // Connect at a give-my-public-ip website and get computer public ip
-
-        string url = "http://checkip.dyndns.org/";
-
-        WWW website = new WWW(url); // Go to website
-
         Text IPText = GetComponent<Text>();
+        IPText.text = "Local IP Address: " + GetLocalIPAddress();
+    }
 
-        yield return website;
+    public static string GetLocalIPAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList) {
+            if (ip.AddressFamily == AddressFamily.InterNetwork) {
+                return ip.ToString();
+            }
+        }
 
-        // Print the IPadress
-        IPText.text = website.text.Substring(64, website.text.Length - 64 - 16);
+        return "Not found";
     }
 }

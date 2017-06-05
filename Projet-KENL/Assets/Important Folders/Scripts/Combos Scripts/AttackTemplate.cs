@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using UnityEngine.Networking;
 
-public abstract class AttackTemplate : MonoBehaviour
+public abstract class AttackTemplate : NetworkBehaviour
 {
     public string inputKey;
     public float attackCooldown;
