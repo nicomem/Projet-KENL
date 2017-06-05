@@ -2,10 +2,12 @@
 
 public class BulletScript : MonoBehaviour
 {
-    public float speed = 1.0f;
+    public float speed = 1f;
     public float dirX = 0f;
-    public PlayerScript player;
+    public float power = 2f;
+    public float multPush = 4f;
 
+    [HideInInspector] public PlayerScript player;
     private MapInfosScript mapInfos;
 
     private void Start()
@@ -46,8 +48,23 @@ public class BulletScript : MonoBehaviour
         }
     }
 
-    private void GiveAttack(PlayerScript other)
+    private void GiveAttack(PlayerScript playerHit)
     {
-        Debug.Log(player.persoName + " is hitting on " + other.persoName);
+        float healthMultiplier = 1 + (playerHit.percentHealth / 100);
+        float leftRight;
+        if (transform.position.x < playerHit.transform.position.x)
+            leftRight = 1f;
+        else
+            leftRight = -1f;
+
+        float x = power * leftRight * healthMultiplier
+            * multPush;
+        float y = power * healthMultiplier * multPush;
+
+        // Place it in mid-air (== not grounded)
+        playerHit.AddPosY(0.1f);
+        playerHit.AddVelocities(x, y);
+        playerHit.SyncInvulnerableTimer(0.5f);
+        playerHit.SyncPercentHealth(playerHit.percentHealth + power);
     }
 }

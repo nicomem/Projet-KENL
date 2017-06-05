@@ -4,8 +4,8 @@
 public class Combo_Basic : AttackTemplate
 {
     public Vector3 dir = new Vector3(0.8f, 0.2f, 0);
-    public float power = 11;
-    public float multPush = 5; // For throwing farther with the same power
+    public float power = 5f;
+    public float multPush = 10f; // For throwing farther with the same power
     
     public Collider attackCollider;
     private bool isNetworked;
