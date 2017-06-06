@@ -121,7 +121,7 @@ public class PlayerScript : NetworkBehaviour
     [HideInInspector] [SyncVar] public bool isBlocking;
     public void SyncIsBlocking(bool b)
     {
-        if (isServer || !isNetworked) isBlocking = b;
+        if (isServer || !isNetworked || !hasAuthority) isBlocking = b;
         else CmdSyncIsBlocking(b);
     }
     [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
@@ -272,7 +272,7 @@ public class PlayerScript : NetworkBehaviour
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
             Movement_Attack(attackSelected);
-            Movement_Block(blockPressed);
+            Movement_Block(blockPressed || isBlocking);
         }
 
         animScript.DoAnimations();
