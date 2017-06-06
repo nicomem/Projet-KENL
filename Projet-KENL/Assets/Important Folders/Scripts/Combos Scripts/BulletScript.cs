@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 public class BulletScript : NetworkBehaviour
 {
     public float speed = 1f;
-    public float dirX = 0f;
+    [SyncVar] [HideInInspector] public float dirX = 0f;
     public float power = 2f;
     public float multPush = 4f;
 
@@ -28,7 +28,7 @@ public class BulletScript : NetworkBehaviour
             || transform.position.y < mapInfos.yMinLimit)
             Destroy(gameObject);
     }
-
+    
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {

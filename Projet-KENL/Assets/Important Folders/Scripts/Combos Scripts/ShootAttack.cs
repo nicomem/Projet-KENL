@@ -15,8 +15,13 @@ public class ShootAttack : AttackTemplate
 
         player = GetComponent<PlayerScript>();
     }
-
+    
     public override void Attack()
+    {
+        CmdSpawnBullet();
+    }
+
+    [Command] private void CmdSpawnBullet()
     {
         Vector3 pos = transform.position;
         pos += new Vector3(
