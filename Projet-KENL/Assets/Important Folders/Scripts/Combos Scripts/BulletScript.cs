@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class BulletScript : MonoBehaviour
+public class BulletScript : NetworkBehaviour
 {
     public float speed = 1f;
     public float dirX = 0f;
@@ -28,6 +29,7 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
     }
 
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
         // No self-hitting
@@ -47,7 +49,7 @@ public class BulletScript : MonoBehaviour
             // return;
         }
     }
-
+    
     private void GiveAttack(PlayerScript playerHit)
     {
         float healthMultiplier = 1 + (playerHit.percentHealth / 100);

@@ -121,7 +121,7 @@ public class PlayerScript : NetworkBehaviour
     [HideInInspector] [SyncVar] public bool isBlocking;
     public void SyncIsBlocking(bool b)
     {
-        if (isServer || !isNetworked || !hasAuthority) isBlocking = b;
+        if (isServer || !isNetworked) isBlocking = b;
         else CmdSyncIsBlocking(b);
     }
     [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
@@ -136,7 +136,8 @@ public class PlayerScript : NetworkBehaviour
         else
             CmdAddPosY(y);
     }
-    [Command] private void CmdAddPosY(float y)
+    [Command]
+    private void CmdAddPosY(float y)
     {
         transform.localPosition = new Vector3(transform.localPosition.x,
             transform.localPosition.y + y, 0);
@@ -148,9 +149,10 @@ public class PlayerScript : NetworkBehaviour
             horizontalVelocity += dvx;
             verticalVelocity += dvy;
         } else
-            CmdChangeVelocities(dvx, dvy);
+            CmdAddVelocities(dvx, dvy);
     }
-    [Command] private void CmdChangeVelocities(float dvx, float dvy)
+    [Command]
+    private void CmdAddVelocities(float dvx, float dvy)
     {
         horizontalVelocity += dvx;
         verticalVelocity += dvy;
@@ -268,6 +270,7 @@ public class PlayerScript : NetworkBehaviour
             animScript.SyncIsAttacking(attackTimerActivated);
             animScript.SyncIsHit(InvulnerableTimer > 0);
             animScript.SyncIsBlocking(blockPressed);
+
         } else {
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
@@ -281,7 +284,7 @@ public class PlayerScript : NetworkBehaviour
         // Other useful functions
         CheckRotation(xInput);
 
-        // Added velocities
+        // Add velocities
         moveVector += new Vector3(horizontalVelocity, verticalVelocity, 0);
 
         // And finally move the player

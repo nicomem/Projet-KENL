@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 [System.Serializable]
 public class Combo_Basic : AttackTemplate
@@ -19,6 +20,7 @@ public class Combo_Basic : AttackTemplate
         attackCooldown = 0.5f;
     }
 
+    [ServerCallback]
     public override void Attack()
     {
         /* Checks the collisions of the attack (== attack active) */
@@ -51,7 +53,7 @@ public class Combo_Basic : AttackTemplate
             }
         }
     }
-
+    
     private void GiveAttack(PlayerScript playerHit, Vector3 attackDir,
         float attackPower, float leftRight, float multPush)
     {
