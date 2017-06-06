@@ -122,7 +122,7 @@ public class PlayerScript : NetworkBehaviour
     public void SyncIsBlocking(bool b)
     {
         if (isServer || !isNetworked) isBlocking = b;
-        else CmdSyncIsBlocking(b);
+        else if (hasAuthority) CmdSyncIsBlocking(b);
     }
     [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
     #endregion
@@ -270,7 +270,6 @@ public class PlayerScript : NetworkBehaviour
             animScript.SyncIsAttacking(attackTimerActivated);
             animScript.SyncIsHit(InvulnerableTimer > 0);
             animScript.SyncIsBlocking(blockPressed);
-
         } else {
             Movement_Run(xInput);
             Movement_Jump(jumpButtonPressed);
