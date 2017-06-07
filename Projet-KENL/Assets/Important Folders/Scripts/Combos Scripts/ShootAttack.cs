@@ -21,7 +21,8 @@ public class ShootAttack : AttackTemplate
         CmdSpawnBullet();
     }
 
-    [Command] private void CmdSpawnBullet()
+    [Command]
+    private void CmdSpawnBullet()
     {
         Vector3 pos = transform.position;
         pos += new Vector3(

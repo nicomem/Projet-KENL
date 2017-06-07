@@ -7,7 +7,7 @@ public class Combo_Basic : AttackTemplate
     public Vector3 dir = new Vector3(0.8f, 0.2f, 0);
     public float power = 5f;
     public float multPush = 10f; // For throwing farther with the same power
-    
+
     public Collider attackCollider;
     private bool isNetworked;
 
@@ -20,8 +20,13 @@ public class Combo_Basic : AttackTemplate
         attackCooldown = 0.5f;
     }
 
-    [ServerCallback]
     public override void Attack()
+    {
+        CmdAttack();
+    }
+
+    [Command]
+    private void CmdAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
 
@@ -53,7 +58,7 @@ public class Combo_Basic : AttackTemplate
             }
         }
     }
-    
+
     private void GiveAttack(PlayerScript playerHit, Vector3 attackDir,
         float attackPower, float leftRight, float multPush)
     {
