@@ -7,14 +7,14 @@ public class ComboTemplate : MonoBehaviour
      * inherit from this one (and sets its value) to create a combo */
 
     // Combo properties
-    public Vector3 dirLastAttack;
-    public float powerLastAttack;
-    public float multPushLastAttack = 1; // For throwing farther with the same power
-    public int comboLength;
+    public Vector3 dirLastAttack = new Vector3(0.8f, 0.2f, 0);
+    public float powerLastAttack = 11;
+    public float multPushLastAttack = 5; // For throwing farther with the same power
+    public int comboLength = 1;
 
-    public string inputKey;
+    public string inputKey = "e";
     public Collider attackCollider;
-    public float attackCooldown;
+    public float attackCooldown = 0.5f;
 
     // Other variables
     [System.NonSerialized]
@@ -48,18 +48,24 @@ public class ComboTemplate : MonoBehaviour
 
             // No self-hitting
             if (playerHit.transform.GetInstanceID() != transform.GetInstanceID()) {
+
                 leftRight = GetComponent<PlayerScript>()
                     .LookToRight() ? 1f : -1f;
 
                 // If player can get hit
                 if (playerHit.CanBeHit()) {
-                    if (actualCombo < comboLength - 1) {
-                        GiveAttack(dirLastAttack, powerLastAttack / 2,
-                            leftRight, multPushLastAttack / 5);
-                    } else {
-                        GiveAttack(dirLastAttack, powerLastAttack,
-                            leftRight, multPushLastAttack);
+                    if (playerHit.isBlocking) {
+                        powerLastAttack /= 2;
+                        multPushLastAttack /= 2;
                     }
+
+                    if (actualCombo < comboLength - 1) {
+                        powerLastAttack /= 2;
+                        multPushLastAttack /= 5;
+                    }
+
+                    GiveAttack(dirLastAttack, powerLastAttack,
+                        leftRight, multPushLastAttack);
                 }
             }
         }
@@ -68,7 +74,6 @@ public class ComboTemplate : MonoBehaviour
     protected void GiveAttack(Vector3 attackDir, float attackPower,
         float leftRight, float multPush)
     {
-        // TODO: Verify health system
         healthMultiplier = 1 + (playerHit.percentHealth / 100);
 
         x = attackDir.x * attackPower * leftRight * healthMultiplier

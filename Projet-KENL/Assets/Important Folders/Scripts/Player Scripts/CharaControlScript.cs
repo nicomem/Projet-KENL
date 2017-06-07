@@ -27,7 +27,7 @@ public class CharaControlScript : NetworkBehaviour
     #region SyncVar: attackSelected
     // If -1: no attack selected
     // If 0 <= ... < listAttacks.length: listAttacks[i] selected
-    [HideInInspector] [SyncVar] public int attackSelected;
+    [HideInInspector] [SyncVar] public int attackSelected = -1;
     public void SyncAttackSelected(int i)
     {
         if (isServer || !isNetworked) attackSelected = i;
@@ -38,11 +38,18 @@ public class CharaControlScript : NetworkBehaviour
         attackSelected = i;
     }
     #endregion
+
+    #region SyncVar: blockPressed
+    [HideInInspector] [SyncVar] public bool blockPressed;
+    public void SyncBlockPressed(bool b)
+    {
+        if (isServer || !isNetworked) blockPressed = b;
+        else CmdSyncBlockPressed(b);
+    }
+    [Command] private void CmdSyncBlockPressed(bool b) { blockPressed = b; }
+    #endregion
     #endregion
 
-    //private float xInput;
-    //private bool jumpButtonPressed;
-    //private bool[] inputs; // true if listAttack[i].inputKey is pressed
     private bool isNetworked; // is in multi mode or single mode ?
 
     private PlayerScript player;
@@ -79,16 +86,19 @@ public class CharaControlScript : NetworkBehaviour
             }
         }
 
+        blockPressed = Input.GetKey(player.blockScript.inputKey);
+
         SyncXInput(xInput);
         SyncJumpButtonPressed(jumpButtonPressed);
         SyncAttackSelected(attackSelected);
+        SyncBlockPressed(blockPressed);
     }
 
     private void MovementPlayer()
     {
         /* To move the player with input */
 
-        player.Movements(xInput, jumpButtonPressed, attackSelected);
+        player.Movements(xInput, jumpButtonPressed, attackSelected, blockPressed);
 
         // We make sure there is no movement through Z-Axis
         charaControl.transform.position.Set(

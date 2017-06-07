@@ -20,6 +20,8 @@ public class MapInfosScript : MonoBehaviour
     private string victoryName;
     private bool isNetworked;
 
+    private SoundManager soundManager;
+
     private void Start()
     {
         ListPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -31,6 +33,9 @@ public class MapInfosScript : MonoBehaviour
         playersInitiated = new bool[ListPlayers.Length];
 
         isNetworked = GameObject.Find("Network Manager") != null;
+
+        soundManager = GameObject.Find("Sound Manager")
+            .GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -57,10 +62,12 @@ public class MapInfosScript : MonoBehaviour
                 player.transform.SetParent(transform);
                 player.transform.SetParent(null);
 
+                GameObject parent;
+
                 switch (playerScript.persoName) {
                     case "Gianluigi Conti":
                         // Set Rotate90 as parent (& do things)
-                        var parent = new GameObject("Stealth Char - Rotate90");
+                        parent = new GameObject("Stealth Char - Rotate90");
                         parent.transform.position = Vector3.zero;
                         parent.transform.rotation = Quaternion.Euler(0, 90, 0);
 
@@ -69,6 +76,18 @@ public class MapInfosScript : MonoBehaviour
                         break;
 
                     case "Player Test":
+                        break;
+
+                    case "Antiope":
+                        parent = new GameObject("Antiope - Rotate90");
+                        parent.transform.position = Vector3.zero;
+                        parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                        player.transform.SetParent(parent.transform);
+                        player.transform.localRotation = Quaternion.identity;
+
+                        player.transform.localScale = new Vector3(2f, 2f, 2f);
+                        //player.transform.rotation = Quaternion.Euler(0, 90, 0);
                         break;
 
                     default:
@@ -96,12 +115,16 @@ public class MapInfosScript : MonoBehaviour
     {
         for (short i = 0; i < ListPlayers.Length; i++) {
             var player = ListPlayers[i];
+            var playerScript = player.GetComponent<PlayerScript>();
             currentY = player.transform.position.y;
             currentX = player.transform.position.x;
 
-            if (currentY < yMinLimit || currentY > yMaxLimit
-             || currentX < xMinLimit || currentX > xMaxLimit) {
-                var playerScript = player.GetComponent<PlayerScript>();
+            bool ejected = currentY < yMinLimit || currentY > yMaxLimit
+             || currentX < xMinLimit || currentX > xMaxLimit;
+
+            bool ko = playerScript.percentHealth >= 100;
+
+            if (ejected || ko) {
 
                 if (!gameHasEnded) // Player will not die when end screen
                     playerScript.persoLives--; // Will be (maybe) synched auto
@@ -115,7 +138,10 @@ public class MapInfosScript : MonoBehaviour
                     /* Animation ejected */
                     playerScript.verticalVelocity = 0;
                     playerScript.horizontalVelocity = 0;
+                    playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
+
+                    soundManager.DoBruitages("Respawn");
                 }
             }
         }
@@ -142,21 +168,16 @@ public class MapInfosScript : MonoBehaviour
 
     private void OnGUI()
     {
+        Vector3 pos;
+        foreach (PlayerScript script in ListPlayerScripts) {
+            pos = Camera.main.WorldToScreenPoint(script.transform.position);
+            GUI.Label(new Rect(pos.x - (4 * script.playerName.Length),
+                                Screen.height - pos.y - 115, 100, 25),
+                script.playerName);
+        }
+
         if (gameHasEnded) {
-            string message = "";
-
-            if (!isNetworked) {
-                message = "The game has ended!";
-            } else {
-                // Until we player names arer synched
-                message = "The game has ended!";
-                /*if (victoryName != "")
-                    message = "The game has ended: " + victoryName + " has won!";
-                else
-                    message = "It's a tie!";*/
-            }
-
-            message += "\n\nBack to main menu";
+            string message = "The game has ended!\n\nBack to main menu";
 
             int buttonWidth = Screen.width / 3;
             int buttonHeight = Screen.height / 5;

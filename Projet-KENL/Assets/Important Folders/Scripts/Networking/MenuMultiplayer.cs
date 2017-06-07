@@ -32,7 +32,7 @@ public class MenuMultiplayer : NetworkManager
     private GameObject charaSelected;
     private int connectedPlayers;
 
-    public enum PlayerType { PlayerTest, StealthChar };
+    public enum PlayerType { StealthChar, Antiope };
 
     // Server vars
     [HideInInspector]
@@ -234,16 +234,17 @@ public class MenuMultiplayer : NetworkManager
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
-            case PlayerType.PlayerTest:
+            case PlayerType.Antiope:
                 charaSelected.transform.localScale =
-                    new Vector3(1.5f, 2f, 1f);
+                    new Vector3(2f, 2f, 2f);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             default:
                 break;
         }
 
-        charaSelected.transform.localScale *= 0.75f;
+        charaSelected.transform.localScale *= 0.6f;
         persoName = persosPrefabsNames[(int)playerSelected];
 
         playerScript.persoName = persoName;
@@ -379,8 +380,9 @@ public class MenuMultiplayer : NetworkManager
                 .GetComponent<LobbyPlayerScript>().playerName;
             playerScript.SyncPlayerName(_playerName);
         }
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Starting game");
+#endif
         ServerChangeScene(mapScenes[mapSelected]);
     }
     #endregion
@@ -397,9 +399,10 @@ public class MenuMultiplayer : NetworkManager
             if (listNetworkConn[i] == null) {
                 listNetworkConn[i] = conn;
                 connectedPlayers++;
-
+#if UNITY_EDITOR
                 Debug.Log("[INF] OnServerConnect: Player " + i +
                     " connected");
+#endif
                 return;
             }
         }
@@ -441,9 +444,10 @@ public class MenuMultiplayer : NetworkManager
 
                 listPlayersGO[i].GetComponent<LobbyPlayerScript>()
                     .CmdDisconnect();
-
+#if UNITY_EDITOR
                 Debug.Log("[INF] OnServerDisconnected: Player " + i +
                     " disconnected");
+#endif
                 break;
             }
         }
@@ -458,8 +462,9 @@ public class MenuMultiplayer : NetworkManager
     {
         // When a scene is loaded
         // Launch functions for setting the buttons
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Loaded scene: " + scene.name);
+#endif
 
         if (scene.name == "MainMenu") {
             // When entering the MainMenu scene

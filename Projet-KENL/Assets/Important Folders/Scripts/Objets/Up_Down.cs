@@ -2,8 +2,8 @@
 
 public class Up_Down : MonoBehaviour
 {
-    public float amplitude = 2;          //Set in Inspector 
-    public float speed = 2;                  //Set in Inspector 
+    public float amplitude = 2;      // Amplitude of movement up/down
+    public float speed = 2;          // Speed up/down
     public float rotationSpeed = 90; // Rotation in 1 second
 
     private float tempVal;
@@ -19,10 +19,6 @@ public class Up_Down : MonoBehaviour
     {
         tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);
         transform.position = tempPos;
-
-        // Rotations "spéciales"
-        //transform.Rotate(transform.TransformVector(Vector3.up),
-        //    rotationSpeed * Time.deltaTime);
 
         transform.Rotate(transform.InverseTransformVector(Vector3.up),
             rotationSpeed * Time.deltaTime);

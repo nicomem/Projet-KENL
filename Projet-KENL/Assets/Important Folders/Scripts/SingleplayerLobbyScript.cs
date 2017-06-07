@@ -6,7 +6,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 {
     // Script derived from MenuMultiplayer, if you do a modification on
     // this last, make sure to update this script if necessary
-    
+
     private GameObject canvas;
     private GameObject charaSelectBox;
     private GameObject readyButton;
@@ -27,7 +27,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private GameObject charaSelected;
 
-    public enum PlayerType { PlayerTest, StealthChar };
+    public enum PlayerType { StealthChar, Antiope };
 
     private void Start()
     {
@@ -127,22 +127,25 @@ public class SingleplayerLobbyScript : MonoBehaviour
         switch (playerSelected) {
             case PlayerType.StealthChar:
                 charaSelected.transform.localScale =
-                    new Vector3(2.1f, 2.1f, 2.1f);
+                    new Vector3(3f, 3f, 3f);
                 charaSelected.transform.localPosition +=
-                    new Vector3(0, -2f, 0);
+                    new Vector3(0, -2.5f, 0);
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
-            case PlayerType.PlayerTest:
+            case PlayerType.Antiope:
                 charaSelected.transform.localScale =
-                    new Vector3(1.5f, 2f, 1f);
+                    new Vector3(3f, 3f, 3f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
             default:
-                Debug.Log("[ERR] SingleplayerLobbyScript/UpdatePersoInSelect: " +
-                    "Unrecognized character");
                 break;
         }
+
+        charaSelected.transform.localScale *= 0.75f;
 
         persoName = persosPrefabsNames[(int)playerSelected];
 
@@ -189,8 +192,9 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         // Will be detroyed after (look a bit under)
         DontDestroyOnLoad(gameObject);
-
+#if UNITY_EDITOR
         Debug.Log("[INF] Starting game");
+#endif
         SceneManager.LoadScene(mapScenes[mapSelected]);
     }
 
@@ -204,27 +208,31 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
                 break;
 
-            case "Player Test":
-                go = Instantiate(persoPrefabs[(int)PlayerType.PlayerTest]);
+            case "Antiope":
+                go = Instantiate(persoPrefabs[(int)PlayerType.Antiope]);
                 break;
 
             default:
                 go = new GameObject();
+#if UNITY_EDITOR
                 Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
                     persoName);
+#endif
                 return;
         }
 
-        go.GetComponent<PlayerScript>().persoName = persoName;
+        PlayerScript script = go.GetComponent<PlayerScript>();
+        script.persoName = persoName;
+        script.playerName = "Human";
 
         // IA
         for (int i = 0; i < 3; i++) {
             if (enabledIA[i]) {
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
-                var playerScript = go.GetComponent<PlayerScript>();
-                playerScript.persoName =
-                    persosPrefabsNames[(int)playerSelectedIA[i]];
-                playerScript.isIA = true;
+                script = go.GetComponent<PlayerScript>();
+                script.persoName = persosPrefabsNames[(int)playerSelectedIA[i]];
+                script.playerName = "IA " + i.ToString();
+                script.isIA = true;
             }
         }
 
@@ -334,7 +342,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         ButtonRightIA(0);
     }
-    
+
     public void ButtonLeftIA2()
     {
         ButtonLeftIA(1);
@@ -379,7 +387,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     {
         canvas.transform.Find("IA Selection " + (IANumber + 1))
             .Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = 
+            .GetComponent<Text>().text =
             persosPrefabsNames[(int)playerSelectedIA[IANumber]];
     }
     #endregion

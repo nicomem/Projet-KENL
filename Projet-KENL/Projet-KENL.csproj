@@ -87,6 +87,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CamTarget.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\CharacterDemoController.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\MouseOrbit.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\Outfitter.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\RootMotionOff.cs" />
+    <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\AllStarCharacterLibrary\Scripts\SkinnedMeshCombiner.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneAlarmLight.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneCCTVPlayerDetection.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\AlarmSystems\DoneLaserBlinking.cs" />
@@ -113,12 +119,14 @@
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\guiTextSet.cs" />
     <Compile Include="Assets\Important Folders\Personnages\Script\playerstealhchar.cs" />
     <Compile Include="Assets\Important Folders\Scripts\CameraTest.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BlockScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\ComboTemplate.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\Combo_Basic.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\AnimationsScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\CameraScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\GUIScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\PassThroughPlateformScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\MenuMultiplayer.cs" />
@@ -128,27 +136,11 @@
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Brick Substance\Documentation\Eula.txt" />
-    <None Include="Assets\Brick Substance\Documentation\Help.txt" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRimCUTOUT.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDDisplaceBumpedSpecularRefRimDX11.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDDisplaceBumpedSpecularRefRimDX11CUTOUT.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedRim.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedRimReflective.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedSpecularRefRim.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\DisplaceBumpedSpecularRefRimDX11.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_2SIDEDBumpedSpecularCUTOUT.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_BumpedSpecular.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShader.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\MOBILE_SuperShaderCUTOUT.shader" />
-    <None Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\StealthChar.txt" />
-    <None Include="Assets\KajamansRoads\FileNamesDescription.txt" />
-    <None Include="Assets\KajamansRoads\Free\ReadMe.txt" />
-    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
@@ -176,13 +168,9 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceRaytrace.cginc" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
@@ -207,7 +195,6 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
@@ -215,25 +202,6 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
-    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
-    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
-    <None Include="Assets\Standard Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
-    <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
-    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
-    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
-    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
-    <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
-    <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAdd.shader" />
-    <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAddSoft.shader" />
-    <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
