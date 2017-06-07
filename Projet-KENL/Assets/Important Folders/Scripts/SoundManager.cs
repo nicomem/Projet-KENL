@@ -51,10 +51,13 @@ public class SoundManager : MonoBehaviour
         string activeScene = SceneManager.GetActiveScene().name;
         AudioSource newMusic;
 
+        if (activeScene == "MainMenu")
+            return;
+
         if (musics.TryGetValue(activeScene, out newMusic)
             && newMusic != activeMusic) {
-
-            activeMusic.Stop();
+            if (activeMusic.isPlaying)
+                activeMusic.Stop();
             newMusic.Play();
             activeMusic = newMusic;
         }

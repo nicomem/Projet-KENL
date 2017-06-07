@@ -5,7 +5,7 @@ public class AnimationsScript : NetworkBehaviour
 {
     private Animator anim;
     private bool isNetworked;
-    
+
     private SoundManager soundManager;
     private PlayerScript playerScript;
 
@@ -63,12 +63,17 @@ public class AnimationsScript : NetworkBehaviour
 
         isNetworked = GameObject.Find("Network Manager") != null;
         playerScript = GetComponent<PlayerScript>();
-        soundManager = GameObject.Find("Sound Manager")
-            .GetComponent<SoundManager>();
+
+        GameObject soundManagerGO = GameObject.Find("Sound Manager");
+        if (soundManagerGO != null)
+            soundManager = soundManagerGO.GetComponent<SoundManager>();
     }
 
     public void DoSounds()
     {
+        if (soundManager == null)
+            return;
+
         if (isAttacking)
             soundManager.DoBruitages("Attack");
     }
@@ -92,39 +97,23 @@ public class AnimationsScript : NetworkBehaviour
 
     private void AnimationsGuianluigi()
     {
-        if (isBlocking)
-            // Put block anim
-            anim.Play("idle02", -1);
-        else if (isAttacking)
-            anim.Play("attack05", -1);
-        else if (isHit)
-            anim.Play("gethit01", -1);
-        else if (isRunning)
-            anim.Play("run00", -1);
-        else
-            anim.Play("idle02", -1);
+        if (isBlocking) { anim.Play("idle02", -1); return; }
+        if (isHit) { anim.Play("gethit01", -1); return; }
+        if (isAttacking) { anim.Play("attack05", -1); return; }
+        if (isRunning) { anim.Play("run00", -1); return; }
+
+        anim.Play("idle02", -1);
     }
 
     private void AnimationsAntiope()
     {
-        if (isBlocking)
-            // Put block anim
-            anim.SetBool("Idling", true);
-        else {
-            anim.SetBool("Idling", false);
+        anim.SetBool("Idling", true);
+        anim.SetBool("Pain", false);
+        anim.SetBool("Use", false);
 
-            if (isAttacking)
-                anim.SetBool("Use", true);
-            else {
-                anim.SetBool("Use", false);
-
-                if (isHit)
-                    anim.SetBool("Pain", true);
-                else if (isRunning)
-                    anim.SetBool("Idling", false);
-                else
-                    anim.SetBool("Idling", true);
-            }
-        }
+        if (isBlocking) return; // Idling => true
+        if (isHit) { anim.SetBool("Pain", true); return; }
+        if (isAttacking) { anim.SetBool("Use", true); return; }
+        if (isRunning) { anim.SetBool("Idling", false); return; }
     }
 }
