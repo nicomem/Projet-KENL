@@ -8,8 +8,10 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioSource> musics;
     private Dictionary<string, AudioSource> bruitagesAS;
     private AudioSource activeMusic;
+
     public Slider VolumeSlider;
     //private float volume;
+
     [Header("Musics")]
     public AudioSource introTheme;
     public AudioSource fightTheme;
@@ -28,12 +30,24 @@ public class SoundManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        if (musics == null) {
+            InitMusics();
+            activeMusic = musics["MainMenu"];
+            activeMusic.Play();
+        }
+
+        if (bruitagesAS == null)
+            InitBruitages();
+    }
+
+    private void InitMusics()
+    {
         musics = new Dictionary<string, AudioSource> {
             { "MainMenu", introTheme },
             { "MainMenuChoose", introTheme },
             { "MainMenuCredits", introTheme },
+            { "MainMenuSettings", introTheme },
             { "MainMenuMultiplayer", introTheme },
-            { "MainMenuChoose", introTheme },
             { "SingleplayerLobby", volcanChoices },
             { "MultiplayerLobby", volcanChoices },
             { "Bundok", fightTheme },
@@ -41,29 +55,40 @@ public class SoundManager : MonoBehaviour
             { "Gubatgabi", nightForest },
             { "Lungsod", fightTheme }
         };
+    }
 
+    private void InitBruitages()
+    {
         bruitagesAS = new Dictionary<string, AudioSource> {
             { "Attack", attackSound },
             { "Respawn", respawnSound }
         };
-
-        activeMusic = musics["MainMenu"];
-        activeMusic.Play();
-        
     }
+
     public void OnValueChanged()
     {
-         AudioListener.volume = VolumeSlider.value;
+        AudioListener.volume = VolumeSlider.value;
     }
+
     private void OnLevelWasLoaded(int level)
     {
-        if (SceneManager.GetActiveScene().name == "MainMenuSettings")
-            VolumeSlider.value = AudioListener.volume;
         string activeScene = SceneManager.GetActiveScene().name;
         AudioSource newMusic;
 
-        if (activeScene == "MainMenu")
-            return;
+        if (activeScene == "MainMenuSettings") {
+            VolumeSlider = GameObject.Find("Canvas").transform.Find("Slider")
+                .GetComponent<Slider>();
+            VolumeSlider.value = AudioListener.volume;
+        }
+
+        if (activeMusic == null)
+            activeMusic = introTheme;
+
+        if (musics == null)
+            InitMusics();
+
+        if (bruitagesAS == null)
+            InitBruitages();
 
         if (musics.TryGetValue(activeScene, out newMusic)
             && newMusic != activeMusic) {
@@ -72,7 +97,6 @@ public class SoundManager : MonoBehaviour
             newMusic.Play();
             activeMusic = newMusic;
         }
-        
     }
 
     public void DoBruitages(string soundCode)

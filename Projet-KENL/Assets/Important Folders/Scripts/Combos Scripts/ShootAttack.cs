@@ -7,6 +7,7 @@ public class ShootAttack : AttackTemplate
     public float offsetX = 1f, offsetY = 2f;
 
     private PlayerScript player;
+    private bool isNetworked;
 
     private void Start()
     {
@@ -14,15 +15,25 @@ public class ShootAttack : AttackTemplate
         attackCooldown = 0.5f;
 
         player = GetComponent<PlayerScript>();
+
+        isNetworked = GameObject.Find("Network Manager") != null;
     }
     
     public override void Attack()
     {
-        CmdSpawnBullet();
+        if (isServer || !isNetworked)
+            SpawnBullet();
+        else
+            CmdSpawnBullet();
     }
 
     [Command]
     private void CmdSpawnBullet()
+    {
+        SpawnBullet();
+    }
+
+    private void SpawnBullet()
     {
         Vector3 pos = transform.position;
         pos += new Vector3(
@@ -31,7 +42,8 @@ public class ShootAttack : AttackTemplate
         GameObject bullet = Instantiate(bulletPrefab, pos,
             bulletPrefab.transform.rotation);
 
-        NetworkServer.Spawn(bullet);
+        if (isNetworked)
+            NetworkServer.Spawn(bullet);
 
         BulletScript script = bullet.GetComponent<BulletScript>();
         script.dirX = player.LookToRight() ? 1f : -1f;

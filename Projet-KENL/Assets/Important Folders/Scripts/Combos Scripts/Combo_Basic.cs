@@ -22,11 +22,19 @@ public class Combo_Basic : AttackTemplate
 
     public override void Attack()
     {
-        CmdAttack();
+        if (isServer || !isNetworked)
+            BeginAttack();
+        else
+            CmdBeginAttack();
     }
 
     [Command]
-    private void CmdAttack()
+    private void CmdBeginAttack()
+    {
+        BeginAttack();
+    }
+
+    private void BeginAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
 

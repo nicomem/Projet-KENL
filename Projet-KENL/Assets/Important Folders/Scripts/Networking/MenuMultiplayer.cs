@@ -584,6 +584,8 @@ public class MenuMultiplayer : NetworkManager
 
         if (isHost)
             canvas.transform.Find("IP Server").gameObject.SetActive(true);
+        else
+            canvas.transform.Find("IP Server").gameObject.SetActive(false);
     }
 
     void OnEnable()
