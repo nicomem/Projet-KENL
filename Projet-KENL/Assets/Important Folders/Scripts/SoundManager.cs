@@ -28,6 +28,8 @@ public class SoundManager : MonoBehaviour
 
         musics = new Dictionary<string, AudioSource> {
             { "MainMenu", introTheme },
+            { "MainMenuChoose", introTheme },
+            { "MainMenuCredits", introTheme },
             { "MainMenuMultiplayer", introTheme },
             { "SingleplayerLobby", volcanChoices },
             { "MultiplayerLobby", volcanChoices },
