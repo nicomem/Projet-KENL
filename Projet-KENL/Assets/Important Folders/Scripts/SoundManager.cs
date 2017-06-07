@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -7,7 +8,8 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioSource> musics;
     private Dictionary<string, AudioSource> bruitagesAS;
     private AudioSource activeMusic;
-
+    public Slider VolumeSlider;
+    //private float volume;
     [Header("Musics")]
     public AudioSource introTheme;
     public AudioSource fightTheme;
@@ -29,6 +31,7 @@ public class SoundManager : MonoBehaviour
         musics = new Dictionary<string, AudioSource> {
             { "MainMenu", introTheme },
             { "MainMenuMultiplayer", introTheme },
+            { "MainMenuChoose", introTheme },
             { "SingleplayerLobby", volcanChoices },
             { "MultiplayerLobby", volcanChoices },
             { "Bundok", fightTheme },
@@ -44,10 +47,16 @@ public class SoundManager : MonoBehaviour
 
         activeMusic = musics["MainMenu"];
         activeMusic.Play();
+        
     }
-
+    public void OnValueChanged()
+    {
+         AudioListener.volume = VolumeSlider.value;
+    }
     private void OnLevelWasLoaded(int level)
     {
+        if (SceneManager.GetActiveScene().name == "MainMenuSettings")
+            VolumeSlider.value = AudioListener.volume;
         string activeScene = SceneManager.GetActiveScene().name;
         AudioSource newMusic;
 
@@ -58,6 +67,7 @@ public class SoundManager : MonoBehaviour
             newMusic.Play();
             activeMusic = newMusic;
         }
+        
     }
 
     public void DoBruitages(string soundCode)
