@@ -99,10 +99,30 @@ public class MapInfosScript : MonoBehaviour
 
                 player.transform.position = startPos;
 
-                if (playerScript.isIA)
-                    player.AddComponent<IAScript>();
-                else
+                // Get IA mode + ')'
+                string[] nameSplit = playerScript.playerName.Split('(');
+
+                if (nameSplit.Length == 1) { // Human
                     player.AddComponent<CharaControlScript>();
+                } else {
+                    switch (nameSplit[1]) { // IAMode + ')'
+                        case "Training)":
+                            player.AddComponent<IATrainingScript>();
+                            break;
+
+                        case "Edwin)":
+                            player.AddComponent<IAEdwinScript>();
+                            break;
+
+                        case "Machine)":
+                            player.AddComponent<IAScript>();
+                            break;
+
+                        default:
+                            Debug.Log("[ERR] IAMode not recognized");
+                            break;
+                    }
+                }
 
                 playersInitiated[i] = true;
             }

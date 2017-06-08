@@ -92,7 +92,9 @@
      <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
      <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
      <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
+     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAEdwinScript.cs" />
      <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
+     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IATrainingScript.cs" />
      <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
      <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />

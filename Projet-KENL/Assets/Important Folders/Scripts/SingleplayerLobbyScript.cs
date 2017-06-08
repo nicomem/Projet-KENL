@@ -22,7 +22,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
     private PlayerType playerSelected = 0;
     private int mapSelected = 0;
 
-    private bool[] enabledIA = new bool[3];
+    private string[] IAMode = new string[3];
     private PlayerType[] playerSelectedIA = new PlayerType[3];
 
     private GameObject charaSelected;
@@ -32,6 +32,9 @@ public class SingleplayerLobbyScript : MonoBehaviour
     private void Start()
     {
         SetupLobbySceneButtons();
+
+        for (int i = 0; i < IAMode.Length; i++)
+            IAMode[i] = "Disabled";
     }
 
     #region Perso Selection
@@ -227,11 +230,11 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
         // IA
         for (int i = 0; i < 3; i++) {
-            if (enabledIA[i]) {
+            if (IAMode[i] != "Disabled") {
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
                 script = go.GetComponent<PlayerScript>();
                 script.persoName = persosPrefabsNames[(int)playerSelectedIA[i]];
-                script.playerName = "IA " + i.ToString();
+                script.playerName = string.Format("IA {0} ({1})", i, IAMode[i]);
                 script.isIA = true;
             }
         }
@@ -318,16 +321,18 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private void ButtonEnableIA(int IANumber)
     {
-        enabledIA[IANumber] = !enabledIA[IANumber];
-
         var IASelection = canvas.transform.Find("IA Selection " + (IANumber + 1));
         var text = IASelection.Find("Button").Find("Text")
             .GetComponent<Text>().text;
 
-        if (text == "Disabled")
-            text = "Enabled";
-        else
-            text = "Disabled";
+        switch (text) {
+            case "Disabled": text = "Training"; break;
+            case "Training": text = "Edwin"; break;
+            case "Edwin": text = "Machine"; break;
+            default: text = "Disabled"; break;
+        }
+
+        IAMode[IANumber] = text;
 
         IASelection.Find("Button").Find("Text")
             .GetComponent<Text>().text = text;

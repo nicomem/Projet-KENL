@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class IAScript : NetworkBehaviour
+public class IAEdwinScript : NetworkBehaviour
 {
     private float xInput;
     private bool jumpButtonPressed;
     private int attackSelected;
     private bool blockPressed;
-    private bool noIdea;
+
     private PlayerScript player;
     private CharacterController charaControl;
     private GameObject otherPlayer;
@@ -20,8 +20,10 @@ public class IAScript : NetworkBehaviour
         player = GetComponent<PlayerScript>();
         charaControl = GetComponent<CharacterController>();
 
-        foreach (var player in GameObject.FindGameObjectsWithTag("Player")) {
-            if (!player.GetComponent<PlayerScript>().isKO) {
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (!player.GetComponent<PlayerScript>().isKO)
+            {
                 otherPlayer = player;
                 break;
             }
@@ -41,30 +43,25 @@ public class IAScript : NetworkBehaviour
 
     private void GetInputsIA()
     {
-        
-        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 2
-            && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 1
+
+        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 3
+            && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 3
             && otherPlayer.active)
             attackSelected = 0;
         else
             attackSelected = -1;
 
-        if (otherPlayer.transform.position.x < transform.position.x - 2 && otherPlayer.active)
+        if (otherPlayer.transform.position.x < transform.position.x - 3)
             xInput = -1.0f;
-        else if (otherPlayer.transform.position.x > transform.position.x + 2 && otherPlayer.active)
+        else if (otherPlayer.transform.position.x > transform.position.x + 3)
             xInput = 1.0f;
-        /*else
-            xInput = 0f;*/
+        else
+            xInput = 0f;
 
-        /*if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 2 && (transform.position.x - otherPlayer.transform.position.x) < 0
-            && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) > 5)
-            xInput = -1.0f;*/
 
-        
-        
-            
         // Lorsque IA touchée
-        if (player.IsHit()) {
+        if (player.IsHit())
+        {
             if (otherPlayer.transform.position.x < transform.position.x)
                 xInput = 1.0f;
             else
