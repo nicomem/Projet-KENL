@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioSource> bruitagesAS;
     private AudioSource activeMusic;
     public Slider VolumeSlider;
+
     //private float volume;
     [Header("Musics")]
     public AudioSource introTheme;
@@ -49,10 +50,11 @@ public class SoundManager : MonoBehaviour
         activeMusic.Play();
         
     }
-    public void OnValueChanged()
+    public void yolo()
     {
-         AudioListener.volume = VolumeSlider.value;
+        AudioListener.volume = VolumeSlider.value;
     }
+    
     private void OnLevelWasLoaded(int level)
     {
         if (SceneManager.GetActiveScene().name == "MainMenuSettings")
