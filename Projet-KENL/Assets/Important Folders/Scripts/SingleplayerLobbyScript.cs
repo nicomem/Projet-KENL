@@ -27,7 +27,7 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private GameObject charaSelected;
 
-    public enum PlayerType { StealthChar, Antiope };
+    public enum PlayerType { StealthChar, Antiope, VladimirX };
 
     private void Start()
     {
@@ -144,6 +144,14 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
+            case PlayerType.VladimirX:
+                charaSelected.transform.localScale =
+                    new Vector3(2f, 2f, 2f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
             default:
                 break;
         }
@@ -213,6 +221,10 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
             case "Antiope":
                 go = Instantiate(persoPrefabs[(int)PlayerType.Antiope]);
+                break;
+
+            case "Vladimir X":
+                go = Instantiate(persoPrefabs[(int)PlayerType.VladimirX]);
                 break;
 
             default:

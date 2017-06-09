@@ -87,9 +87,6 @@ public class MapInfosScript : MonoBehaviour
                         player.transform.localRotation = Quaternion.identity;
                         break;
 
-                    case "Player Test":
-                        break;
-
                     case "Antiope":
                         parent = new GameObject("Antiope - Rotate90");
                         parent.transform.position = Vector3.zero;
@@ -99,7 +96,17 @@ public class MapInfosScript : MonoBehaviour
                         player.transform.localRotation = Quaternion.identity;
 
                         player.transform.localScale = new Vector3(2f, 2f, 2f);
-                        //player.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        break;
+
+                    case "Vladimir X":
+                        parent = new GameObject("Antiope - Rotate90");
+                        parent.transform.position = Vector3.zero;
+                        parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                        player.transform.SetParent(parent.transform);
+                        player.transform.localRotation = Quaternion.identity;
+
+                        player.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
                         break;
 
                     default:
