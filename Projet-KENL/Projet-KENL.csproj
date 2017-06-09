@@ -118,7 +118,6 @@
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BulletScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\Combo_Basic.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\ShootAttack.cs" />
-    <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\AnimationsScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\CameraScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\GUIScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\SpawnObject.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Player Scripts\AnimationsScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAAbstract.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAEdwinScript.cs" />
