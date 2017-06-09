@@ -17,8 +17,6 @@ public class MapInfosScript : MonoBehaviour
     public bool InitPlayersFinished { get; private set; }
 
     private bool gameHasEnded;
-    private string victoryName;
-    private bool isNetworked;
 
     private SoundManager soundManager;
 
@@ -31,8 +29,6 @@ public class MapInfosScript : MonoBehaviour
             ListPlayerScripts[i] = ListPlayers[i].GetComponent<PlayerScript>();
 
         playersInitiated = new bool[ListPlayers.Length];
-
-        isNetworked = GameObject.Find("Network Manager") != null;
 
         GameObject soundManagerGO = GameObject.Find("Sound Manager");
         if (soundManagerGO != null)
@@ -54,11 +50,9 @@ public class MapInfosScript : MonoBehaviour
 
     private void InitMap()
     {
-        if (SceneManager.GetActiveScene().name == "Tabingdagat") {
-            Light light = GameObject.Find("Directional Light").GetComponent<Light>();
+        Light light = GameObject.Find("Directional Light").GetComponent<Light>();
 
-            light.transform.rotation = Quaternion.Euler(30, 0, 0);
-        }
+        light.transform.rotation = Quaternion.Euler(30, 0, 0);
     }
 
     private void InitPlayers()
@@ -79,7 +73,7 @@ public class MapInfosScript : MonoBehaviour
                 switch (playerScript.persoName) {
                     case "Gianluigi Conti":
                         // Set Rotate90 as parent (& do things)
-                        parent = new GameObject("Stealth Char - Rotate90");
+                        parent = new GameObject("Gianluigi Conti - Rotate90");
                         parent.transform.position = Vector3.zero;
                         parent.transform.rotation = Quaternion.Euler(0, 90, 0);
 
@@ -99,7 +93,7 @@ public class MapInfosScript : MonoBehaviour
                         break;
 
                     case "Vladimir X":
-                        parent = new GameObject("Antiope - Rotate90");
+                        parent = new GameObject("Vladimir X - Rotate90");
                         parent.transform.position = Vector3.zero;
                         parent.transform.rotation = Quaternion.Euler(0, 90, 0);
 
@@ -107,6 +101,17 @@ public class MapInfosScript : MonoBehaviour
                         player.transform.localRotation = Quaternion.identity;
 
                         player.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+                        break;
+
+                    case "Satela":
+                        parent = new GameObject("Satela - Rotate90");
+                        parent.transform.position = Vector3.zero;
+                        parent.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                        player.transform.SetParent(parent.transform);
+                        player.transform.localRotation = Quaternion.identity;
+
+                        player.transform.localScale = new Vector3(2.25f, 2.25f, 2.25f);
                         break;
 
                     default:
@@ -179,7 +184,7 @@ public class MapInfosScript : MonoBehaviour
                     playerScript.horizontalVelocity = 0;
                     playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
-                    
+
                     if (soundManager != null)
                         soundManager.DoBruitages("Respawn");
                 }
@@ -197,13 +202,7 @@ public class MapInfosScript : MonoBehaviour
         }
 
         // If victory or tie
-        if (activePlayerScripts.Count <= 1) {
-            gameHasEnded = true;
-
-            if (activePlayerScripts.Count == 1)
-                victoryName = activePlayerScripts[0].playerName;
-            else victoryName = "";
-        }
+        gameHasEnded = activePlayerScripts.Count <= 1;
     }
 
     private void OnGUI()

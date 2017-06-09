@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿#pragma warning disable
+
+using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour {
 

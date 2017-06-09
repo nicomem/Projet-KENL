@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 public class AnimationsScript : NetworkBehaviour
 {
     private Animator anim;
+    private Animation anim2;
     private bool isNetworked;
 
     private SoundManager soundManager;
@@ -60,6 +61,7 @@ public class AnimationsScript : NetworkBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+        anim2 = GetComponent<Animation>();
 
         isNetworked = GameObject.Find("Network Manager") != null;
         playerScript = GetComponent<PlayerScript>();
@@ -67,6 +69,12 @@ public class AnimationsScript : NetworkBehaviour
         GameObject soundManagerGO = GameObject.Find("Sound Manager");
         if (soundManagerGO != null)
             soundManager = soundManagerGO.GetComponent<SoundManager>();
+    }
+
+    private void Update()
+    {
+        DoAnimations();
+        DoSounds();
     }
 
     public void DoSounds()
@@ -80,6 +88,11 @@ public class AnimationsScript : NetworkBehaviour
 
     public void DoAnimations()
     {
+        if (playerScript == null) {
+            AnimationsSatela();
+            return;
+        }
+
         switch (playerScript.persoName) {
             case "Gianluigi Conti":
                 AnimationsGuianluigi();
@@ -91,6 +104,10 @@ public class AnimationsScript : NetworkBehaviour
 
             case "Vladimir X":
                 AnimationsVladimir();
+                break;
+
+            case "Satela":
+                AnimationsSatela();
                 break;
 
             default:
@@ -129,5 +146,15 @@ public class AnimationsScript : NetworkBehaviour
         if (isRunning) { anim.Play("run", 0); return; }
 
         anim.Play("idel", -1);
+    }
+
+    private void AnimationsSatela()
+    {
+        if (isBlocking) { anim2.Play("Idle"); return; }
+        if (isHit) { anim2.Play("Receibe Damage"); return; }
+        if (isAttacking) { anim2.Play("Dagger Strike 2"); return; }
+        if (isRunning) { anim2.Play("Run"); return; }
+
+        anim2.Play("Idle");
     }
 }

@@ -30,7 +30,7 @@ function LateUpdate () {
  		
  		y = ClampAngle(y, yMinLimit, yMaxLimit);
  		       
-        var rotation = Quaternion.EulerAngles(y * Mathf.Deg2Rad, x * Mathf.Deg2Rad, 0);
+        var rotation = Quaternion.Euler(y * Mathf.Deg2Rad, x * Mathf.Deg2Rad, 0);
         var position = rotation * Vector3(0.0, 0.0, -distance) + target.position;
         
         transform.rotation = rotation;

@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#pragma warning disable
+
 using UnityEngine;
 
 public class MovePlatform : MonoBehaviour {
@@ -29,7 +29,7 @@ public class MovePlatform : MonoBehaviour {
     void FixedUpdate()
     {
         //Platform.rigidbody.MovePosition(Platform.position * Vector3.right * PlatformSpeed * Time.fixedDeltaTime);
-        rb = this.Platform.GetComponent<Rigidbody>();
+        rb = Platform.GetComponent<Rigidbody>();
         rb.MovePosition(Platform.position + direction * PlatformSpeed * Time.fixedDeltaTime);
 
         if (Vector3.Distance(Platform.position, destination.position) < PlatformSpeed * Time.fixedDeltaTime)
