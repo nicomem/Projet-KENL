@@ -177,7 +177,7 @@ public class PlayerScript : NetworkBehaviour
     public AnimationsScript animScript;
     #endregion
 
-    #region Private vars
+    #region Other vars
     private int jumpCount = 0; // How many jumps done before grounded
     private Collider[] colliders;
 
@@ -202,6 +202,8 @@ public class PlayerScript : NetworkBehaviour
     private CharacterController charaControl;
 
     [HideInInspector] public BlockScript blockScript;
+
+    public float bonusAttack = 1f;
 
     #endregion
     #endregion

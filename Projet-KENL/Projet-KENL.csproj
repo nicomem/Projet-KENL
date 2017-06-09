@@ -128,6 +128,7 @@
     <Compile Include="Assets\Important Folders\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\MenuMultiplayer.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Objets\SpawnObject.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAAbstract.cs" />

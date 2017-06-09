@@ -11,7 +11,6 @@ public class Combo_Basic : AttackTemplate
     public Collider attackCollider;
     private bool isNetworked;
 
-
     private void Start()
     {
         isNetworked = GameObject.Find("Network Manager") != null;
@@ -61,7 +60,8 @@ public class Combo_Basic : AttackTemplate
                         multPush /= 2;
                     }
 
-                    GiveAttack(playerHit, dir, power, leftRight, multPush);
+                    GiveAttack(playerHit, dir, power * playerScript.bonusAttack,
+                        leftRight, multPush);
                 }
             }
         }
