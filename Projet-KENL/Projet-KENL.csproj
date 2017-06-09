@@ -123,6 +123,7 @@
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\PassThroughPlateformScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\MovingPlatform.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\IPAddressFinder.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\LobbyPlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Networking\MenuMultiplayer.cs" />
@@ -138,8 +139,6 @@
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />
-    <Compile Include="Assets\MovePlatform.cs" />
-    <Compile Include="Assets\Scripts\MovingPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
