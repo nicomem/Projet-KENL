@@ -18,7 +18,7 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion>4</LangVersion>
+    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -130,6 +130,7 @@
     <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAAbstract.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAEdwinScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IATrainingScript.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Important Folders\Personnages\Adventurer\Readme.txt" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedSpecularRefRim.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
