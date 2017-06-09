@@ -130,16 +130,21 @@
     <Compile Include="Assets\Important Folders\Scripts\Objets\PickUpObjects.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Objets\Up_Down.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\CharaControlScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAAbstract.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAEdwinScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IAScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\IATrainingScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Player Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SingleplayerLobbyScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\SoundManager.cs" />
+    <Compile Include="Assets\MovePlatform.cs" />
+    <Compile Include="Assets\Scripts\MovingPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedSpecularRefRim.shader" />
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassCullBackface.shader" />
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassNoCullBackface.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />

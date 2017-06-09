@@ -146,6 +146,8 @@
   <ItemGroup>
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\2SIDEDBumpedSpecularRefRim.shader" />
     <None Include="Assets\Important Folders\Personnages\ManyWorlds\Matarial Library\Custom Shaders\BumpedSpecularRefRim.shader" />
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassCullBackface.shader" />
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassNoCullBackface.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />

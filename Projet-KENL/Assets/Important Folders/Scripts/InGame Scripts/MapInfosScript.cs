@@ -37,6 +37,8 @@ public class MapInfosScript : MonoBehaviour
         GameObject soundManagerGO = GameObject.Find("Sound Manager");
         if (soundManagerGO != null)
             soundManager = soundManagerGO.GetComponent<SoundManager>();
+
+        InitMap();
     }
 
     // Update is called once per frame
@@ -47,6 +49,15 @@ public class MapInfosScript : MonoBehaviour
         else {
             CheckEjected();
             if (!gameHasEnded) CheckVictory();
+        }
+    }
+
+    private void InitMap()
+    {
+        if (SceneManager.GetActiveScene().name == "Tabingdagat") {
+            Light light = GameObject.Find("Directional Light").GetComponent<Light>();
+
+            light.transform.rotation = Quaternion.Euler(30, 0, 0);
         }
     }
 
