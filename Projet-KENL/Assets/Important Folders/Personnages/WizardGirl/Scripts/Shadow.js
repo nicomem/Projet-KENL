@@ -14,9 +14,15 @@ function Start(){
 	transform.parent = transform.root;
 }
 
-function LateUpdate () {
-	//Shadow position.
-	transform.position = castingPoint.position;
+function LateUpdate() {
+    //Shadow position.
+    try {
+        transform.position = castingPoint.position;
+    } catch (Exception) {
+        Destroy(this);
+        return;
+    }
+	
 	var hits : RaycastHit[];
 	hits = Physics.RaycastAll(transform.position + Vector3.up*0.5, -Vector3.up);
 	var maxShadowYPosition : float = -999999;

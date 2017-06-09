@@ -26,8 +26,8 @@ public class SingleplayerLobbyScript : MonoBehaviour
     private PlayerType[] playerSelectedIA = new PlayerType[3];
 
     private GameObject charaSelected;
+    public enum PlayerType { StealthChar, Antiope, VladimirX, Satela };
 
-    public enum PlayerType { StealthChar, Antiope, VladimirX };
 
     private void Start()
     {
@@ -152,6 +152,14 @@ public class SingleplayerLobbyScript : MonoBehaviour
                 charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
 
+            case PlayerType.Satela:
+                charaSelected.transform.localScale =
+                    new Vector3(3f, 3f, 3f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
             default:
                 break;
         }
@@ -211,37 +219,19 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        GameObject go;
-
         // Player
-        switch (persoName) {
-            case "Gianluigi Conti":
-                go = Instantiate(persoPrefabs[(int)PlayerType.StealthChar]);
-                break;
+        int i = 0;
+        for (i = 0; i < persosPrefabsNames.Length
+            && persosPrefabsNames[i] != persoName; i++) ;
 
-            case "Antiope":
-                go = Instantiate(persoPrefabs[(int)PlayerType.Antiope]);
-                break;
-
-            case "Vladimir X":
-                go = Instantiate(persoPrefabs[(int)PlayerType.VladimirX]);
-                break;
-
-            default:
-                go = new GameObject();
-#if UNITY_EDITOR
-                Debug.Log("[ERR] StartGame: Unrecognized persoName: " +
-                    persoName);
-#endif
-                return;
-        }
+        GameObject go = Instantiate(persoPrefabs[i]);
 
         PlayerScript script = go.GetComponent<PlayerScript>();
         script.persoName = persoName;
         script.playerName = "Human";
 
         // IA
-        for (int i = 0; i < 3; i++) {
+        for (i = 0; i < 3; i++) {
             if (IAMode[i] != "Disabled") {
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
                 script = go.GetComponent<PlayerScript>();
