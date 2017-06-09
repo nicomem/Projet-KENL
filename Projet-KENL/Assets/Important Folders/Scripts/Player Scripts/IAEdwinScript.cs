@@ -1,91 +1,39 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
-public class IAEdwinScript : NetworkBehaviour
+public class IAEdwinScript : IAAbstract
 {
-    private float xInput;
-    private bool jumpButtonPressed;
-    private int attackSelected;
-    private bool blockPressed;
+    // See IAAbstract to see variables
 
-    private PlayerScript player;
-    private CharacterController charaControl;
-    private GameObject otherPlayer;
-    private CharacterController otherPlayerCharaControl;
-    private bool Training;
-
-    // Use this for initialization
-    void Start()
+    protected override void GetInputsIA()
     {
-        player = GetComponent<PlayerScript>();
-        charaControl = GetComponent<CharacterController>();
+        float dxSigned = transform.position.x - ennemyScript.transform.position.x,
+            dySigned = transform.position.y - ennemyScript.transform.position.y,
+            dx = Mathf.Abs(dxSigned),
+            dy = Mathf.Abs(dxSigned);
 
-        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (!player.GetComponent<PlayerScript>().isKO)
-            {
-                otherPlayer = player;
-                break;
-            }
-        }
-
-        otherPlayerCharaControl = otherPlayer.GetComponent<CharacterController>();
-    }
-
-    private void Update()
-    {
-        // We move the IA
-        GetInputsIA();
-
-        // Function for moving the player with input (!= IA)
-        MovementPlayer();
-    }
-
-    private void GetInputsIA()
-    {
-
-        if (Mathf.Abs(transform.position.x - otherPlayer.transform.position.x) < 3
-            && Mathf.Abs(transform.position.y - otherPlayer.transform.position.y) < 3
-            && otherPlayer.active)
+        if (dx < 3f && dy < 3f)
             attackSelected = 0;
         else
             attackSelected = -1;
 
-        if (otherPlayer.transform.position.x < transform.position.x - 3)
-            xInput = -1.0f;
-        else if (otherPlayer.transform.position.x > transform.position.x + 3)
-            xInput = 1.0f;
-        else
-            xInput = 0f;
-
+        if (dxSigned > 3f)
+            xInput = -1f;
+        else if (dxSigned < -3f)
+            xInput = 1f;
 
         // Lorsque IA touchée
-        if (player.IsHit())
-        {
-            if (otherPlayer.transform.position.x < transform.position.x)
+        if (playerScript.IsHit()) {
+            if (dxSigned > 0)
                 xInput = 1.0f;
             else
                 xInput = -1.0f;
         }
 
         // Le time évite le bug au début ou le perso saute sans raison
-        if ((!otherPlayerCharaControl.isGrounded && Time.deltaTime > 1.0f)
-            || (otherPlayer.transform.position.y - transform.position.y > 0.2f))
+        if ((!ennemyCharaControl.isGrounded && Time.deltaTime > 1.0f)
+            || (dySigned < -0.2f))
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
-    }
-
-    private void MovementPlayer()
-    {
-        /* To move the player with input */
-
-        player.Movements(xInput, jumpButtonPressed, attackSelected, blockPressed);
-
-        // We make sure there is no movement through Z-Axis
-        charaControl.transform.position.Set(
-            charaControl.transform.position.x,
-            charaControl.transform.position.y,
-            0);
     }
 }
