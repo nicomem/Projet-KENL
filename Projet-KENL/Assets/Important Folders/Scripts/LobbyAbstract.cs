@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class LobbyAbstract : NetworkLobbyManager
+public class LobbyAbstract : NetworkManager
 {
     protected GameObject canvas;
     protected GameObject charaSelectBox;
