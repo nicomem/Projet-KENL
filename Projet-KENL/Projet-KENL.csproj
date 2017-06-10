@@ -112,7 +112,6 @@
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\DoneTags.cs" />
     <Compile Include="Assets\Important Folders\Personnages\ManyWorlds\Stealth Character\demo\Resources\DoneScripts\UnappliedScripts\guiTextSet.cs" />
     <Compile Include="Assets\Important Folders\Personnages\Script\playerstealhchar.cs" />
-    <Compile Include="Assets\Important Folders\Scripts\CameraTest.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\AttackTemplate.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BlockScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\Combos Scripts\BulletScript.cs" />
