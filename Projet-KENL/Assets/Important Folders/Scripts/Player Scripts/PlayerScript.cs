@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
@@ -119,7 +120,7 @@ public class PlayerScript : NetworkBehaviour
     private void Start()
     {
         // When lobby -> inGame
-        if (transform.parent == null)
+        if (SceneManager.GetActiveScene().name == "MultiplayerLobby")
             DontDestroyOnLoad(gameObject);
 
         charaControl = GetComponent<CharacterController>();

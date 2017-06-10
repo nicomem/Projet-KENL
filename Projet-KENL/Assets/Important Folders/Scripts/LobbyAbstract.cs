@@ -90,5 +90,4 @@ public class LobbyAbstract : NetworkManager
         mapSelectBox.transform.Find("Map Image").GetComponent<RawImage>().texture =
             mapScreenshots[mapSelected];
     }
-
 }
