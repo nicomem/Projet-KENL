@@ -3,36 +3,20 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuMultiplayer : NetworkManager
+public class MenuMultiplayer : LobbyAbstract
 {
     private Text InputIPAdress;
     private Text InputPlayerName;
 
-    private GameObject canvas;
-    private GameObject charaSelectBox;
-    private GameObject readyButton;
-    private GameObject mapSelectBox;
-    private GameObject chooseMapButton;
-
     public GameObject[] lobbyPrefabs;
-    public GameObject[] persoPrefabs;
-    public string[] persosPrefabsNames;
-    public string[] mapScenes;
-    public Texture[] mapScreenshots;
-
     public string PlayerName { get; private set; }
-    private string persoName;
+    
     private bool isHost;
     private bool mapChoosed;
-    private PlayerType playerSelected = 0;
-    private int mapSelected = 0;
 
     [HideInInspector] public GameObject LobbyPlayer;
     [HideInInspector] public LobbyPlayerScript lobbyPlayerScript;
-    private GameObject charaSelected;
     private int connectedPlayers;
-
-    public enum PlayerType { StealthChar, Antiope };
 
     // Server vars
     [HideInInspector]
@@ -41,6 +25,7 @@ public class MenuMultiplayer : NetworkManager
     [HideInInspector] public GameObject[] listPlayersGO = new GameObject[4];
     [HideInInspector] public bool[] isReadyPlayers = new bool[4];
     [HideInInspector] public string[] persoNames = new string[4];
+
 
     #region MainMenuMultiplayer Scene
 
@@ -210,48 +195,6 @@ public class MenuMultiplayer : NetworkManager
         // Update perso in charSelectBox
         UpdatePersoInSelect();
     }
-
-    public void UpdatePersoInSelect()
-    {
-        if (charaSelected != null) {
-            Destroy(charaSelected);
-        }
-
-        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
-        charaSelected.transform.parent = charaSelectBox.transform;
-        charaSelected.transform.position = canvas.transform.position;
-        charaSelected.transform.localScale = new Vector3(1, 1, 1);
-
-        var playerScript = charaSelected.GetComponent<PlayerScript>();
-
-        // Other fixes for each perso
-        switch (playerSelected) {
-            case PlayerType.StealthChar:
-                charaSelected.transform.localScale =
-                    new Vector3(2.5f, 2.5f, 2.5f);
-                charaSelected.transform.localPosition +=
-                    new Vector3(0, -2.5f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.Antiope:
-                charaSelected.transform.localPosition +=
-                    new Vector3(0, -2.5f, 0);
-                charaSelected.transform.localScale =
-                    new Vector3(2.5f, 2.5f, 2.5f);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            default:
-                break;
-        }
-        
-        persoName = persosPrefabsNames[(int)playerSelected];
-
-        playerScript.persoName = persoName;
-        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = persoName;
-    }
     #endregion
 
     #region Map Selection
@@ -316,15 +259,6 @@ public class MenuMultiplayer : NetworkManager
         buttonEvent = chooseMapButton.GetComponent<Button>().onClick;
         buttonEvent.RemoveAllListeners();
         buttonEvent.AddListener(Lobby_MapSelectChooseButton);
-    }
-
-    public void UpdateMapInSelect()
-    {
-        // Change map in image & sync with clients
-        mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
-            .GetComponent<Text>().text = mapScenes[mapSelected];
-        mapSelectBox.transform.Find("Map Image").GetComponent<RawImage>().texture =
-            mapScreenshots[mapSelected];
     }
     #endregion
 
