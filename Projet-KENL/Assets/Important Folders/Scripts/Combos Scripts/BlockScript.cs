@@ -17,17 +17,14 @@ public class BlockScript : MonoBehaviour
     {
         // Begin (or continue) blocking
 
-        player.SyncIsBlocking(true);
         shieldGO.SetActive(true);
-
         shieldGO.transform.rotation = Quaternion.identity;
     }
 
     public void StopBlocking()
     {
         // Stop blocking
-
-        player.SyncIsBlocking(false);
+        
         shieldGO.SetActive(false);
     }
 }

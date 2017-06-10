@@ -180,8 +180,8 @@ public class MapInfosScript : MonoBehaviour
                     player.SetActive(false);
                 } else {
                     /* Animation ejected */
-                    playerScript.verticalVelocity = 0;
-                    playerScript.horizontalVelocity = 0;
+                    playerScript.SetVerticalVelocity(0);
+                    playerScript.SetHorizontalVelocity(0);
                     playerScript.percentHealth = 0;
                     player.transform.position = respawnPositions[i];
 

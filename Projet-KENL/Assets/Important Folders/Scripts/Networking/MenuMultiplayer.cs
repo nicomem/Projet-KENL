@@ -92,6 +92,10 @@ public class MenuMultiplayer : LobbyAbstract
     {
         // When clicking on "Back" button
 
+        // If it become sentient, it would not exit this place !
+        // (trad: it is marked as DontDestroyOnLoad but we don't need it)
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+
         if (isHost) {
             StopHost();
             listNetworkConn = new NetworkConnection[4];
@@ -293,9 +297,10 @@ public class MenuMultiplayer : LobbyAbstract
             int _playerSelectedIndex = 0;
 
             // DO NOT REMOVE THIS !!!
-            if (persoNames[i] == null || persoNames[i] == "")
+            if (string.IsNullOrEmpty(persoNames[i]))
                 break;
 
+            // Get index prefab
             for (int k = 0; k < persosPrefabsNames.Length; k++) {
                 if (persoNames[i] == persosPrefabsNames[k]) {
                     _playerSelectedIndex = k;

@@ -31,12 +31,16 @@ public class Combo_Basic : AttackTemplate
     [Command]
     private void CmdBeginAttack()
     {
+        // On the server
+
         BeginAttack();
     }
 
     private void BeginAttack()
     {
         /* Checks the collisions of the attack (== attack active) */
+
+        // On the server
 
         Collider[] colliders = Physics.OverlapBox(attackCollider.bounds.center,
             attackCollider.bounds.extents,
@@ -56,7 +60,7 @@ public class Combo_Basic : AttackTemplate
 
                 // If player can get hit
                 if (playerHit.CanBeHit()) {
-                    if (playerHit.isBlocking) {
+                    if (playerHit.IsBlocking) {
                         power /= 2;
                         multPush /= 2;
                     }
@@ -71,16 +75,17 @@ public class Combo_Basic : AttackTemplate
     private void GiveAttack(PlayerScript playerHit, Vector3 attackDir,
         float attackPower, float leftRight, float multPush)
     {
-        float healthMultiplier = 1 + (playerHit.percentHealth / 100);
+        // On the server
+
+        float healthMultiplier = 1 + (playerHit.percentHealth / 50);
 
         float x = attackDir.x * attackPower * leftRight * healthMultiplier
             * multPush;
         float y = attackDir.y * attackPower * healthMultiplier * multPush;
 
-        // Place it in mid-air (== not grounded)
-        playerHit.AddPosY(0.1f);
-        playerHit.AddVelocities(x, y);
-        playerHit.SyncInvulnerableTimer(attackCooldown);
-        playerHit.SyncPercentHealth(playerHit.percentHealth + attackPower);
+        if (playerHit.GetHorizontalVelocity() < 0f)
+            x *= -1f;
+
+        playerHit.GetHit(x, y, attackCooldown, attackPower);
     }
 }

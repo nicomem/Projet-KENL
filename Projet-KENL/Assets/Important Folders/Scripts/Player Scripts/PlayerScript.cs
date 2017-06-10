@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerScript : NetworkBehaviour
@@ -36,37 +37,6 @@ public class PlayerScript : NetworkBehaviour
     [Command] private void CmdSyncIsIA(bool b) { isIA = b; }
     #endregion
 
-    #region SyncVar: syncPos
-    [HideInInspector] [SyncVar] public Vector3 syncPos;
-    public void SyncPos(Vector3 p)
-    {
-        if (isServer || !isNetworked) syncPos = p;
-        else CmdSyncPos(p);
-    }
-    [Command] private void CmdSyncPos(Vector3 p) { syncPos = p; }
-    #endregion
-
-    #region SyncVar: syncRotation
-    [HideInInspector] [SyncVar] public Quaternion syncRotation;
-    public void SyncRotation(Quaternion r)
-    {
-        if (isServer || !isNetworked) syncRotation = r;
-        else CmdSyncRotation(r);
-    }
-    [Command] private void CmdSyncRotation(Quaternion r) { syncRotation = r; }
-    #endregion
-
-    #region SyncVar: InvulnerableTimer
-    // If <= 0f, player can get hit, resets in function of the attack
-    [HideInInspector] [SyncVar] public float InvulnerableTimer;
-    public void SyncInvulnerableTimer(float f)
-    {
-        if (isServer || !isNetworked) InvulnerableTimer = f;
-        else CmdSyncInvulnerableTimer(f);
-    }
-    [Command] private void CmdSyncInvulnerableTimer(float t) { InvulnerableTimer = t; }
-    #endregion
-
     #region SyncVar: percentHealth
     [HideInInspector] [SyncVar] public float percentHealth = 0;
     public void SyncPercentHealth(float f)
@@ -95,68 +65,6 @@ public class PlayerScript : NetworkBehaviour
         else CmdSyncIsKO(b);
     }
     [Command] private void CmdSyncIsKO(bool b) { isKO = b; }
-    #endregion
-
-    #region SyncVar: verticalVelocity
-    [HideInInspector] [SyncVar] public float verticalVelocity;
-    public void SyncVerticalVelocity(float f)
-    {
-        if (isServer || !isNetworked) verticalVelocity = f;
-        else CmdSyncVerticalVelocity(f);
-    }
-    [Command] private void CmdSyncVerticalVelocity(float f) { verticalVelocity = f; }
-    #endregion
-
-    #region SyncVar: horizontalVelocity
-    [HideInInspector] [SyncVar] public float horizontalVelocity;
-    public void SyncHorizontalVelocity(float f)
-    {
-        if (isServer || !isNetworked) horizontalVelocity = f;
-        else CmdSyncHorizontalVelocity(f);
-    }
-    [Command] private void CmdSyncHorizontalVelocity(float f) { horizontalVelocity = f; }
-    #endregion
-
-    #region SyncVar: isBlocking
-    [HideInInspector] [SyncVar] public bool isBlocking;
-    public void SyncIsBlocking(bool b)
-    {
-        if (isServer || !isNetworked) isBlocking = b;
-        else if (hasAuthority) CmdSyncIsBlocking(b);
-    }
-    [Command] private void CmdSyncIsBlocking(bool b) { isBlocking = b; }
-    #endregion
-
-    #region Others
-    public void AddPosY(float y)
-    {
-        if (isServer || !isNetworked)
-            syncPos = new Vector3(transform.localPosition.x,
-                transform.localPosition.y + y, 0);
-        else
-            CmdAddPosY(y);
-    }
-    [Command]
-    private void CmdAddPosY(float y)
-    {
-        transform.localPosition = new Vector3(transform.localPosition.x,
-            transform.localPosition.y + y, 0);
-    }
-
-    public void AddVelocities(float dvx, float dvy)
-    {
-        if (isServer || !isNetworked) {
-            horizontalVelocity += dvx;
-            verticalVelocity += dvy;
-        } else
-            CmdAddVelocities(dvx, dvy);
-    }
-    [Command]
-    private void CmdAddVelocities(float dvx, float dvy)
-    {
-        horizontalVelocity += dvx;
-        verticalVelocity += dvy;
-    }
     #endregion
     #endregion
 
@@ -194,35 +102,72 @@ public class PlayerScript : NetworkBehaviour
     private float currentPeriod = 0; // If <= 0, can check attackCollider
     private bool attackTimerActivated = false; // If true, activate he attack timer
     private bool isGrounded;
+    private float horizontalVelocity = 0f, verticalVelocity = 0f;
+    private float invulnerableTimer;
 
     private float waySign; // If 1: player looks to the right
     private bool isNetworked; // See CharaControlScript
-
-    private Vector3 moveVector;
+    
     private CharacterController charaControl;
 
     [HideInInspector] public BlockScript blockScript;
-
     public float bonusAttack = 1f;
 
+    public bool IsBlocking { get; private set; }
     #endregion
     #endregion
 
     private void Start()
     {
         // When lobby -> inGame
-        if (transform.parent == null)
+        if (SceneManager.GetActiveScene().name == "MultiplayerLobby")
             DontDestroyOnLoad(gameObject);
 
         charaControl = GetComponent<CharacterController>();
-        InvulnerableTimer = 0f;
-        moveVector = Vector3.zero;
+        invulnerableTimer = 0f;
 
         isNetworked = GameObject.Find("Network Manager") != null;
         blockScript = GetComponent<BlockScript>();
     }
 
+    public float GetHorizontalVelocity() { return horizontalVelocity; }
+
+    public void SetVerticalVelocity(float vel)
+    {
+        verticalVelocity = vel;
+    }
+
+    public void SetHorizontalVelocity(float vel)
+    {
+        horizontalVelocity = vel;
+    }
+
+    public void GetHit(float x, float y, float attackCooldown, float attackPower)
+    {
+        if (isGrounded)
+            charaControl.Move(new Vector3(0, 1, 0));
+
+        horizontalVelocity += x;
+        verticalVelocity += y;
+
+        invulnerableTimer = attackCooldown;
+
+        percentHealth += attackPower;
+    }
+
+    #region Call for Movements
     public void Movements(float xInput, bool jumpButtonPressed,
+        int attackSelected, bool blockPressed)
+    {
+        if (isNetworked && !isServer)
+            CmdMovements(xInput, jumpButtonPressed, attackSelected,
+                blockPressed);
+        else
+            LocalMovements(xInput, jumpButtonPressed, attackSelected,
+                blockPressed);
+    }
+
+    private void LocalMovements(float xInput, bool jumpButtonPressed,
         int attackSelected, bool blockPressed)
     {
         /* Change the moveVector based on differents forces and inputs
@@ -231,19 +176,8 @@ public class PlayerScript : NetworkBehaviour
         // We update the timers
         UpdateTimers();
 
-        if (isNetworked) {
-            if (hasAuthority) {
-                SyncPos(transform.position);
-                SyncRotation(transform.rotation);
-            } else {
-                transform.position = Vector3.Lerp(transform.position,
-                    syncPos, 0.33f);
-                transform.rotation = syncRotation;
-            }
-        }
-
         // We reset moveVector and do things to velocities
-        moveVector = Vector3.zero;
+        Vector3 moveVector = Vector3.zero;
 
         horizontalVelocity /= (1 + 3 * Time.deltaTime);
 
@@ -262,27 +196,19 @@ public class PlayerScript : NetworkBehaviour
             attackSelected = -1;
         }
 
+        bool isRunning, isAttacking, isHit;
+
         // Movement functions
-        if (!isNetworked || hasAuthority) {
-            animScript.SyncIsRunning(Movement_Run(xInput));
-            Movement_Jump(jumpButtonPressed);
-            Movement_Attack(attackSelected);
-            Movement_Block(blockPressed);
+        isRunning = Movement_Run(ref moveVector, xInput);
+        Movement_Jump(jumpButtonPressed);
+        Movement_Attack(attackSelected);
+        Movement_Block(blockPressed);
 
-            animScript.SyncIsAttacking(attackTimerActivated);
-            animScript.SyncIsHit(InvulnerableTimer > 0);
-            animScript.SyncIsBlocking(blockPressed);
-        } else {
-            Movement_Run(xInput);
-            Movement_Jump(jumpButtonPressed);
-            Movement_Attack(attackSelected);
-            Movement_Block(blockPressed || isBlocking);
-        }
-
-        animScript.DoAnimations();
-        animScript.DoSounds();
-
-        // Other useful functions
+        isAttacking = attackTimerActivated;
+        isHit = invulnerableTimer > 0;
+        IsBlocking = blockPressed;
+        
+        // Make the player rotate the right way
         CheckRotation(xInput);
 
         // Add velocities
@@ -291,7 +217,42 @@ public class PlayerScript : NetworkBehaviour
         // And finally move the player
         charaControl.Move(moveVector * Time.deltaTime);
         isGrounded = charaControl.isGrounded;
+
+        if (isNetworked && isServer)
+            RpcApplyMovements(transform.position, transform.rotation,
+                isRunning, isAttacking, isHit, IsBlocking);
+        else
+            ApplyMovements(transform.position, transform.rotation,
+                isRunning, isAttacking, isHit, IsBlocking);
     }
+
+    private void ApplyMovements(Vector3 position, Quaternion rotation,
+        bool isRunning, bool isAttacking, bool isHit, bool isBlocking)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+
+        animScript.isRunning = isRunning;
+        animScript.isAttacking = isAttacking;
+        animScript.isHit = isHit;
+        animScript.isBlocking = isBlocking;
+    }
+
+    [Command]
+    private void CmdMovements(float xInput, bool jumpButtonPressed,
+        int attackSelected, bool blockPressed)
+    {
+        LocalMovements(xInput, jumpButtonPressed, attackSelected, blockPressed);
+    }
+
+    [ClientRpc]
+    private void RpcApplyMovements(Vector3 position, Quaternion rotation,
+        bool isRunning, bool isAttacking, bool isHit, bool isBlocking)
+    {
+        ApplyMovements(position, rotation,
+            isRunning, isAttacking, isHit, isBlocking);
+    }
+    #endregion
 
     private void UpdateTimers()
     {
@@ -301,14 +262,14 @@ public class PlayerScript : NetworkBehaviour
         if (attackTimer > 0f) attackTimer -= deltaTime;
 
         // Invulnerable Timer
-        if (InvulnerableTimer > 0f) InvulnerableTimer -= deltaTime;
+        if (invulnerableTimer > 0f) invulnerableTimer -= deltaTime;
 
         // Attack-Collision Timer
         if (attackTimerActivated) currentPeriod -= deltaTime;
     }
 
     #region Movement functions
-    private bool Movement_Run(float xInput)
+    private bool Movement_Run(ref Vector3 moveVector, float xInput)
     {
         /* Make the player run based on xInput */
         if (Mathf.Abs(xInput) >= 0.25) {
@@ -326,7 +287,7 @@ public class PlayerScript : NetworkBehaviour
             jumpCount = 0;
         } else {
             if (verticalVelocity > 0 && CheckCollisionUp()) {
-                if (hasAuthority) SyncVerticalVelocity(0);
+                if (hasAuthority) verticalVelocity = 0;
                 else verticalVelocity = 0;
             }
 
@@ -337,8 +298,8 @@ public class PlayerScript : NetworkBehaviour
         if (jumpButtonPressed
           && jumpCount < jumpMax
           && verticalVelocity < 0.5f * jumpForce) {
-            SyncVerticalVelocity(jumpForce);
-            SyncHorizontalVelocity(0.25f * horizontalVelocity);
+            verticalVelocity = jumpForce;
+            horizontalVelocity = 0.25f * horizontalVelocity;
             jumpCount++;
             return true;
         }
@@ -374,12 +335,13 @@ public class PlayerScript : NetworkBehaviour
 
     private bool Movement_Block(bool blockPressed)
     {
-        if (blockPressed)
+        if (blockPressed) {
             blockScript.Block();
-        else
+            return true;
+        } else {
             blockScript.StopBlocking();
-
-        return blockPressed;
+            return false;
+        }
     }
     #endregion
 
@@ -421,12 +383,12 @@ public class PlayerScript : NetworkBehaviour
 
     public bool CanBeHit()
     {
-        return InvulnerableTimer <= 0.5f;
+        return invulnerableTimer <= 0.5f;
     }
 
     public bool IsHit()
     {
-        return InvulnerableTimer > 0;
+        return invulnerableTimer > 0;
     }
     #endregion
 }
