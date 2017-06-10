@@ -2,31 +2,13 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class SingleplayerLobbyScript : MonoBehaviour
+public class SingleplayerLobbyScript : LobbyAbstract
 {
     // Script derived from MenuMultiplayer, if you do a modification on
     // this last, make sure to update this script if necessary
 
-    private GameObject canvas;
-    private GameObject charaSelectBox;
-    private GameObject readyButton;
-    private GameObject mapSelectBox;
-    private GameObject chooseMapButton;
-
-    public GameObject[] persoPrefabs;
-    public string[] persosPrefabsNames;
-    public string[] mapScenes;
-    public Texture[] mapScreenshots;
-
-    private string persoName;
-    private PlayerType playerSelected = 0;
-    private int mapSelected = 0;
-
     private string[] IAMode = new string[3];
     private PlayerType[] playerSelectedIA = new PlayerType[3];
-
-    private GameObject charaSelected;
-    public enum PlayerType { StealthChar, Antiope, VladimirX, Satela };
 
 
     private void Start()
@@ -112,66 +94,6 @@ public class SingleplayerLobbyScript : MonoBehaviour
         // Update perso in charSelectBox
         UpdatePersoInSelect();
     }
-
-    public void UpdatePersoInSelect()
-    {
-        if (charaSelected != null) {
-            Destroy(charaSelected);
-        }
-
-        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
-        charaSelected.transform.parent = charaSelectBox.transform;
-        charaSelected.transform.position = canvas.transform.position;
-        charaSelected.transform.localScale = new Vector3(1, 1, 1);
-
-        var playerScript = charaSelected.GetComponent<PlayerScript>();
-
-        // Other fixes for each perso
-        switch (playerSelected) {
-            case PlayerType.StealthChar:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.localPosition +=
-                    new Vector3(0, -2.5f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.Antiope:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.VladimirX:
-                charaSelected.transform.localScale =
-                    new Vector3(2f, 2f, 2f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.Satela:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            default:
-                break;
-        }
-
-        charaSelected.transform.localScale *= 0.75f;
-
-        persoName = persosPrefabsNames[(int)playerSelected];
-
-        playerScript.persoName = persoName;
-        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = persoName;
-    }
     #endregion
 
     #region Map Selection
@@ -196,15 +118,6 @@ public class SingleplayerLobbyScript : MonoBehaviour
         // Start game (we give selected map)
         StartGame();
     }
-
-    public void UpdateMapInSelect()
-    {
-        // Change map in image & sync with clients
-        mapSelectBox.transform.Find("Map Name Panel").Find("Map Name")
-            .GetComponent<Text>().text = mapScenes[mapSelected];
-        mapSelectBox.transform.Find("Map Image").GetComponent<RawImage>().texture =
-            mapScreenshots[mapSelected];
-    }
     #endregion
 
     public void StartGame()
@@ -219,10 +132,16 @@ public class SingleplayerLobbyScript : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
+        if (string.IsNullOrEmpty(persoName))
+            return;
+
         // Player
         int i = 0;
         for (i = 0; i < persosPrefabsNames.Length
             && persosPrefabsNames[i] != persoName; i++) ;
+
+        if (i == persosPrefabsNames.Length)
+            Debug.Log("[ERR] PersoName not found");
 
         GameObject go = Instantiate(persoPrefabs[i]);
 
