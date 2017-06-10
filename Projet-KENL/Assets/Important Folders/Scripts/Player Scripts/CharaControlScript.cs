@@ -50,7 +50,7 @@ public class CharaControlScript : NetworkBehaviour
     {
         /* To move the player with input */
 
-        player.CmdMovements(xInput, jumpButtonPressed, attackSelected,
+        player.Movements(xInput, jumpButtonPressed, attackSelected, 
             blockPressed);
 
         // We make sure there is no movement through Z-Axis

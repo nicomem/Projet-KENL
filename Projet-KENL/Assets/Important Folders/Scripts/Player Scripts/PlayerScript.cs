@@ -152,8 +152,19 @@ public class PlayerScript : NetworkBehaviour
         percentHealth += attackPower;
     }
 
-    [Command]
-    public void CmdMovements(float xInput, bool jumpButtonPressed,
+    #region Call for Movements
+    public void Movements(float xInput, bool jumpButtonPressed,
+        int attackSelected, bool blockPressed)
+    {
+        if (isNetworked && !isServer)
+            CmdMovements(xInput, jumpButtonPressed, attackSelected,
+                blockPressed);
+        else
+            LocalMovements(xInput, jumpButtonPressed, attackSelected,
+                blockPressed);
+    }
+
+    private void LocalMovements(float xInput, bool jumpButtonPressed,
         int attackSelected, bool blockPressed)
     {
         /* Change the moveVector based on differents forces and inputs
@@ -204,12 +215,15 @@ public class PlayerScript : NetworkBehaviour
         charaControl.Move(moveVector * Time.deltaTime);
         isGrounded = charaControl.isGrounded;
 
-        RpcMovements(transform.position, transform.rotation,
-            isRunning, isAttacking, isHit, IsBlocking);
+        if (isNetworked && isServer)
+            RpcApplyMovements(transform.position, transform.rotation,
+                isRunning, isAttacking, isHit, IsBlocking);
+        else
+            ApplyMovements(transform.position, transform.rotation,
+                isRunning, isAttacking, isHit, IsBlocking);
     }
 
-    [ClientRpc]
-    private void RpcMovements(Vector3 position, Quaternion rotation,
+    private void ApplyMovements(Vector3 position, Quaternion rotation,
         bool isRunning, bool isAttacking, bool isHit, bool isBlocking)
     {
         transform.position = position;
@@ -220,6 +234,22 @@ public class PlayerScript : NetworkBehaviour
         animScript.isHit = isHit;
         animScript.isBlocking = isBlocking;
     }
+
+    [Command]
+    private void CmdMovements(float xInput, bool jumpButtonPressed,
+        int attackSelected, bool blockPressed)
+    {
+        LocalMovements(xInput, jumpButtonPressed, attackSelected, blockPressed);
+    }
+
+    [ClientRpc]
+    private void RpcApplyMovements(Vector3 position, Quaternion rotation,
+        bool isRunning, bool isAttacking, bool isHit, bool isBlocking)
+    {
+        ApplyMovements(position, rotation,
+            isRunning, isAttacking, isHit, isBlocking);
+    }
+    #endregion
 
     private void UpdateTimers()
     {

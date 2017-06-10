@@ -61,7 +61,7 @@ public class BulletScript : NetworkBehaviour
     
     private void GiveAttack(PlayerScript playerHit)
     {
-        float healthMultiplier = 1 + (playerHit.percentHealth / 25);
+        float healthMultiplier = 1 + (playerHit.percentHealth / 50);
         float leftRight;
         if (transform.position.x < playerHit.transform.position.x)
             leftRight = 1f;

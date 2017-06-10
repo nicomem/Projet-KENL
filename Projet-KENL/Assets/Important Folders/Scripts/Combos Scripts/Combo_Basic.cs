@@ -77,7 +77,7 @@ public class Combo_Basic : AttackTemplate
     {
         // On the server
 
-        float healthMultiplier = 1 + (playerHit.percentHealth / 25);
+        float healthMultiplier = 1 + (playerHit.percentHealth / 50);
 
         float x = attackDir.x * attackPower * leftRight * healthMultiplier
             * multPush;

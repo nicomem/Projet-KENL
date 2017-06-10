@@ -67,7 +67,7 @@ public abstract class IAAbstract : MonoBehaviour
     {
         /* To move the player with input */
 
-        playerScript.CmdMovements(xInput, jumpButtonPressed, attackSelected,
+        playerScript.Movements(xInput, jumpButtonPressed, attackSelected,
             blockPressed);
 
         // We make sure there is no movement through Z-Axis
