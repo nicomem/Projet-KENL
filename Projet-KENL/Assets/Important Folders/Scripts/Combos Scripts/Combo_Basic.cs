@@ -83,6 +83,9 @@ public class Combo_Basic : AttackTemplate
             * multPush;
         float y = attackDir.y * attackPower * healthMultiplier * multPush;
 
+        if (playerHit.GetHorizontalVelocity() < 0f)
+            x *= -1f;
+
         playerHit.GetHit(x, y, attackCooldown, attackPower);
     }
 }

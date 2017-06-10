@@ -71,6 +71,9 @@ public class BulletScript : NetworkBehaviour
         float x = power * leftRight * healthMultiplier * multPush;
         float y = power * healthMultiplier * multPush;
 
+        if (playerHit.GetHorizontalVelocity() < 0f)
+            x *= -1f;
+
         playerHit.GetHit(x, y, 0.5f, power);
     }
 }

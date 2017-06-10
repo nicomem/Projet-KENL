@@ -130,6 +130,8 @@ public class PlayerScript : NetworkBehaviour
         blockScript = GetComponent<BlockScript>();
     }
 
+    public float GetHorizontalVelocity() { return horizontalVelocity; }
+
     public void SetVerticalVelocity(float vel)
     {
         verticalVelocity = vel;
