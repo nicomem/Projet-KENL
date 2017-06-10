@@ -3,21 +3,17 @@
 public class SpawnObject : MonoBehaviour
 {
     public GameObject[] ObjectPrefabs;
-
-    private float time;
-    private float spawnTime = 5f;
-    
+    public float spawnTime = 5f;
     public Vector3 positionToSpawn;
 
+    private float time;
     private GameObject objectSpawned;
-
-    System.Random rand;
+    private System.Random rand;
 
 	// Use this for initialization
 	void Start ()
     {
         rand = new System.Random();
-        positionToSpawn = new Vector3(0, 8, 0);
 	}
 	
 	// Update is called once per frame
