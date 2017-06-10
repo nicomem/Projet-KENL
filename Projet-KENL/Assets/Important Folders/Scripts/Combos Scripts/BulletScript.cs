@@ -10,10 +10,12 @@ public class BulletScript : NetworkBehaviour
 
     [HideInInspector] public PlayerScript player;
     private MapInfosScript mapInfos;
+    private bool isNetworked;
 
     private void Start()
     {
         mapInfos = GameObject.Find("Map Infos").GetComponent<MapInfosScript>();
+        isNetworked = GameObject.Find("Network Manager") != null;
     }
 
     private void Update()
@@ -29,9 +31,16 @@ public class BulletScript : NetworkBehaviour
             Destroy(gameObject);
     }
     
-    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
+        if (isServer || !isNetworked)
+            ServerOnCollisionEnter(other);
+    }
+
+    private void ServerOnCollisionEnter(Collider other)
+    {
+        // Custom function (call only on server or singleplayer)
+
         // No self-hitting
         if (other.transform.GetInstanceID() == player.transform.GetInstanceID())
             return;
