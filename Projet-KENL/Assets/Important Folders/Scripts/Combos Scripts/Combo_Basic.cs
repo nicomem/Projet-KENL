@@ -17,6 +17,7 @@ public class Combo_Basic : AttackTemplate
 
         inputKey = "e";
         attackCooldown = 0.5f;
+        playerScript = GetComponent<PlayerScript>();
     }
 
     public override void Attack()
