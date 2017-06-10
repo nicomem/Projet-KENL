@@ -61,21 +61,16 @@ public class BulletScript : NetworkBehaviour
     
     private void GiveAttack(PlayerScript playerHit)
     {
-        float healthMultiplier = 1 + (playerHit.percentHealth / 100);
+        float healthMultiplier = 1 + (playerHit.percentHealth / 25);
         float leftRight;
         if (transform.position.x < playerHit.transform.position.x)
             leftRight = 1f;
         else
             leftRight = -1f;
 
-        float x = power * leftRight * healthMultiplier
-            * multPush;
+        float x = power * leftRight * healthMultiplier * multPush;
         float y = power * healthMultiplier * multPush;
 
-        // Place it in mid-air (== not grounded)
-        playerHit.AddPosY(0.1f);
-        playerHit.AddVelocities(x, y);
-        playerHit.SyncInvulnerableTimer(0.5f);
-        playerHit.SyncPercentHealth(playerHit.percentHealth + power);
+        playerHit.GetHit(x, y, 0.5f, power);
     }
 }
