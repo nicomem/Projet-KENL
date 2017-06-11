@@ -45,12 +45,11 @@ public class Combo_Basic : AttackTemplate
         Collider[] colliders = Physics.OverlapBox(attackCollider.bounds.center,
             attackCollider.bounds.extents,
             attackCollider.transform.rotation,
-            LayerMask.GetMask("Hitbox"));
+            LayerMask.GetMask("Player"));
 
         PlayerScript playerHit;
         for (int i = 0; i < colliders.Length; i++) {
-            playerHit = colliders[i].transform.parent
-                .GetComponent<PlayerScript>();
+            playerHit = colliders[i].GetComponent<PlayerScript>();
 
             // No self-hitting
             if (playerHit.transform.GetInstanceID() != transform.GetInstanceID()) {
