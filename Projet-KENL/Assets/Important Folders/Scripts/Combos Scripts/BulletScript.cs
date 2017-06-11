@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 public class BulletScript : NetworkBehaviour
 {
     public float speed = 1f;
-    [SyncVar] [HideInInspector] public float dirX = 0f;
+    [HideInInspector] public float dirX = 0f;
     public float power = 2f;
     public float multPush = 4f;
 
