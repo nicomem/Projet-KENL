@@ -16,9 +16,9 @@ public class IAEdwinScript : IAAbstract
         else
             attackSelected = -1;
 
-        if (dxSigned > 3f)
+        if (dxSigned > 2f)
             xInput = -1f;
-        else if (dxSigned < -3f)
+        else if (dxSigned < -2f)
             xInput = 1f;
         else
             xInput = 0f;
@@ -37,5 +37,8 @@ public class IAEdwinScript : IAAbstract
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
+
+        if (playerScript.horizontalSpeed < 0)
+            xInput *= -1f;
     }
 }

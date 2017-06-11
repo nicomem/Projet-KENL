@@ -28,5 +28,8 @@ public class IATrainingScript : IAAbstract
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
+
+        if (playerScript.horizontalSpeed < 0)
+            xInput *= -1f;
     }
 }

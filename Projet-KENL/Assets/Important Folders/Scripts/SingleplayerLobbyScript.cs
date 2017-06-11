@@ -155,7 +155,7 @@ public class SingleplayerLobbyScript : LobbyAbstract
                 go = Instantiate(persoPrefabs[(int)playerSelectedIA[i]]);
                 script = go.GetComponent<PlayerScript>();
                 script.persoName = persosPrefabsNames[(int)playerSelectedIA[i]];
-                script.playerName = string.Format("IA {0} ({1})", i, IAMode[i]);
+                script.playerName = string.Format("IA {0} ({1})", i+1, IAMode[i]);
                 script.isIA = true;
             }
         }

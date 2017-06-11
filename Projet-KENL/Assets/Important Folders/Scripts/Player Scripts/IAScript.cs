@@ -12,16 +12,16 @@ public class IAScript : IAAbstract
             dy = Mathf.Abs(dySigned);
 
         if (dy < 4f) {
-            if (dx < 3f)
+            if (dx < 4f)
                 attackSelected = 0;
             else
                 attackSelected = 1;
         }
         else attackSelected = -1;
 
-        if (dxSigned > 2f)
+        if (dxSigned > 3f)
             xInput = -1f;
-        else if (dxSigned < -2f)
+        else if (dxSigned < -3f)
             xInput = 1f;
         else
             xInput = 0f;
