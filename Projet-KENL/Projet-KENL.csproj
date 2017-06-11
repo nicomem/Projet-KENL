@@ -121,6 +121,7 @@
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\GUIScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\PassThroughPlateformScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\JumpTriggerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\LobbyAbstract.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MovingPlatform.cs" />

@@ -28,31 +28,33 @@ public abstract class IAAbstract : MonoBehaviour
         ennemyScriptList.Remove(playerScript); // We are not our own ennemy
     }
 
-    protected void UpdateEnnemy()
+    protected bool UpdateEnnemy()
     {
         // Get a new ennemy if current is ko
+        // Returns a bool whether an ennemy has been got
 
         if (ennemyScript != null && !ennemyScript.isKO)
-            return;
+            return true;
 
         // Remove all ko
         ennemyScriptList.RemoveAll(script => script.isKO);
+
+        if (ennemyScriptList.Count == 0)
+            return false;
         
         // Get the ennemy (randomly)
         System.Random rand = new System.Random();
         ennemyScript = ennemyScriptList[rand.Next(ennemyScriptList.Count)];
 
         ennemyCharaControl = ennemyScript.GetComponent<CharacterController>();
+        return true;
     }
 
     protected void Update()
     {
-        // If end
-        if (ennemyScriptList.Count == 0)
+        // If end || Update the ennemy
+        if (ennemyScriptList.Count == 0 || !UpdateEnnemy())
             return;
-
-        // Update the ennemy
-        UpdateEnnemy();
 
         // We move the IA
         GetInputsIA();

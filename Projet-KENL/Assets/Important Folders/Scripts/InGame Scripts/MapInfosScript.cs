@@ -169,9 +169,8 @@ public class MapInfosScript : MonoBehaviour
             bool ko = playerScript.percentHealth >= 100;
 
             if (ejected || ko) {
-
                 if (!gameHasEnded) // Player will not die when end screen
-                    playerScript.persoLives--; // Will be (maybe) synched auto
+                    --playerScript.persoLives; // Will be (maybe) synched auto
 
                 if (playerScript.persoLives <= 0) {
                     playerScript.SyncIsKO(true);

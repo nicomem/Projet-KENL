@@ -282,15 +282,10 @@ public class PlayerScript : NetworkBehaviour
     {
         /* Verify if a jump can be made, if so, makes the player jump
          * Returns a bool indicating if a jump has been made */
-
+        
         if (charaControl.isGrounded) {
             jumpCount = 0;
         } else {
-            if (verticalVelocity > 0 && CheckCollisionUp()) {
-                if (hasAuthority) verticalVelocity = 0;
-                else verticalVelocity = 0;
-            }
-
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
         }
