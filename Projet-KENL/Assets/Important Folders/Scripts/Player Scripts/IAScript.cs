@@ -20,8 +20,8 @@ public class IAScript : IAAbstract
             xInput = -1f;
         else if (dxSigned < -2f)
             xInput = 1f;
-        /*else
-            xInput = 0f;*/
+        else
+            xInput = 0f;
 
         /*if (dx < 2 && dxSigned < 0 && dySigned > 5)
             xInput = -1.0f;*/

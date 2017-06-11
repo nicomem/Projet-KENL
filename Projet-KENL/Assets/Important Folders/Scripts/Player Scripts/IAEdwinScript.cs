@@ -20,6 +20,8 @@ public class IAEdwinScript : IAAbstract
             xInput = -1f;
         else if (dxSigned < -3f)
             xInput = 1f;
+        else
+            xInput = 0f;
 
         // Lorsque IA touchée
         if (playerScript.IsHit()) {

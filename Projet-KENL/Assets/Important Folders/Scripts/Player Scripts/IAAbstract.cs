@@ -5,7 +5,7 @@ public abstract class IAAbstract : MonoBehaviour
 {
     protected float xInput;
     protected bool jumpButtonPressed;
-    protected int attackSelected;
+    protected int attackSelected = -1;
     protected bool blockPressed;
 
     protected PlayerScript playerScript;
@@ -62,10 +62,6 @@ public abstract class IAAbstract : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // If end || Update the ennemy
-        if (ennemyScriptList.Count == 0 || !UpdateEnnemy())
-            return;
-
         // Function for moving the player with input (!= IA)
         MovementPlayer();
     }
