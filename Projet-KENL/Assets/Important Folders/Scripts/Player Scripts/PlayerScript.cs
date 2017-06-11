@@ -286,10 +286,8 @@ public class PlayerScript : NetworkBehaviour
         if (charaControl.isGrounded) {
             jumpCount = 0;
         } else {
-            if (verticalVelocity > 0 && CheckCollisionUp()) {
-                if (hasAuthority) verticalVelocity = 0;
-                else verticalVelocity = 0;
-            }
+            if (verticalVelocity > 0 && CheckCollisionUp())
+                verticalVelocity = 0;
 
             // Gravity here
             verticalVelocity -= gravity * Time.deltaTime;
