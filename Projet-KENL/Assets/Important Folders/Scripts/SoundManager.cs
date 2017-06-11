@@ -17,6 +17,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource fightTheme;
     public AudioSource volcanChoices;
     public AudioSource nightForest;
+    public AudioSource volcanTheme;
+    public AudioSource beachTheme;
 
     [Header("Bruitages")]
     public AudioSource attackSound;
@@ -53,7 +55,9 @@ public class SoundManager : MonoBehaviour
             { "Bundok", fightTheme },
             { "Gubataraw", fightTheme },
             { "Gubatgabi", nightForest },
-            { "Lungsod", fightTheme }
+            { "Lungsod", fightTheme },
+            { "Bulkan", volcanTheme },
+            { "Tabingdagat", beachTheme }
         };
     }
 
