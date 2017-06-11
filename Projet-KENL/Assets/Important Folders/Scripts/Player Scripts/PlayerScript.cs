@@ -144,7 +144,7 @@ public class PlayerScript : NetworkBehaviour
 
     public void GetHit(float x, float y, float attackCooldown, float attackPower)
     {
-        if (isGrounded)
+        if (isGrounded && !IsBlocking)
             charaControl.Move(new Vector3(0, 1, 0));
 
         horizontalVelocity += x;

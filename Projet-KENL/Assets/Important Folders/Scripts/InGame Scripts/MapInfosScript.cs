@@ -182,6 +182,7 @@ public class MapInfosScript : MonoBehaviour
                     playerScript.SetVerticalVelocity(0);
                     playerScript.SetHorizontalVelocity(0);
                     playerScript.percentHealth = 0;
+                    player.GetComponent<PickUpObjects>().ResetBonuses();
                     player.transform.position = respawnPositions[i];
 
                     if (soundManager != null)

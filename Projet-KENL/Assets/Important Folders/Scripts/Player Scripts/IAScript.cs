@@ -9,16 +9,19 @@ public class IAScript : IAAbstract
         float dxSigned = transform.position.x - ennemyScript.transform.position.x,
             dySigned = transform.position.y - ennemyScript.transform.position.y,
             dx = Mathf.Abs(dxSigned),
-            dy = Mathf.Abs(dxSigned);
+            dy = Mathf.Abs(dySigned);
 
-        if (dx < 2 && dy < 1)
-            attackSelected = 0;
-        else
-            attackSelected = -1;
+        if (dy < 4f) {
+            if (dx < 3f)
+                attackSelected = 0;
+            else
+                attackSelected = 1;
+        }
+        else attackSelected = -1;
 
-        if (dxSigned > 2f)
+        if (dxSigned > 1.5f)
             xInput = -1f;
-        else if (dxSigned < -2f)
+        else if (dxSigned < -1.5f)
             xInput = 1f;
         else
             xInput = 0f;
@@ -43,14 +46,18 @@ public class IAScript : IAAbstract
             jumpButtonPressed = true;
         else
             jumpButtonPressed = false;
+
+        if (playerScript.horizontalSpeed < 0 && dx > 2.5f)
+            xInput *= -1f;
     }
 
     private bool CheckMin(GameObject[] liste)
     {
         for (int i = 0; i < liste.GetLength(0); i++) {
-            if (Mathf.Abs(liste[i].transform.position.x - transform.position.x) < 3
-            && Mathf.Abs(liste[i].transform.position.y - transform.position.y) < 3
-            && liste[i].GetComponent<BulletScript>().player != gameObject)
+            if (Mathf.Abs(liste[i].transform.position.x - transform.position.x) < 6f
+            && Mathf.Abs(liste[i].transform.position.y - transform.position.y) < 4f
+            && liste[i].GetComponent<BulletScript>().player.GetInstanceID()
+                    != gameObject.GetInstanceID())
                 return true;
         }
 

@@ -72,4 +72,10 @@ public class PickUpObjects : MonoBehaviour
         int index = bonusString.FindIndex(s => s == other.gameObject.tag);
         savedTime[index] = Time.time;
     }
+
+    public void ResetBonuses()
+    {
+        for (int i = 0; i < savedTime.Length; i++)
+            savedTime[i] = -100f;
+    }
 }
