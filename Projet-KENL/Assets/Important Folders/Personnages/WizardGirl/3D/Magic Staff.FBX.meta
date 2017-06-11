@@ -3,7 +3,12 @@ guid: a549ef7a54ef2074199db40d94a72958
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Magic Staff
+    11100000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0

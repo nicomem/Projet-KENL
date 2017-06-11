@@ -18,7 +18,7 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion>4</LangVersion>
+    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -121,6 +121,7 @@
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\GUIScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\MapInfosScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\InGame Scripts\PassThroughPlateformScript.cs" />
+    <Compile Include="Assets\Important Folders\Scripts\InterfaceScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\JumpTriggerScript.cs" />
     <Compile Include="Assets\Important Folders\Scripts\LobbyAbstract.cs" />
     <Compile Include="Assets\Important Folders\Scripts\MainMenuScript.cs" />
