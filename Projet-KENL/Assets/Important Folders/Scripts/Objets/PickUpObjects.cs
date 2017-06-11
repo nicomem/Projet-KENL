@@ -34,7 +34,7 @@ public class PickUpObjects : MonoBehaviour
             // Objet-HP
             () => {
                 playerScript.percentHealth = 
-                    Mathf.Min(0, playerScript.percentHealth - 50);
+                    Mathf.Max(0, playerScript.percentHealth - 50);
                 savedTime[bonusString.FindIndex(s => s == "Objet-HP")] = -100f;
             },
 
