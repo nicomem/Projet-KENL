@@ -19,15 +19,12 @@ public class IAScript : IAAbstract
         }
         else attackSelected = -1;
 
-        if (dxSigned > 1.5f)
+        if (dxSigned > 2f)
             xInput = -1f;
-        else if (dxSigned < -1.5f)
+        else if (dxSigned < -2f)
             xInput = 1f;
         else
             xInput = 0f;
-
-        if (dx < 2 && dySigned > 5 && ennemyCharaControl.isGrounded)
-            xInput = -1.0f;
 
         // Lorsque IA touchée
         if (playerScript.IsHit()) {
