@@ -58,6 +58,13 @@ public abstract class IAAbstract : MonoBehaviour
 
         // We move the IA
         GetInputsIA();
+    }
+
+    private void FixedUpdate()
+    {
+        // If end || Update the ennemy
+        if (ennemyScriptList.Count == 0 || !UpdateEnnemy())
+            return;
 
         // Function for moving the player with input (!= IA)
         MovementPlayer();

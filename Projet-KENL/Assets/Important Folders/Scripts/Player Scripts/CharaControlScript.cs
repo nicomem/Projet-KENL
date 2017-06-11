@@ -27,6 +27,13 @@ public class CharaControlScript : NetworkBehaviour
             return;
 
         GetInputs();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isNetworked && !hasAuthority)
+            return;
+
         MovementPlayer();
     }
 
