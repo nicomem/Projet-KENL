@@ -45,6 +45,11 @@ public class BulletScript : NetworkBehaviour
         if (other.transform.GetInstanceID() == player.transform.GetInstanceID())
             return;
 
+        if (other.transform.CompareTag("Bullet")) {
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+
         // Destroy when hitting a plateform
         if (other.transform.CompareTag("Plateform")) {
             Destroy(gameObject);
