@@ -76,7 +76,7 @@ public class SoundManager : MonoBehaviour
         AudioSource newMusic;
 
         if (activeScene == "MainMenuSettings") {
-            VolumeSlider = GameObject.Find("Canvas").transform.Find("Slider")
+            VolumeSlider = GameObject.Find("Canvas").transform.Find("Slider Général")
                 .GetComponent<Slider>();
             VolumeSlider.value = AudioListener.volume;
         }
