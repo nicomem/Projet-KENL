@@ -79,8 +79,8 @@ public class MenuMultiplayer : LobbyAbstract
 
     public void Load_MainMenu()
     {
-        // When clicking on "Main Menu" button
-        SceneManager.LoadScene("MainMenu");
+        // When clicking on "Main Menu Choose" button
+        SceneManager.LoadScene("MainMenuChoose");
     }
 
     #endregion
@@ -198,6 +198,68 @@ public class MenuMultiplayer : LobbyAbstract
 
         // Update perso in charSelectBox
         UpdatePersoInSelect();
+    }
+
+    public void UpdatePersoInSelect()
+    {
+        if (charaSelected != null) {
+            Destroy(charaSelected);
+        }
+
+        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
+        charaSelected.transform.parent = charaSelectBox.transform;
+        charaSelected.transform.position = canvas.transform.position;
+        charaSelected.transform.localScale = new Vector3(1, 1, 1);
+
+        var playerScript = charaSelected.GetComponent<PlayerScript>();
+
+        // Other fixes for each perso
+        switch (playerSelected) {
+            case PlayerType.StealthChar:
+                charaSelected.transform.localScale =
+                    new Vector3(3f, 3f, 3f);
+                charaSelected.transform.localPosition +=
+                    new Vector3(0, -1f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
+            case PlayerType.Antiope:
+                charaSelected.transform.localScale =
+                    new Vector3(3f, 3f, 3f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1.5f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
+            case PlayerType.VladimirX:
+                charaSelected.transform.localScale =
+                    new Vector3(2f, 2f, 2f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1.5f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
+            case PlayerType.Satela:
+                charaSelected.transform.localScale =
+                    new Vector3(3f, 3f, 3f);
+                charaSelected.transform.position +=
+                    new Vector3(0, -1.5f, 0);
+                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
+                break;
+
+            default:
+                break;
+        }
+
+        charaSelected.transform.localScale *= 0.5f;
+        charaSelected.transform.position +=
+            new Vector3(0, -0.5f, 0);
+
+        persoName = persosPrefabsNames[(int)playerSelected];
+
+        playerScript.persoName = persoName;
+        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
+            .GetComponent<Text>().text = persoName;
     }
     #endregion
 
@@ -406,19 +468,14 @@ public class MenuMultiplayer : LobbyAbstract
         Debug.Log("[INF] Loaded scene: " + scene.name);
 #endif
 
-        if (scene.name == "MainMenu") {
-            // When entering the MainMenu scene
-            Time.timeScale = 1.0f;
-            Lobby_BackButton();
-            offlineScene = "MainMenu";
-            SceneManager.LoadScene("MainMenu");
-            Destroy(gameObject);
-        } else if (scene.name == "MultiplayerLobby") {
+        if (scene.name == "MultiplayerLobby") {
             // When entering the LobbyMultiplayer scene
             SetupLobbySceneButtons();
         } else if (scene.name == "MainMenuMultiplayer") {
             // When entering the MainMenuMultiplayer scene
             SetupMultiSceneButtons();
+        } else if (scene.name == "MainMenuChoose") {
+            Destroy(gameObject);
         }
     }
 

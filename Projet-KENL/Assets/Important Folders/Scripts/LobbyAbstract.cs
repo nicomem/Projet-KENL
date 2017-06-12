@@ -22,66 +22,6 @@ public class LobbyAbstract : NetworkManager
 
     public enum PlayerType { StealthChar, Antiope, VladimirX, Satela };
 
-    public void UpdatePersoInSelect()
-    {
-        if (charaSelected != null) {
-            Destroy(charaSelected);
-        }
-
-        charaSelected = Instantiate(persoPrefabs[(int)playerSelected]);
-        charaSelected.transform.parent = charaSelectBox.transform;
-        charaSelected.transform.position = canvas.transform.position;
-        charaSelected.transform.localScale = new Vector3(1, 1, 1);
-
-        var playerScript = charaSelected.GetComponent<PlayerScript>();
-
-        // Other fixes for each perso
-        switch (playerSelected) {
-            case PlayerType.StealthChar:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.localPosition +=
-                    new Vector3(0, -2.5f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.Antiope:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.VladimirX:
-                charaSelected.transform.localScale =
-                    new Vector3(2f, 2f, 2f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            case PlayerType.Satela:
-                charaSelected.transform.localScale =
-                    new Vector3(3f, 3f, 3f);
-                charaSelected.transform.position +=
-                    new Vector3(0, -1f, 0);
-                charaSelected.transform.rotation = Quaternion.Euler(0, 180, 0);
-                break;
-
-            default:
-                break;
-        }
-
-        charaSelected.transform.localScale *= 0.75f;
-
-        persoName = persosPrefabsNames[(int)playerSelected];
-
-        playerScript.persoName = persoName;
-        charaSelectBox.transform.Find("Panel - Perso Name").Find("Perso Name")
-            .GetComponent<Text>().text = persoName;
-    }
-
     public void UpdateMapInSelect()
     {
         // Change map in image & sync with clients
